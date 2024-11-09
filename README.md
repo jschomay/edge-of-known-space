@@ -1,7 +1,18 @@
-# Edge of Known Space
+Scaffolding rot.js tutorial using suggested best patterns in typescript via vite.js FTW!
 
-*You wake up from long-term cyrosleep in a starship on an alien planet at the edge of known space.  The rest of your team are missing.  What happened?*
- 
-"The Edge of Known Space" is a 1-screen micro-metriodvania where you can't move beyond the known surroundings.  Discover clues and tools to reveal more of the map.  Explore the full map to piece together what happened.
+"Best practices" taken from rot.js "addons" directory as follows:
 
-A small game for fun built on [rot.js](https://github.com/ondras/rot.js/) for [Game Off 2024](https://itch.io/jam/game-off-2024)
+rot.js addons
+=============
+
+This directory contains "skeleton" files to be re-used and adjusted as necessary. They correspond to common design patterns, utilities and general game architecture modules.
+
+  * `pubsub.js`: simple pub-sub implementation. Suitable for cross-component messaging/notification.
+  * `xy.js`: 2D Coords
+  * `game.js`: sample main namespace
+  * `level.js`: empty level encapsulating entities
+  * `entity.js`: abstract displayable game entity
+  * `being.js`: rudimentary game being
+  * `player.js`: custom game being with keyboard control
+  * `textbuffer.js`: buffering text output and displaying it within a ROT.Display subset
+  * `sample.html`: working game with a display, level/map and an interactive player character
