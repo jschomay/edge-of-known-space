@@ -15,6 +15,10 @@ export default class Entity {
     this._visual = visual;
   }
 
+  setVisual(visual: {ch?: string, fg?: string, bg?: string}) {
+    this._visual = { ...this._visual, ...visual };
+  }
+
   getVisual() { return this._visual; }
   getXY() { return this._xy; }
   getLevel() { return this._level; }

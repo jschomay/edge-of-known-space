@@ -13,27 +13,28 @@ export default class Game {
   level: Level;
   display: ROT.Display;
   textBuffer: TextBuffer;
+  width = 80;
+  height = 25;
 
   constructor() {
     this.scheduler = new ROT.Scheduler.Speed();
     this.engine = new ROT.Engine(this.scheduler);
-    this.display = new ROT.Display({ fontSize: 16 });
+    let fontSize = window.innerWidth / 80;
+    this.display = new ROT.Display({ fontSize, width: this.width, height: this.height });
     this.textBuffer = new TextBuffer();
     document.body.appendChild(this.display.getContainer()!);
-    this.player = new Player(this);
 
-    // FIXME build a level and position a player
     let level = new Level(this);
-    let size = level.getSize();
     this.level = level;
     this._switchLevel(level);
-    this.level.setEntity(this.player, new XY(Math.round(size.x / 2), Math.round(size.y / 2)) );
 
+    this.textBuffer.write("Find the box with the ananas to win the game.  \nWatch out for Pedro!")
     this.engine.start();
   }
 
   public draw(xy: XY): void {
     let entity = this.level!.getEntityAt(xy);
+    if (!entity) { return; }
     let visual = entity.getVisual();
     this.display.draw(xy.x, xy.y, visual.ch, visual.fg, visual.bg || null);
   }
@@ -59,7 +60,6 @@ export default class Game {
     });
     this.textBuffer.clear();
 
-    /* FIXME draw a level */
     let xy = new XY();
     for (let i = 0; i < size.x; i++) {
       xy.x = i;
@@ -70,7 +70,6 @@ export default class Game {
     }
 
     /* add new beings to the scheduler */
-    // FIXME separate beings from entitties
     let beings = this.level.getBeings();
     for (let p in beings) {
       this.scheduler.add(beings[p] as Being, true);

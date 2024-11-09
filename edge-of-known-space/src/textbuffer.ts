@@ -15,8 +15,14 @@ export default class TextBuffer {
   }
 
   configure(options) { Object.assign(this._options, options); }
+
   clear() { this._data = []; }
-  write(text: string) { this._data.push(text); }
+
+  write(text: string, append: boolean = false) {
+    !append && this.clear();
+    this._data.push(text);
+    !append && this.flush();
+  }
 
   flush() {
     let o = this._options;
