@@ -17,15 +17,25 @@ export default class Game {
     this.engine = new ROT.Engine(this.scheduler);
     let fontSize = window.innerWidth / 80;
     this.display = new ROT.Display({ fontSize });
-    this.textBuffer = new TextBuffer(this.display);
+    this.textBuffer = new TextBuffer(this.display, this);
     document.body.appendChild(this.display.getContainer()!);
+
+    window.addEventListener("keydown", this.onKeyDown.bind(this));
 
     let level = new Level(this);
     this.level = level;
     this._switchLevel(level);
 
-    this.textBuffer.write("Find the %c{orange}box%c{} with the ananas to win the game.  \nWatch out for %c{red}Pedro%c{}!")
+    this.textBuffer.displayBox("Find the %c{orange}box%c{} with the ananas to win the game.  \nWatch out for %c{red}Pedro%c{}!")
     this.engine.start();
+  }
+
+  public onKeyDown(e: KeyboardEvent) {
+    if (this.textBuffer.showing) {
+      e.key === "Enter" && this.textBuffer.clearDisplayBox()
+    } else {
+      this.level.player.handleEvent(e)
+    }
   }
 
   public draw(xy: XY): void {

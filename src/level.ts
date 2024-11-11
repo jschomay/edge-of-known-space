@@ -64,11 +64,12 @@ export default class Level {
 
 
   _generateMap() {
-    for (let i = 0; i < this._size.x; i++) {
-      for (let j = 0; j < this._size.y; j++) {
-        this.game.display.draw(i, j, "1", "#222");
-      }
-    }
+    // Uncomment to debug full level size
+    // for (let i = 0; i < this._size.x; i++) {
+    //   for (let j = 0; j < this._size.y; j++) {
+    //     this.game.display.draw(i, j, "1", "#222");
+    //   }
+    // }
     let topBorder = 3
     var digger = new Digger(this._size.x, this._size.y - topBorder);
 

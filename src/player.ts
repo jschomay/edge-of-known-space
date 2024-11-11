@@ -12,7 +12,6 @@ export default class Player extends Being {
   constructor(game: Game) {
     super({ ch: "@", fg: "yellow" }, game);
 
-    window.addEventListener("keydown", this);
     this.ready = false;
 
     this._keys = {};
@@ -62,7 +61,7 @@ export default class Player extends Being {
   }
 
   handleEvent(e: KeyboardEvent) {
-    // if (!this.ready) { return; }
+    if (!this.ready) { return; }
 
     let keyHandled = this._handleKey(e.keyCode);
     if (keyHandled) {
