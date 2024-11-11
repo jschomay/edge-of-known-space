@@ -1,18 +1,15 @@
-Scaffolding rot.js tutorial using suggested best patterns in typescript via vite.js FTW!
+```
+8""""                                   8   8                                8""""8                       
+8     eeeee eeeee eeee    eeeee eeee    8   8  eeeee eeeee e   e  e eeeee    8      eeeee eeeee eeee eeee 
+8eeee 8   8 8   8 8       8  88 8       8eee8e 8   8 8  88 8   8  8 8   8    8eeeee 8   8 8   8 8  8 8    
+88    8e  8 8e    8eee    8   8 8eee    88   8 8e  8 8   8 8e  8  8 8e  8        88 8eee8 8eee8 8e   8eee 
+88    88  8 88 "8 88      8   8 88      88   8 88  8 8   8 88  8  8 88  8    e   88 88    88  8 88   88   
+88eee 88ee8 88ee8 88ee    8eee8 88      88   8 88  8 8eee8 88ee8ee8 88  8    8eee88 88    88  8 88e8 88ee 
+```
 
-"Best practices" taken from rot.js "addons" directory as follows:
+_You wake up from long-term cyrosleep in a starship on an alien planet at the edge of known space.  The rest of your team are missing.  What happened?_
 
-rot.js addons
-=============
+ 
+"Edge of Known Space" is a sci-fi, 1-screen, micro-metriodvania where you can't move beyond the known surroundings.  Discover clues and tools to reveal more of the map.  Explore the full map to piece together what happened.
 
-This directory contains "skeleton" files to be re-used and adjusted as necessary. They correspond to common design patterns, utilities and general game architecture modules.
-
-  * `pubsub.js`: simple pub-sub implementation. Suitable for cross-component messaging/notification.
-  * `xy.js`: 2D Coords
-  * `game.js`: sample main namespace
-  * `level.js`: empty level encapsulating entities
-  * `entity.js`: abstract displayable game entity
-  * `being.js`: rudimentary game being
-  * `player.js`: custom game being with keyboard control
-  * `textbuffer.js`: buffering text output and displaying it within a ROT.Display subset
-  * `sample.html`: working game with a display, level/map and an interactive player character
+A small game for fun built on [rot.js](https://ondras.github.io/rot.js/hp/) for [Game Off 2024](https://itch.io/jam/game-off-2024).

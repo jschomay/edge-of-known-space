@@ -50,14 +50,13 @@ export default class Player extends Being {
   }
 
   act() {
-    this.game.textBuffer.flush();
+    this.getLevel()!.textBuffer.flush();
     this.game.engine.lock();
     this.ready = true;
   }
 
   die() {
     Being.prototype.die.call(this);
-    this.game.over();
   }
 
   handleEvent(e: KeyboardEvent) {
@@ -74,7 +73,7 @@ export default class Player extends Being {
   _handleKey(keyCode: number): boolean {
     if (!(keyCode in this._keys)) { return false; }
 
-    this.game.textBuffer.clear();
+    this.getLevel()!.textBuffer.clear();
 
     let direction = this._keys[keyCode];
     if (direction == -1) { /* noop */
@@ -87,11 +86,11 @@ export default class Player extends Being {
     let xy = this.getXY()!.plus(new XY(dir[0], dir[1]));
     let entity_at_xy = this.getLevel()!.getEntityAt(xy);
     if (!(entity_at_xy)) {
-      this.game.textBuffer.write("Can't go what way.")
     } else if (entity_at_xy.getVisual().ch == "=") {
+      this.getLevel()!.textBuffer.write("Can't go what way.")
       this._checkBox(xy);
     } else {
-      this.getLevel()!.setEntity(this, xy);
+      this.getLevel()!.setBeing(this, xy);
     }
     return true;
 
@@ -99,12 +98,12 @@ export default class Player extends Being {
 
   _checkBox(xy: XY) {
     if (xy.toString() == this.getLevel()!._ananas) {
-      this.game.textBuffer.write("Hooray! You found an ananas and won this game.");
+      this.getLevel()!.textBuffer.write("Hooray! You found an ananas and won this game.");
       this.game.scheduler.clear()
     } else {
       this.getLevel()!.getEntityAt(xy)!.setVisual({ ch: "+" });
-      this.game.draw(xy)
-      this.game.textBuffer.write("This %c{orange}box%c{} is empty :-(");
+      this.getLevel()!.draw(xy)
+      this.getLevel()!.textBuffer.write("This %c{orange}box%c{} is empty :-(");
     }
   }
 }
@@ -135,7 +134,7 @@ export class Pedro extends Being {
       if (x == player_x && y == player_y) {
         continue;
       }
-      this.game.draw(new XY(x, y));
+      this.getLevel()!.draw(new XY(x, y));
 
     }
 
@@ -160,12 +159,12 @@ export class Pedro extends Being {
     let x = this.path[0][0];
     let y = this.path[0][1];
     let xy = new XY(x, y)
-    this.getLevel()!.setEntity(this, xy);
+    this.getLevel()!.setBeing(this, xy);
 
     if (this.path.length <= 2) {
-      this.game.textBuffer.clear()
-      this.game.textBuffer.write("Game over - you were captured by Pedro!");
-      this.game.textBuffer.flush()
+      this.getLevel()!.textBuffer.clear()
+      this.getLevel()!.textBuffer.write("Game over - you were captured by Pedro!");
+      this.getLevel()!.textBuffer.flush()
       this.game.engine.lock();
       return;
     }

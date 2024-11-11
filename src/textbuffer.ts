@@ -1,18 +1,15 @@
 import XY from "./xy";
 import { Display } from "../lib/rotjs";
-import Game from "./game";
 
 export default class TextBuffer {
   public showing: boolean;
-  private _game: Game
   private _data: string[];
   private displayBoxPos: XY;
   private displayBoxSize: XY
   private _options: { display: Display | null, position: XY, size: XY };
 
-  constructor(display: Display, game: Game) {
+  constructor(display: Display) {
     this.showing = false;
-    this._game = game
     this._data = [];
     this._options = {
       display: display,
@@ -78,7 +75,7 @@ export default class TextBuffer {
     d.drawText(textX, pos.y + size.y - 3, "(Press <Enter> to continue)", size.x - padding * 2);
   }
 
-  clearDisplayBox() {
+  clearDisplayBox(draw: (xy: XY) => void) {
     this.showing = false
     let o = this._options;
     let d = o.display!;
@@ -89,8 +86,8 @@ export default class TextBuffer {
       for (let j = 0; j < size.y; j++) {
         xy.x = pos.x + i
         xy.y = pos.y + j
-        this._game.display.draw(xy.x, xy.y, " ")
-        this._game.draw(xy)
+        d.draw(xy.x, xy.y, " ")
+        draw(xy)
       }
     }
   }
