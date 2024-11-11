@@ -3,8 +3,9 @@ import Being from "./being";
 import XY from "./xy";
 import Game from "./game";
 import Digger from "../lib/rotjs/map/digger";
-import { RNG } from "../lib/rotjs";
+import { Color, RNG } from "../lib/rotjs";
 import Player, { Pedro } from "./player";
+import pubsub from "./pubsub";
 
 
 export default class Level {
@@ -12,9 +13,10 @@ export default class Level {
   private _beings: Record<string, Entity>;
   private _map: Record<string, Entity>;
   private _freeCells: string[]
+  private _fovCells: XY[] = []
   game: Game
   player: Player
-  _ananas: string
+  _ananas!: string
 
   constructor(game: Game) {
     this.game = game;
@@ -28,7 +30,38 @@ export default class Level {
     this.player = new Player(game)
     this._createBeing(this.player);
     this._createBeing(new Pedro(game));
+
+    pubsub.subscribe("player-act-complete", this);
   }
+
+  handleMessage(msg: string, publisher: any, data: any) {
+    if (msg === "player-act-complete") {
+      this._updateFOV();
+    }
+  }
+
+  _updateFOV() {
+    // clear old FOV
+    while (this._fovCells.length) {
+      this.game.draw(this._fovCells.pop()!);
+    }
+
+    let { x: player_x, y: player_y } = this.player.getXY()!
+    let { r: player_r, fov } = this.player.getFOV()
+
+    // draw new FOV
+    fov.compute(player_x, player_y, player_r, (x, y, r, visibility) => {
+      let e = this.getEntityAt(new XY(x, y))
+      if (!e) { return; }
+
+      this._fovCells.push(new XY(x, y));
+      let { ch, fg } = e.getVisual()
+      let multplier = Math.round(255 * Math.pow((player_r / r), 3) / player_r)
+      let fgBrighter = Color.add(Color.fromString(fg), [multplier, multplier, multplier]);
+      this.game.display.draw(x, y, ch, Color.toHex(fgBrighter));
+    });
+  }
+
 
   _generateMap() {
     var digger = new Digger(this.game.width, this.game.height);

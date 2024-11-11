@@ -2,14 +2,12 @@ import * as ROT from "../lib/rotjs"
 import Scheduler from "../lib/rotjs/scheduler/speed"
 import Level from "./level"
 import XY from "./xy"
-import Player from "./player"
 import TextBuffer from "./textbuffer"
 import Being from "./being"
 
 export default class Game {
   scheduler: Scheduler;
   engine: ROT.Engine;
-  player: Player;
   level: Level;
   display: ROT.Display;
   textBuffer: TextBuffer;
@@ -28,7 +26,7 @@ export default class Game {
     this.level = level;
     this._switchLevel(level);
 
-    this.textBuffer.write("Find the box with the ananas to win the game.  \nWatch out for Pedro!")
+    this.textBuffer.write("Find the %c{orange}box%c{} with the ananas to win the game.  \nWatch out for %c{red}Pedro%c{}!")
     this.engine.start();
   }
 

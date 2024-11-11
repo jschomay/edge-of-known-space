@@ -2,10 +2,13 @@ import XY from "./xy";
 import Being from "./being";
 import * as ROT from "../lib/rotjs";
 import Game from "./game";
+import FOV from "../lib/rotjs/fov/fov";
+import pubsub from "./pubsub";
 
 export default class Player extends Being {
   private _keys: { [key: number]: number };
   private ready: boolean;
+  private _fov: FOV;
   constructor(game: Game) {
     super({ ch: "@", fg: "yellow" }, game);
 
@@ -35,6 +38,16 @@ export default class Player extends Being {
     this._keys[ROT.KEYS.VK_NUMPAD7] = 7;
 
     this._keys[ROT.KEYS.VK_ENTER] = -1;
+
+
+
+    this._fov = new ROT.FOV.PreciseShadowcasting((x, y) =>
+      !!this.getLevel()!.getEntityAt(new XY(x, y))
+      , { topology: 8 })
+  }
+
+  getFOV() {
+    return { r: 5, fov: this._fov };
   }
 
   act() {
@@ -49,12 +62,13 @@ export default class Player extends Being {
   }
 
   handleEvent(e: KeyboardEvent) {
-    if (!this.ready) { return; }
+    // if (!this.ready) { return; }
 
     let keyHandled = this._handleKey(e.keyCode);
     if (keyHandled) {
       this.ready = false;
       this.game.engine.unlock();
+      pubsub.publish("player-act-complete", this, {})
     }
   }
 
@@ -83,6 +97,7 @@ export default class Player extends Being {
     return true;
 
   }
+
   _checkBox(xy: XY) {
     if (xy.toString() == this.getLevel()!._ananas) {
       this.game.textBuffer.write("Hooray! You found an ananas and won this game.");
@@ -90,7 +105,7 @@ export default class Player extends Being {
     } else {
       this.getLevel()!.getEntityAt(xy)!.setVisual({ ch: "+" });
       this.game.draw(xy)
-      this.game.textBuffer.write("This box is empty :-(");
+      this.game.textBuffer.write("This %c{orange}box%c{} is empty :-(");
     }
   }
 }
