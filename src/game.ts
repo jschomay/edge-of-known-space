@@ -11,15 +11,13 @@ export default class Game {
   level: Level;
   display: ROT.Display;
   textBuffer: TextBuffer;
-  width = 80;
-  height = 25;
 
   constructor() {
     this.scheduler = new ROT.Scheduler.Speed();
     this.engine = new ROT.Engine(this.scheduler);
     let fontSize = window.innerWidth / 80;
-    this.display = new ROT.Display({ fontSize, width: this.width, height: this.height });
-    this.textBuffer = new TextBuffer();
+    this.display = new ROT.Display({ fontSize });
+    this.textBuffer = new TextBuffer(this.display);
     document.body.appendChild(this.display.getContainer()!);
 
     let level = new Level(this);
@@ -50,10 +48,9 @@ export default class Game {
     let size = this.level.getSize();
 
     let bufferSize = 3;
-    this.display.setOptions({ width: size.x, height: size.y + bufferSize });
+    this.display.setOptions({ width: size.x, height: size.y });
     this.textBuffer.configure({
-      display: this.display,
-      position: new XY(0, size.y),
+      position: new XY(0, 0),
       size: new XY(size.x, bufferSize)
     });
     this.textBuffer.clear();

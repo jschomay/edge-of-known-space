@@ -22,7 +22,7 @@ export default class Level {
     this.game = game;
     this._beings = {};
     this._map = {};
-    this._size = new XY(80, 25);
+    this._size = new XY(110, 40);
     this._freeCells = []
 
     this._generateMap()
@@ -64,13 +64,19 @@ export default class Level {
 
 
   _generateMap() {
-    var digger = new Digger(this.game.width, this.game.height);
+    for (let i = 0; i < this._size.x; i++) {
+      for (let j = 0; j < this._size.y; j++) {
+        this.game.display.draw(i, j, "1", "#222");
+      }
+    }
+    let topBorder = 3
+    var digger = new Digger(this._size.x, this._size.y - topBorder);
 
     var digCallback = function(this: Level, x, y, value) {
       if (value) { return; }
 
       let floor = new Entity({ ch: ".", fg: "#888" }, this.game);
-      var key = x + "," + y;
+      var key = x + "," + (y + topBorder);
       this._map[key] = floor;
       this._freeCells.push(key);
     }

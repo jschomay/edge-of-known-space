@@ -5,16 +5,16 @@ export default class TextBuffer {
   private _data: string[];
   private _options: { display: Display | null, position: XY, size: XY };
 
-  constructor() {
+  constructor(display: Display) {
     this._data = [];
     this._options = {
-      display: null,
+      display: display,
       position: new XY(),
       size: new XY()
     }
   }
 
-  configure(options) { Object.assign(this._options, options); }
+  configure(options: { position: XY, size: XY }) { Object.assign(this._options, options); }
 
   clear() { this._data = []; }
 
