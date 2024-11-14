@@ -16,13 +16,13 @@ export default class Game {
     this.display = new ROT.Display({ fontSize });
     document.body.appendChild(this.display.getContainer()!);
 
-    window.addEventListener("keydown", this.onKeyDown.bind(this));
-
     // let level = new MainLevel(this);
     let level = new StartScreen(this);
     this.level = level;
-    this._switchLevel(level);
+    this.switchLevel(level);
     this.engine.start();
+
+    window.addEventListener("keydown", this.onKeyDown.bind(this));
   }
 
   public onKeyDown(e: KeyboardEvent) {
@@ -30,7 +30,7 @@ export default class Game {
   }
 
 
-  private _switchLevel(level: Level): void {
+  switchLevel(level: Level): void {
     this.level = level;
     let size = level.getSize();
     this.display.setOptions({ width: size.x, height: size.y });
