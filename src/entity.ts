@@ -2,7 +2,7 @@ import XY from './xy'
 import Level from './level'
 import Game from './game'
 
-export type Visual = { ch: string, fg: string, bg?: string };
+export type Visual = { ch: string, fg: string };
 
 export default class Entity {
   private _visual: Visual;
@@ -10,12 +10,12 @@ export default class Entity {
   private _level?: Level;
   game: Game;
 
-  constructor(visual: Visual, game: Game) {
+  constructor(game: Game, visual: Visual = { ch: "!", fg: "red" }) {
     this.game = game
     this._visual = visual;
   }
 
-  setVisual(visual: {ch?: string, fg?: string, bg?: string}) {
+  setVisual(visual: { ch?: string, fg?: string }) {
     this._visual = { ...this._visual, ...visual };
   }
 
@@ -23,9 +23,11 @@ export default class Entity {
   getXY() { return this._xy; }
   getLevel() { return this._level; }
 
-  setPosition(xy: XY, level: Level) {
+  setPosition(xy: XY, level?: Level) {
     this._xy = xy;
-    this._level = level;
+    if (level) { this._level = level }
     return this;
   }
+
+  isTraversable(entity: Entity) { return true; }
 }

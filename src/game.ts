@@ -8,6 +8,7 @@ export default class Game {
   engine: ROT.Engine;
   level: Level;
   display: ROT.Display;
+  HANDLED_KEYS = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "w", "a", "s", "d", "Enter", "Escape", " "];
 
   constructor() {
     this.scheduler = new ROT.Scheduler.Speed();
@@ -16,8 +17,9 @@ export default class Game {
     this.display = new ROT.Display({ fontSize });
     document.body.appendChild(this.display.getContainer()!);
 
-    // let level = new MainLevel(this);
-    let level = new StartScreen(this);
+    let level = new MainLevel(this);
+    // TODO only for debugging
+    // let level = new StartScreen(this);
     this.level = level;
     this.switchLevel(level);
     this.engine.start();
@@ -26,6 +28,7 @@ export default class Game {
   }
 
   public onKeyDown(e: KeyboardEvent) {
+    if (this.HANDLED_KEYS.includes(e.key)) { e.preventDefault(); }
     this.level.onKeyDown(e);
   }
 
