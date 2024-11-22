@@ -81,8 +81,7 @@ export default class Player extends Entity implements SpeedActor {
       return false
     }
 
-    // TODO change to something like interact and return value determins move
-    if (entity_at_xy.isTraversable(this)) {
+    if (entity_at_xy.onInteract(this)) {
       this.moveTo(newXY);
     } else {
     }

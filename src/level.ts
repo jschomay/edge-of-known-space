@@ -5,9 +5,19 @@ import { Color } from "../lib/rotjs";
 import Player from "./entities/player";
 import pubsub from "./pubsub";
 import TextBuffer from "./textbuffer"
-// TODO change to json level
-import MAP from "../public/main-level.txt?raw"
 import { entityFromCh } from "./entities";
+import map0 from "../public/main-level-0.txt?raw"
+import map1 from "../public/main-level-1.txt?raw"
+import Item from "./items";
+import TerminalItem from "./items/terminal";
+
+// TODO change to json level
+const MAPS = [map0, map1]
+
+const DEBUG = true
+function debug(level: MainLevel) {
+  level.addInventory(new TerminalItem(level))
+}
 
 
 export interface Level {
@@ -22,28 +32,24 @@ export interface Level {
 
 export default class MainLevel {
   private _size: XY;
-  private _movable_entities: Entity[];
+  private _specialEntities: Entity[];
   private _map: Record<string, Entity>;
   private _fovCells: XY[] = []
   textBuffer: TextBuffer;
   game: Game
   player: Player
-  _ananas!: string
+  _inventory: Record<string, Item> = {}
+  activeItem: string | null = null
 
   constructor(game: Game) {
     this.game = game;
-    this._movable_entities = []
+    this._specialEntities = []
     this._map = {};
     this._size = new XY(110, 40);
 
-    this.player = new Player(game);
-    game.scheduler.clear();
-    game.scheduler.add(this.player, true);
+    this._generateMap(MAPS[0]);
 
-    this._generateMap()
-
-
-    this.textBuffer = new TextBuffer(this.game.display);
+    this.textBuffer = new TextBuffer(this.game);
 
     let size = this.getSize();
     let bufferSize = 3;
@@ -53,16 +59,42 @@ export default class MainLevel {
     });
     this.textBuffer.clear();
 
-    this.textBuffer.write("Use the arrow keys or WASD to move.")
+    this.player = new Player(game);
+    let playerStart = new XY(37, 17);
+    this.setSpecialEntity(this.player, playerStart)
+
+    game.scheduler.clear();
+    game.scheduler.add(this.player, true);
+
+
+
+    this.textBuffer.write("Where did everyone go?\n\nUse the arrow keys or WASD to move.")
 
     pubsub.subscribe("player-act-complete", this);
+    pubsub.subscribe("expand-map", this);
+
+    if (DEBUG) {
+      debug(this)
+    }
   }
 
   onKeyDown(e: KeyboardEvent) {
+    this.textBuffer.clear();
     if (this.textBuffer.showing) {
       e.key === "Enter" && this.textBuffer.clearDisplayBox(this.draw.bind(this))
+
+    } else if (e.key === this.activeItem) {
+      this._inventory[this.activeItem].onDeactivate()
+      this.activeItem = null
+      this._drawInventory()
+
+    } else if (e.key in this._inventory) {
+      let item = this._inventory[e.key]
+      this.activeItem = item.key
+      this._drawInventory()
+      item.onActivate()
+
     } else {
-      this.textBuffer.clear();
       this.player.onKeyDown(e)
     }
   }
@@ -76,21 +108,47 @@ export default class MainLevel {
   }
 
   handleMessage(msg: string, publisher: any, data: any) {
-    if (msg === "player-act-complete") {
-      this._updateFOV();
+    switch (msg) {
+      case "player-act-complete":
+        this._updateFOV();
+        break;
+      case "expand-map":
+        let { level, specialEntities } = data
+        this._generateMap(MAPS[level]);
+        Object.entries(specialEntities).forEach(([pos, e]) => this.setSpecialEntity(e, new XY(...pos.split(",").map(Number))));
+        break;
+      default:
+        break;
     }
+  }
+
+  addInventory(item: Item) {
+    this._inventory[item.key] = item
+    this._drawInventory()
   }
 
   getSize() { return this._size; }
 
   setEntity(entity: Entity, xy: XY) {
+    // TODO delete current entity at this spot
     entity.setPosition(xy, this); // propagate position data to the entity itself
     this._map[xy.toString()] = entity;
     this.draw(xy);
   }
 
   getEntityAt(xy: XY): Entity | null {
-    return this._movable_entities.find(e => e.getXY() == xy) || this._map[xy.toString()]
+    return this._specialEntities.find(e => e.getXY()?.toString() == xy?.toString()) || this._map[xy.toString()]
+  }
+
+  setSpecialEntity(entity: Entity, xy: XY) {
+    this._specialEntities.push(entity)
+    entity.setPosition(xy, this);
+    this.draw(xy);
+  }
+
+  removeSpecialEntity(entity: Entity) {
+    this._specialEntities = this._specialEntities.filter(e => e != entity)
+    this.draw(entity.getXY()!);
   }
 
   _updateFOV() {
@@ -117,8 +175,17 @@ export default class MainLevel {
     });
   }
 
+  _drawInventory() {
+    let { x, y } = this.getSize()
+    for (let key in this._inventory) {
+      let index = parseInt(key) + 3
+      let activeIndicator = this.activeItem === key ? " *" : ""
+      this.game.display.drawText(index, y - 1, `%c{${this._inventory[key].color}}[${key}]%c{} ` + this._inventory[key].name + activeIndicator)
+    }
+  }
 
-  _generateMap() {
+
+  _generateMap(data: string) {
     // Uncomment to debug full level size
     // for (let i = 0; i < this._size.x; i++) {
     //   for (let j = 0; j < this._size.y; j++) {
@@ -126,20 +193,17 @@ export default class MainLevel {
     //   }
     // }
     // TODO change to json structure instead of text
-    let map = MAP.split("\n")
+    let map = data.split("\n")
     for (let row = 0; row < this._size.y; row++) {
       for (let col = 0; col < this._size.x; col++) {
-        let mapCh = map[row][col]
+        // ignore map areas already drawn
+        if (this._map[col + "," + row]) { continue; }
 
+        // skip empty
+        let mapCh = map[row][col]
         if (mapCh === " ") { continue; }
+
         let xy = new XY(col, row);
-        if (mapCh === "@") {
-          // treat as "spawn point"
-          this._movable_entities.push(this.player)
-          this.player.setPosition(xy, this);
-          // still add "ground" under spawn point
-          mapCh = "."
-        }
         let entity = entityFromCh(mapCh, this.game)
         this.setEntity(entity, xy)
         this.draw(xy);

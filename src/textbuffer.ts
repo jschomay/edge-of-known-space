@@ -1,5 +1,6 @@
 import XY from "./xy";
 import { Display } from "../lib/rotjs";
+import Game from "./game";
 
 export default class TextBuffer {
   public showing: boolean;
@@ -7,18 +8,21 @@ export default class TextBuffer {
   private displayBoxPos: XY;
   private displayBoxSize: XY
   private _options: { display: Display | null, position: XY, size: XY };
+  private _cb: (() => any) | null;
+  private game: Game
 
-  constructor(display: Display) {
+  constructor(game: Game) {
     this.showing = false;
     this._data = [];
     this._options = {
-      display: display,
+      display: game.display,
       position: new XY(),
       size: new XY()
     }
     this.displayBoxPos = new XY(10, 5);
     this.displayBoxSize = new XY(90, 25);
-
+    this._cb = null
+    this.game = game
   }
 
   configure(options: { position: XY, size: XY }) { Object.assign(this._options, options); }
@@ -48,7 +52,8 @@ export default class TextBuffer {
     d.drawText(pos.x, pos.y, text, size.x);
   }
 
-  displayBox(text: string) {
+  displayBox(text: string, cb: (() => any) | null = null) {
+    this._cb = cb;
     this.showing = true;
     let o = this._options;
     let d = o.display!;
@@ -60,7 +65,7 @@ export default class TextBuffer {
     for (let i = 0; i < size.x; i++) {
       for (let j = 0; j < size.y; j++) {
         if (i === 0 || i === size.x - 1 || j === 0 || j === size.y - 1) {
-          d.draw(pos.x + i, pos.y + j, "/");
+          d.draw(pos.x + i, pos.y + j, "-");
         } else {
           d.draw(pos.x + i, pos.y + j, " ");
         }
@@ -72,10 +77,10 @@ export default class TextBuffer {
     let textX = pos.x + padding;
     let textY = pos.y + padding;
     d.drawText(textX, textY, text, size.x - padding * 2);
-    d.drawText(textX, pos.y + size.y - 3, "(Press <Enter> to continue)", size.x - padding * 2);
+    d.drawText(textX, pos.y + size.y - 3, "Press [Enter] to continue", size.x - padding * 2);
   }
 
-  clearDisplayBox(draw: (xy: XY) => void) {
+  clearDisplayBox() {
     this.showing = false
     let o = this._options;
     let d = o.display!;
@@ -87,8 +92,13 @@ export default class TextBuffer {
         xy.x = pos.x + i
         xy.y = pos.y + j
         d.draw(xy.x, xy.y, " ")
-        draw(xy)
+        this.game.level.draw(xy)
       }
+    }
+
+    if (this._cb !== null) {
+      this._cb();
+      this._cb = null;
     }
   }
 }

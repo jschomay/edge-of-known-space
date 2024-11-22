@@ -1,12 +1,14 @@
 import Game from "../game";
 import Entity from "../entity";
 import Ship from "./ship";
-import Player from "./player";
 
 export function entityFromCh(ch: string, game: Game) {
-  switch (ch) {
+  // ignore special entities marked on map (only for convenience)
+  // markers on ground terrain:
+  if ("@t.".includes(ch.toLowerCase())) return new Entity(game, { ch: ".", fg: "grey" });
+
+  switch (ch.toLowerCase()) {
     case "o": return new Ship(game);
-    case ".": return new Entity(game, { ch: ".", fg: "grey" });
     default: return new Entity(game);
   }
 }

@@ -57,7 +57,7 @@ export default class StartScreen implements Level {
 
         if (this._state === 1) {
           if ([11, 15, 19, 23, 27, 31].includes(row)) ch = " "
-          this.game.display.drawText(32, 38, "%c{#ff0}Press <Enter> to wake up from cyrosleep...")
+          this.game.display.drawText(32, 38, "%c{#ff0}Press [Enter] to wake up from cyrosleep...")
         } else if (this._state === 2) {
           if (row == 17 && [33, 35].includes(col)) ch = "x"
           if (row == 17 && col === 34) ch = " "

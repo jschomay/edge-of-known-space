@@ -7,7 +7,8 @@ export type Visual = { ch: string, fg: string };
 export default class Entity {
   private _visual: Visual;
   private _xy?: XY;
-  private _level?: Level;
+  private _level!: Level;
+  protected _visible: boolean = true
   game: Game;
 
   constructor(game: Game, visual: Visual = { ch: "!", fg: "red" }) {
@@ -29,5 +30,11 @@ export default class Entity {
     return this;
   }
 
-  isTraversable(entity: Entity) { return true; }
+  remove() {
+    this.getLevel()?.removeSpecialEntity(this);
+  }
+  /**
+   * Perform side effects and return true if the iterating entity can move here
+   */
+  onInteract(entity: Entity) { return true; }
 }
