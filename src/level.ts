@@ -70,7 +70,7 @@ export default class MainLevel {
 
     this.textBuffer.write("Where did everyone go?\n\nUse the arrow keys or WASD to move.")
 
-    pubsub.subscribe("player-act-complete", this);
+    pubsub.subscribe("update_fov", this);
     pubsub.subscribe("expand-map", this);
 
     if (DEBUG) {
@@ -81,18 +81,23 @@ export default class MainLevel {
   onKeyDown(e: KeyboardEvent) {
     this.textBuffer.clear();
     if (this.textBuffer.showing) {
-      e.key === "Enter" && this.textBuffer.clearDisplayBox(this.draw.bind(this))
+      e.key === "Enter" && this.textBuffer.clearDisplayBox()
+      this._updateFOV()
 
     } else if (e.key === this.activeItem) {
+      // deactivate item
       this._inventory[this.activeItem].onDeactivate()
       this.activeItem = null
       this._drawInventory()
+      this._updateFOV()
 
     } else if (e.key in this._inventory) {
+      // active item
       let item = this._inventory[e.key]
       this.activeItem = item.key
       this._drawInventory()
       item.onActivate()
+      this._updateFOV()
 
     } else {
       this.player.onKeyDown(e)
@@ -109,7 +114,7 @@ export default class MainLevel {
 
   handleMessage(msg: string, publisher: any, data: any) {
     switch (msg) {
-      case "player-act-complete":
+      case "update_fov":
         this._updateFOV();
         break;
       case "expand-map":
@@ -152,26 +157,27 @@ export default class MainLevel {
   }
 
   _updateFOV() {
-    // TODO
-    return;
     // clear old FOV
     while (this._fovCells.length) {
       this.draw(this._fovCells.pop()!);
     }
 
+    let item_fov = this.activeItem && this._inventory[this.activeItem].getFOV()
+    if (!item_fov) { return; }
+
     let { x: player_x, y: player_y } = this.player.getXY()!
-    let { r: player_r, fov } = this.player.getFOV()
+    let { r: fov_r, fov, cb } = item_fov
 
     // draw new FOV
-    fov.compute(player_x, player_y, player_r, (x, y, r, visibility) => {
-      let e = this.getEntityAt(new XY(x, y))
+    fov.compute(player_x, player_y, fov_r, (x, y, r, visibility) => {
+      let xy = new XY(x, y)
+      let e = this.getEntityAt(xy)
       if (!e) { return; }
 
-      this._fovCells.push(new XY(x, y));
-      let { ch, fg } = e.getVisual()
-      let multplier = Math.round(255 * Math.pow((player_r / r), 3) / player_r)
-      let fgBrighter = Color.add(Color.fromString(fg), [multplier, multplier, multplier]);
-      this.game.display.draw(x, y, ch, Color.toHex(fgBrighter));
+      this._fovCells.push(xy);
+      // let multplier = Math.round(255 * Math.pow((fov_r / r), 3) / fov_r)
+      // let fgBrighter = Color.add(Color.fromString(fg), [multplier, multplier, multplier]);
+      cb(x, y, r, visibility)
     });
   }
 
@@ -179,8 +185,8 @@ export default class MainLevel {
     let { x, y } = this.getSize()
     for (let key in this._inventory) {
       let index = parseInt(key) + 3
-      let activeIndicator = this.activeItem === key ? " *" : ""
-      this.game.display.drawText(index, y - 1, `%c{${this._inventory[key].color}}[${key}]%c{} ` + this._inventory[key].name + activeIndicator)
+      let activeIndicator = this.activeItem === key ? "* " : "  "
+      this.game.display.drawText(index, y - 1, `%c{${this._inventory[key].color}}[${key}]%c{} ` + activeIndicator + this._inventory[key].name)
     }
   }
 

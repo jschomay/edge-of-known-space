@@ -1,6 +1,5 @@
-import Entity from "../entity";
 import * as ROT from "../../lib/rotjs";
-import FOV from "../../lib/rotjs/fov/fov";
+import Entity from "../entity";
 import XY from "../xy";
 import Game from "../game";
 import pubsub from "../pubsub";
@@ -9,7 +8,6 @@ import { SpeedActor } from "../../lib/rotjs";
 export default class Player extends Entity implements SpeedActor {
   private _keys: { [key: number]: number };
   private ready: boolean;
-  private _fov: FOV;
   constructor(game: Game) {
     super(game, { ch: "@", fg: "yellow" });
 
@@ -27,16 +25,6 @@ export default class Player extends Entity implements SpeedActor {
 
 
     this._keys[ROT.KEYS.VK_ENTER] = -1;
-
-
-
-    this._fov = new ROT.FOV.PreciseShadowcasting((x, y) =>
-      !!this.getLevel()!.getEntityAt(new XY(x, y))
-      , { topology: 8 })
-  }
-
-  getFOV() {
-    return { r: 3, fov: this._fov };
   }
 
   getSpeed() {
@@ -57,7 +45,6 @@ export default class Player extends Entity implements SpeedActor {
     if (keyHandled) {
       this.ready = false;
       this.game.engine.unlock();
-      pubsub.publish("player-act-complete", this, {})
     }
   }
 
@@ -83,6 +70,8 @@ export default class Player extends Entity implements SpeedActor {
 
     if (entity_at_xy.onInteract(this)) {
       this.moveTo(newXY);
+      // BUG? this can draw over the displayBox, might have to check if it is open
+      pubsub.publish("update_fov", this, {})
     } else {
     }
     return true;
