@@ -8,7 +8,7 @@ export default class Entity {
   private _visual: Visual;
   private _xy?: XY;
   private _level!: Level;
-  protected _visible: boolean = true
+  visible: boolean = true
   game: Game;
 
   constructor(game: Game, visual: Visual = { ch: "!", fg: "red" }) {

@@ -1,28 +1,24 @@
 import Entity from "./entity";
 import XY from "./xy";
 import Game from "./game";
-import { Color } from "../lib/rotjs";
 import Player from "./entities/player";
 import pubsub from "./pubsub";
 import TextBuffer from "./textbuffer"
 import { entityFromCh } from "./entities";
-import map0 from "../public/main-level-0.txt?raw"
-import map1 from "../public/main-level-1.txt?raw"
 import Item from "./items";
 import TerminalItem from "./items/terminal";
+import { MapData } from "./level-data";
+import * as mapData from "./level-data";
 
-// TODO change to json level
-const MAPS = [map0, map1]
-
-const DEBUG = true
+const DEBUG = 1
 function debug(level: MainLevel) {
+  [mapData.map1].forEach(level.expandMap.bind(level))
   level.addInventory(new TerminalItem(level))
 }
 
 
 export interface Level {
   onKeyDown(e: KeyboardEvent): void
-  handleMessage(msg: string, publisher: any, data: any): void
   draw(xy: XY): void
   getSize(): XY
   getEntityAt(xy: XY): Entity | null
@@ -47,7 +43,7 @@ export default class MainLevel {
     this._map = {};
     this._size = new XY(110, 40);
 
-    this._generateMap(MAPS[0]);
+    this.expandMap(mapData.map0);
 
     this.textBuffer = new TextBuffer(this.game);
 
@@ -70,9 +66,6 @@ export default class MainLevel {
 
     this.textBuffer.write("Where did everyone go?\n\nUse the arrow keys or WASD to move.")
 
-    pubsub.subscribe("update_fov", this);
-    pubsub.subscribe("expand-map", this);
-
     if (DEBUG) {
       debug(this)
     }
@@ -80,16 +73,19 @@ export default class MainLevel {
 
   onKeyDown(e: KeyboardEvent) {
     this.textBuffer.clear();
+
     if (this.textBuffer.showing) {
-      e.key === "Enter" && this.textBuffer.clearDisplayBox()
-      this._updateFOV()
+      if (e.key === "Enter") {
+        this.textBuffer.clearDisplayBox()
+        this.updateFOV()
+      }
 
     } else if (e.key === this.activeItem) {
       // deactivate item
       this._inventory[this.activeItem].onDeactivate()
       this.activeItem = null
       this._drawInventory()
-      this._updateFOV()
+      this.updateFOV()
 
     } else if (e.key in this._inventory) {
       // active item
@@ -97,7 +93,7 @@ export default class MainLevel {
       this.activeItem = item.key
       this._drawInventory()
       item.onActivate()
-      this._updateFOV()
+      this.updateFOV()
 
     } else {
       this.player.onKeyDown(e)
@@ -112,19 +108,10 @@ export default class MainLevel {
     this.game.display.draw(xy.x, xy.y, visual.ch, visual.fg);
   }
 
-  handleMessage(msg: string, publisher: any, data: any) {
-    switch (msg) {
-      case "update_fov":
-        this._updateFOV();
-        break;
-      case "expand-map":
-        let { level, specialEntities } = data
-        this._generateMap(MAPS[level]);
-        Object.entries(specialEntities).forEach(([pos, e]) => this.setSpecialEntity(e, new XY(...pos.split(",").map(Number))));
-        break;
-      default:
-        break;
-    }
+  expandMap(map: MapData) {
+    let { mapData, specialEntities } = map(this.game)
+    this._generateMap(mapData);
+    specialEntities?.forEach(({ entity, xy }) => this.setSpecialEntity(entity, xy))
   }
 
   addInventory(item: Item) {
@@ -135,14 +122,15 @@ export default class MainLevel {
   getSize() { return this._size; }
 
   setEntity(entity: Entity, xy: XY) {
-    // TODO delete current entity at this spot
     entity.setPosition(xy, this); // propagate position data to the entity itself
     this._map[xy.toString()] = entity;
     this.draw(xy);
   }
 
-  getEntityAt(xy: XY): Entity | null {
-    return this._specialEntities.find(e => e.getXY()?.toString() == xy?.toString()) || this._map[xy.toString()]
+  getEntityAt(xy: XY, includeHidden: boolean = false): Entity | null {
+    return this._specialEntities.find(
+      e => ((e.visible || includeHidden) && e.getXY()?.toString() == xy?.toString()))
+      || this._map[xy.toString()]
   }
 
   setSpecialEntity(entity: Entity, xy: XY) {
@@ -156,7 +144,7 @@ export default class MainLevel {
     this.draw(entity.getXY()!);
   }
 
-  _updateFOV() {
+  updateFOV() {
     // clear old FOV
     while (this._fovCells.length) {
       this.draw(this._fovCells.pop()!);

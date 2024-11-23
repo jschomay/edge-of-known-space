@@ -4,6 +4,7 @@ import MainLevel from "../level"
 import FOV from "../../lib/rotjs/fov/fov";
 import Item from "."
 import Entity from "../entity";
+import Log from "../entities/log";
 
 export default class TerminalItem implements Item {
   key: string = "0"
@@ -29,11 +30,18 @@ export default class TerminalItem implements Item {
 
   _fovCb(x: number, y: number, r: number, visibility: number) {
     let xy = new XY(x, y)
-    let e = this._level.getEntityAt(xy)
+    let e = this._level.getEntityAt(xy, true)
     if (!e) { return; }
-    let ch =e.getVisual().ch
+    if (e instanceof Log) {
+      e.visible = true;
+      this._level.game.display.draw(x, y, e.getVisual().ch, e.getVisual().fg);
+      return
+    } else {
+      e = this._level.getEntityAt(xy)
+    }
+    let ch = e.getVisual().ch
     if (ch != ".") { return; }
-    this._level.game.display.draw(x, y, ch, "#bb0")
+    this._level.game.display.draw(x, y, ch, "#5a0")
   }
 
   readLog(log: string) {

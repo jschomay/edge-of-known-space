@@ -71,7 +71,7 @@ export default class Player extends Entity implements SpeedActor {
     if (entity_at_xy.onInteract(this)) {
       this.moveTo(newXY);
       // BUG? this can draw over the displayBox, might have to check if it is open
-      pubsub.publish("update_fov", this, {})
+      this.getLevel().updateFOV()
     } else {
     }
     return true;

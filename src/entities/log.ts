@@ -10,7 +10,7 @@ export default class Log extends Entity {
 
   constructor(game: Game) {
     super(game, { ch: "+", fg: "yellow" });
-    this._visible = false
+    this.visible = false
   }
 
   setLog(text: string) {
