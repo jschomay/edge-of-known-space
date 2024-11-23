@@ -11,7 +11,7 @@ export default class Player extends Entity implements SpeedActor {
   constructor(game: Game) {
     super(game, { ch: "@", fg: "yellow" });
 
-    this.ready = false;
+    this.ready = true;
 
     this._keys = {};
     this._keys[ROT.KEYS.VK_UP] = 0;

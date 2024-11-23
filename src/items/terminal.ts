@@ -3,7 +3,6 @@ import XY from "../xy";
 import MainLevel from "../level"
 import FOV from "../../lib/rotjs/fov/fov";
 import Item from "."
-import Entity from "../entity";
 import Log from "../entities/log";
 
 export default class TerminalItem implements Item {
@@ -41,7 +40,7 @@ export default class TerminalItem implements Item {
     }
     let ch = e.getVisual().ch
     if (ch != ".") { return; }
-    this._level.game.display.draw(x, y, ch, "#5a0")
+    this._level.game.display.draw(x, y, ch, "#270")
   }
 
   readLog(log: string) {

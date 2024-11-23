@@ -1,7 +1,7 @@
 import Game from "./game";
 import XY from "./xy";
 import { Level } from "./level";
-import level1Data from "../public/level1-1.json";
+import level1Data from "./level-data/level1-1.json";
 import MainLevel from "./level";
 
 

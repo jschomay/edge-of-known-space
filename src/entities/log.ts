@@ -1,5 +1,6 @@
 import Entity from "../entity";
 import Game from "../game";
+import { map2 } from "../level-data";
 
 
 export default class Log extends Entity {
@@ -54,7 +55,7 @@ Primary objective: locate INTREPID and recover classified research data.
 
 ...
 5671008 - Atmospheric entry initiated; ALERT: velocity exceeds safe parameters.  
-5671147 - INTREPID emergency beacon detected.
+5671147 - INTREPID emergency beacon detected to the Southwest.
 5671203 - Cryosleep pods A, D, E: activation sequence initiated.  
 5672724 - Reserve power systems engaged.  
 5679114 - Cryosleep pod C: activation sequence completed.  
@@ -65,9 +66,7 @@ Primary objective: locate INTREPID and recover classified research data.
 
 ::END LOGS::
 `.trim(),
-  onDiscover: (entity: Entity) => {
-    entity.getLevel().game.display.draw(90, 30, "!", "red")
-  }
+  onDiscover: (entity: Entity) => entity.getLevel().game.display.draw(90, 30, "!", "red")
 }
 
 export const SCIENCE_OFFICER_FIRST = {
@@ -78,7 +77,7 @@ Something went wrong. I woke up and Lo and the sec goons were gone.  I debated w
 ---
 I found footprints heading East.  I'll follow them momentarily, but I want to check out some strong energy signatures I'm reading to the West.
 ---
-These crystal formations are incredible!  I've never seen anything like it.  I'm going to take a close look.
+These crystal formations are incredible!  I've never seen anything like it.  I'm going to take a closer look.
 `.trim(),
-  onDiscover: () => { }
+  onDiscover: (entity: Entity) => entity.getLevel().expandMap(map2)
 }

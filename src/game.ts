@@ -17,8 +17,8 @@ export default class Game {
     this.display = new ROT.Display({ fontSize });
     document.body.appendChild(this.display.getContainer()!);
 
-    let level = new MainLevel(this);
     // TODO only for debugging
+    let level = new MainLevel(this);
     // let level = new StartScreen(this);
     this.level = level;
     this.switchLevel(level);

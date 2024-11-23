@@ -8,11 +8,14 @@ import Item from "./items";
 import TerminalItem from "./items/terminal";
 import { MapData } from "./level-data";
 import * as mapData from "./level-data";
+import TorchItem from "./items/torch";
 
 const DEBUG = 0
 function debug(level: MainLevel) {
-  [mapData.map1].forEach(level.expandMap.bind(level))
+  [mapData.map1, mapData.map2].forEach(level.expandMap.bind(level))
   level.addInventory(new TerminalItem(level))
+  level.addInventory(new TorchItem(level))
+  level.activateItem("1")
 }
 
 
@@ -169,8 +172,6 @@ export default class MainLevel {
       if (!e) { return; }
 
       this._fovCells.push(xy);
-      // let multplier = Math.round(255 * Math.pow((fov_r / r), 3) / fov_r)
-      // let fgBrighter = Color.add(Color.fromString(fg), [multplier, multplier, multplier]);
       cb(x, y, r, visibility)
     });
   }
@@ -178,7 +179,7 @@ export default class MainLevel {
   _drawInventory() {
     let { x, y } = this.getSize()
     for (let key in this._inventory) {
-      let index = parseInt(key) + 3
+      let index = parseInt(key) * Math.floor(x / 6) + 3
       let activeIndicator = this.activeItem === key ? "* " : "  "
       this.game.display.drawText(index, y - 1, `%c{${this._inventory[key].color}}[${key}]%c{} ` + activeIndicator + this._inventory[key].name)
     }
