@@ -2,7 +2,6 @@ import Entity from "./entity";
 import XY from "./xy";
 import Game from "./game";
 import Player from "./entities/player";
-import pubsub from "./pubsub";
 import TextBuffer from "./textbuffer"
 import { entityFromCh } from "./entities";
 import Item from "./items";
@@ -10,7 +9,7 @@ import TerminalItem from "./items/terminal";
 import { MapData } from "./level-data";
 import * as mapData from "./level-data";
 
-const DEBUG = 1
+const DEBUG = 0
 function debug(level: MainLevel) {
   [mapData.map1].forEach(level.expandMap.bind(level))
   level.addInventory(new TerminalItem(level))
@@ -81,23 +80,30 @@ export default class MainLevel {
       }
 
     } else if (e.key === this.activeItem) {
-      // deactivate item
-      this._inventory[this.activeItem].onDeactivate()
-      this.activeItem = null
-      this._drawInventory()
-      this.updateFOV()
+      this.deactivateItem(e.key)
 
     } else if (e.key in this._inventory) {
-      // active item
-      let item = this._inventory[e.key]
-      this.activeItem = item.key
-      this._drawInventory()
-      item.onActivate()
-      this.updateFOV()
+      this.activateItem(e.key)
 
     } else {
       this.player.onKeyDown(e)
     }
+  }
+
+  activateItem(key: string) {
+    let item = this._inventory[key]
+    this.activeItem = item.key
+    this._drawInventory()
+    item.onActivate()
+    this.updateFOV()
+  }
+
+  deactivateItem(key: string) {
+    let item = this._inventory[key]
+    item.onDeactivate()
+    this.activeItem = null
+    this._drawInventory()
+    this.updateFOV()
   }
 
 

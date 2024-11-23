@@ -13,7 +13,7 @@ export default class Game {
   constructor() {
     this.scheduler = new ROT.Scheduler.Speed();
     this.engine = new ROT.Engine(this.scheduler);
-    let fontSize = window.innerWidth / 80;
+    let fontSize = window.innerWidth / 90;
     this.display = new ROT.Display({ fontSize });
     document.body.appendChild(this.display.getContainer()!);
 
