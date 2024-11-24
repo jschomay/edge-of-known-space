@@ -10,7 +10,7 @@ import { MapData } from "./level-data";
 import * as mapData from "./level-data";
 import TorchItem from "./items/torch";
 
-const DEBUG = 0
+const DEBUG = 1
 function debug(level: MainLevel) {
   [mapData.map1, mapData.map2].forEach(level.expandMap.bind(level))
   level.addInventory(new TerminalItem(level))
@@ -137,9 +137,13 @@ export default class MainLevel {
   }
 
   getEntityAt(xy: XY, includeHidden: boolean = false): Entity | null {
-    return this._specialEntities.find(
-      e => ((e.visible || includeHidden) && e.getXY()?.toString() == xy?.toString()))
-      || this._map[xy.toString()]
+    const special = this._specialEntities.find(e => e.getXY()?.toString() == xy.toString())
+    if (special && (special.visible || includeHidden)) return special
+
+    const map = this._map[xy.toString()]
+    if (map && (map.visible || includeHidden)) return map
+
+    return null
   }
 
   setSpecialEntity(entity: Entity, xy: XY) {
@@ -167,6 +171,7 @@ export default class MainLevel {
 
     // draw new FOV
     fov.compute(player_x, player_y, fov_r, (x, y, r, visibility) => {
+      if (r === 0) return;
       let xy = new XY(x, y)
       let e = this.getEntityAt(xy)
       if (!e) { return; }
@@ -198,7 +203,7 @@ export default class MainLevel {
     for (let row = 0; row < this._size.y; row++) {
       for (let col = 0; col < this._size.x; col++) {
         // ignore map areas already drawn
-        if (this._map[col + "," + row]) { continue; }
+        // if (this._map[col + "," + row]) { continue; }
 
         // skip empty
         let mapCh = map[row][col]

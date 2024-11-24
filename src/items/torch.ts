@@ -19,11 +19,13 @@ export default class TorchItem implements Item {
     this._level = level
 
     this._fov = new ROT.FOV.PreciseShadowcasting((x, y) => {
-      let entity = level.getEntityAt(new XY(x, y))?.getVisual()
+      let entity = level.getEntityAt(new XY(x, y), true)
       if (!entity) return false
-      if (".@".includes(entity.ch)) return true
-      // TODO change to check for crystal clearing
-      if (entity instanceof Crystal) return entity.getVisual().ch === "/"
+      if (entity instanceof Crystal) {
+        entity.visible = true
+        return entity.clearing
+      }
+      if (!"=o".includes(entity.getVisual().ch)) return true
       return false
     }
       , { topology: 8 })
@@ -35,19 +37,23 @@ export default class TorchItem implements Item {
   }
 
   _fovCb(x: number, y: number, r: number, visibility: number) {
-    if (r === 0) return;
     let xy = new XY(x, y)
-    let e = this._level.getEntityAt(xy, true)
+    let e = this._level.getEntityAt(xy)
     if (!e) { return; }
 
-    // TODO handle clearings
-    if (e instanceof Crystal && false) {
-      e.visible = true;
-      // TODO how to hide again when out of fov?
-      this._level.game.display.draw(x, y, e.getVisual().ch, e.getVisual().fg);
+    if (e instanceof Crystal) {
+      e.visible = true
+      let { ch, fg } = e.getVisual()
+      this._level.game.display.draw(x, y, ch, fg)
+    }
+
+    if (e instanceof Crystal && e.clearing) {
+      let fgBase = "#00f"
+      let multplier = Math.min(170, Math.round(255 * Math.pow((5 / r), 1) / 5))
+      let fg = Color.add(Color.fromString(fgBase), [multplier, multplier, Math.floor(multplier / 2)]);
+      this._level.game.display.draw(x, y, ".", Color.toHex(fg));
 
     } else {
-      e = this._level.getEntityAt(xy)
       let { ch, fg } = e!.getVisual()
       let multplier = Math.min(170, Math.round(255 * Math.pow((5 / r), 1) / 5))
       let fgBrighter = Color.add(Color.fromString(fg), [multplier, multplier, Math.floor(multplier / 2)]);

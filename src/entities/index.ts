@@ -16,6 +16,7 @@ export function entityFromCh(ch: string, game: Game) {
     case "o": return new Ship(game);
     case "=": return new Cliff(game);
     case "/": return new Crystal(game);
+    case ",": return new Crystal(game, true);
     case ":": return new Bridge(game, true);
     case "~": return new Chasm(game);
     default: return new Entity(game, { ch: ch, fg: "grey" });

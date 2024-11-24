@@ -2,7 +2,6 @@ import * as ROT from "../../lib/rotjs";
 import Entity from "../entity";
 import XY from "../xy";
 import Game from "../game";
-import pubsub from "../pubsub";
 import { SpeedActor } from "../../lib/rotjs";
 
 export default class Player extends Entity implements SpeedActor {
@@ -16,11 +15,15 @@ export default class Player extends Entity implements SpeedActor {
     this._keys = {};
     this._keys[ROT.KEYS.VK_UP] = 0;
     this._keys[ROT.KEYS.VK_W] = 0;
+    this._keys[ROT.KEYS.VK_K] = 0;
     this._keys[ROT.KEYS.VK_RIGHT] = 1;
     this._keys[ROT.KEYS.VK_D] = 1;
+    this._keys[ROT.KEYS.VK_L] = 1;
     this._keys[ROT.KEYS.VK_DOWN] = 2;
     this._keys[ROT.KEYS.VK_S] = 2;
+    this._keys[ROT.KEYS.VK_J] = 2;
     this._keys[ROT.KEYS.VK_LEFT] = 3;
+    this._keys[ROT.KEYS.VK_H] = 3;
     this._keys[ROT.KEYS.VK_A] = 3;
 
 
