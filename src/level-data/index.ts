@@ -1,6 +1,6 @@
 import map0Data from "./main-level-0.txt?raw"
 import map1Data from "./main-level-1.txt?raw"
-import map2Data from "./main-level-3.txt?raw"
+import map2Data from "./main-level-2.txt?raw"
 import Game from "../game"
 import Entity from "../entity"
 import XY from "../xy"

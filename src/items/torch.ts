@@ -18,7 +18,7 @@ export default class TorchItem implements Item {
   constructor(level: MainLevel) {
     this._level = level
 
-    this._fov = new ROT.FOV.PreciseShadowcasting((x, y) => {
+    this._fov = new ROT.FOV.RecursiveShadowcasting((x, y) => {
       let entity = level.getEntityAt(new XY(x, y), true)
       if (!entity) return false
       if (entity instanceof Crystal) {

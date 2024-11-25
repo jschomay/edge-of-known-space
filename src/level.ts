@@ -19,15 +19,6 @@ function debug(level: MainLevel) {
 }
 
 
-export interface Level {
-  onKeyDown(e: KeyboardEvent): void
-  draw(xy: XY): void
-  getSize(): XY
-  getEntityAt(xy: XY): Entity | null
-  setEntity(entity: Entity, xy: XY): void
-}
-
-
 export default class MainLevel {
   private _size: XY;
   private _specialEntities: Entity[];
@@ -202,16 +193,20 @@ export default class MainLevel {
     let map = data.split("\n")
     for (let row = 0; row < this._size.y; row++) {
       for (let col = 0; col < this._size.x; col++) {
-        // ignore map areas already drawn
-        // if (this._map[col + "," + row]) { continue; }
 
         // skip empty
         let mapCh = map[row][col]
         if (mapCh === " ") { continue; }
 
         let xy = new XY(col, row);
-        let entity = entityFromCh(mapCh, this.game)
-        this.setEntity(entity, xy)
+        let existingEntity = this.getEntityAt(xy)
+
+        let newEntity = entityFromCh(mapCh, this.game)
+        this.setEntity(newEntity, xy)
+
+        // useful for example when swapping out crystal with clearing
+        if (existingEntity) { newEntity.visible = existingEntity.visible; }
+
         this.draw(xy);
       }
     }
