@@ -17,11 +17,12 @@ export default class Game {
     let fontSize = window.innerWidth / 90;
     this.display = new ROT.Display({ fontSize });
     const container = this.display.getContainer()!
+    container.classList.add("max-h-screen", "max-w-full")
     document.body.appendChild(container);
 
     // TODO only for debugging
-    let level = new MainLevel(this);
-    // let level = new StartScreen(this);
+    // let level = new MainLevel(this);
+    let level = new StartScreen(this);
     this.level = level;
     this.switchLevel(level);
     this.engine.start();
@@ -29,7 +30,7 @@ export default class Game {
     window.addEventListener("keydown", this.onKeyDown.bind(this));
 
     // debug (click to inspect entity)
-    container.addEventListener("click", e => console.log(this.level.getEntityAt(new XY(...this.display.eventToPosition(e)), true)))
+    // container.addEventListener("click", e => console.log(this.level.getEntityAt(new XY(...this.display.eventToPosition(e)), true)))
   }
 
   public onKeyDown(e: KeyboardEvent) {

@@ -1,11 +1,10 @@
 import Game from "./game";
 import XY from "./xy";
-import { Level } from "./level";
 import level1Data from "./level-data/level1-1.json";
 import MainLevel from "./level";
 
 
-export default class StartScreen implements Level {
+export default class StartScreen {
 
   size = new XY(110, 40);
   game: Game

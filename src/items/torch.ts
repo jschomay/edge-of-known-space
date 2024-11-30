@@ -5,6 +5,7 @@ import FOV from "../../lib/rotjs/fov/fov";
 import Item from "."
 import Crystal from "../entities/crystal";
 import { Color } from "../../lib/rotjs";
+import Officer from "../entities/officer";
 
 export default class TorchItem implements Item {
   key: string = "1"
@@ -24,6 +25,10 @@ export default class TorchItem implements Item {
       if (entity instanceof Crystal) {
         entity.visible = true
         return entity.clearing
+      }
+      if (entity instanceof Officer) {
+        entity.visible = true
+        return false
       }
       if (!"=o".includes(entity.getVisual().ch)) return true
       return false

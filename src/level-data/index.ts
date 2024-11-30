@@ -7,6 +7,7 @@ import XY from "../xy"
 import Terminal from "../entities/terminal"
 import Log, * as logs from "../entities/log"
 import Torch from "../entities/torch"
+import Officer, * as messages from "../entities/officer";
 
 // TODO change maps to json level to obscure
 
@@ -33,5 +34,7 @@ export const map2: MapData = (game: Game) => ({
   mapData: map2Data,
   specialEntities: [
     { xy: new XY(66, 10), entity: new Torch(game) },
+    { xy: new XY(64, 17), entity: new Log(game, logs.LO_BRIDGE) },
+    { xy: new XY(7, 6), entity: new Officer(game, messages.BALTHAR) },
   ]
 })

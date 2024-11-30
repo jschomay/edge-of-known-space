@@ -10,7 +10,7 @@ import { MapData } from "./level-data";
 import * as mapData from "./level-data";
 import TorchItem from "./items/torch";
 
-const DEBUG = 1
+const DEBUG = 0
 function debug(level: MainLevel) {
   [mapData.map1, mapData.map2].forEach(level.expandMap.bind(level))
   level.addInventory(new TerminalItem(level))

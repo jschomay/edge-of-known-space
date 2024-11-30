@@ -5,6 +5,7 @@ import { map2 } from "../level-data";
 
 export default class Log extends Entity {
   private log: string
+  private discovered = false
   private onDiscover: (entity: Entity) => void
 
   constructor(game: Game, data: { text: string, onDiscover: (entity: Entity) => void }) {
@@ -21,7 +22,8 @@ export default class Log extends Entity {
         if (logs.length > 0) {
           setTimeout(showLog.bind(this), 0);
         } else {
-          this.onDiscover(this)
+          if (!this.discovered) this.onDiscover(this)
+          this.discovered = true
           this.setVisual({ ch: '+', fg: "#aa0" })
           // this.remove()
         }
@@ -55,7 +57,7 @@ Primary objective: locate INTREPID and recover classified research data.
 
 ...
 5671008 - Atmospheric entry initiated; ALERT: velocity exceeds safe parameters.  
-5671147 - INTREPID emergency beacon detected to the Southwest.
+5671147 - INTREPID emergency beacon detected to the Southeast.
 5671203 - Cryosleep pods A, D, E: activation sequence initiated.  
 5672724 - Reserve power systems engaged.  
 5679114 - Cryosleep pod C: activation sequence completed.  
@@ -80,4 +82,12 @@ I found footprints heading East.  I'll follow them momentarily, but I want to ch
 These crystal formations are incredible!  I've never seen anything like it.  I'm going to take a closer look.
 `.trim(),
   onDiscover: (entity: Entity) => entity.getLevel().expandMap(map2)
+}
+
+export const LO_BRIDGE = {
+  text: `
+:COMMANDING OFFICER LO LOGS::
+
+The INTREPID's on the other side of this chasm.  Hanes, grab the extension bridge, we've got to hurry. Let's go, let's go!
+`.trim(), onDiscover: (entity: Entity) => null
 }
