@@ -7,7 +7,7 @@
 88eee 88ee8 88ee8 88ee    8eee8 88      88   8 88  8 8eee8 88ee8ee8 88  8    8eee88 88    88  8 88e8 88ee 
 ```
 
-_You wake up from long-term cyrosleep in a starship on an alien planet at the edge of known space.  The rest of your team are missing.  What happened?_
+_You wake up from long-term cryosleep in a starship on an alien planet at the edge of known space.  The rest of your team are missing.  What happened?_
 
  
 "Edge of Known Space" is a sci-fi, 1-screen, micro-metriodvania where you can't move beyond the known surroundings.  Discover clues and tools to reveal more of the map.  Explore the full map to piece together what happened.
