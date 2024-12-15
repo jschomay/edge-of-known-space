@@ -1,7 +1,8 @@
 import * as ROT from "../../lib/rotjs";
 import XY from "../xy";
-import MainLevel from "../level"
 import FOV from "../../lib/rotjs/fov/fov";
+import { LightPassesCallback, VisibilityCallback } from "../../lib/rotjs/fov/fov";
+import MainLevel from "../level"
 import Item from "."
 import Log from "../entities/log";
 
@@ -11,32 +12,36 @@ export default class TerminalItem implements Item {
   color: string = "green"
   active: boolean = false
 
-  private _fov: FOV;
   private _logs: string[] = []
   private _level: MainLevel
+  private _fov: FOV;
 
   constructor(level: MainLevel) {
     this._level = level
-
-    this._fov = new ROT.FOV.PreciseShadowcasting((x, y) =>
-      ".@".includes(level.getEntityAt(new XY(x, y))?.getVisual().ch || "")
-      , { topology: 4 })
+    this._fov = new ROT.FOV.PreciseShadowcasting(this._FOVLightPasses, { topology: 4 })
   }
+
 
   getFOV() {
-    return { r: 3, fov: this._fov, cb: this._fovCb.bind(this) };
+    return { r: 3, fov: this._fov, cb: this._FOVIlluminate };
   }
 
-  _fovCb(x: number, y: number, r: number, visibility: number) {
+  _FOVLightPasses: LightPassesCallback = (x, y) => {
+    return true
+    // let ch = this._level.getEntityAt(new XY(x, y))?.getVisual().ch || ""
+    // return ".@".includes(ch)
+  }
+
+
+  _FOVIlluminate: VisibilityCallback = (x, y, r, visibility) => {
+    // illuminates all special entities and ground
     let xy = new XY(x, y)
     let e = this._level.getEntityAt(xy, true)
     if (!e) { return; }
-    if (e instanceof Log) {
+    if (this._level.isSpecial(e)) {
       e.visible = true;
-      this._level.game.display.draw(x, y, e.getVisual().ch, e.getVisual().fg);
+      this._level.draw(xy)
       return
-    } else {
-      e = this._level.getEntityAt(xy)
     }
     let ch = e.getVisual().ch
     if (ch != ".") { return; }

@@ -11,6 +11,8 @@ export default class Game {
   display: ROT.Display;
   HANDLED_KEYS = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "w", "a", "s", "d", "Enter", "Escape", " "];
 
+  _container: HTMLElement
+
   constructor() {
     this.scheduler = new ROT.Scheduler.Speed();
     this.engine = new ROT.Engine(this.scheduler);
@@ -20,9 +22,9 @@ export default class Game {
       this.display.setOptions({ fontSize });
     })
     this.display = new ROT.Display({ fontSize });
-    const container = this.display.getContainer()!
-    container.classList.add("max-h-screen", "max-w-full")
-    document.body.appendChild(container);
+    this._container = this.display.getContainer()!
+    this._container.classList.add("max-h-screen", "max-w-full")
+    document.body.appendChild(this._container);
 
     // TODO only for debugging
     // let level = new MainLevel(this);
@@ -32,9 +34,6 @@ export default class Game {
     this.engine.start();
 
     window.addEventListener("keydown", this.onKeyDown.bind(this));
-
-    // debug (click to inspect entity)
-    // container.addEventListener("click", e => console.log(this.level.getEntityAt(new XY(...this.display.eventToPosition(e)), true)))
   }
 
   public onKeyDown(e: KeyboardEvent) {

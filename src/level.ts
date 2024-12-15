@@ -12,10 +12,14 @@ import TorchItem from "./items/torch";
 
 const DEBUG = 0
 function debug(level: MainLevel) {
-  [mapData.map1, mapData.map2].forEach(level.expandMap.bind(level))
-  level.addInventory(new TerminalItem(level))
+  // [mapData.fullMap].forEach(level.expandMap.bind(level))
+  // level.addInventory(new TerminalItem(level))
   level.addInventory(new TorchItem(level))
   level.activateItem("1")
+
+  // inspect helpers
+  window._at = (x, y, ...rest) => level.getEntityAt(new XY(x, y), ...rest)
+  level.game._container.addEventListener("click", e => console.log(level.getEntityAt(new XY(...level.game.display.eventToPosition(e)), true)))
 }
 
 
@@ -49,7 +53,7 @@ export default class MainLevel {
     this.textBuffer.clear();
 
     this.player = new Player(game);
-    let playerStart = new XY(37, 17);
+    let playerStart = new XY(31, 17);
     this.setSpecialEntity(this.player, playerStart)
 
     game.scheduler.clear();
@@ -127,12 +131,14 @@ export default class MainLevel {
     this.draw(xy);
   }
 
-  getEntityAt(xy: XY, includeHidden: boolean = false): Entity | null {
-    const special = this._specialEntities.find(e => e.getXY()?.toString() == xy.toString())
-    if (special && (special.visible || includeHidden)) return special
+  getEntityAt(xy: XY, includeHiddenSpecial: boolean = false, includeHiddenTerrain: boolean = false): Entity | null {
+    // NOTE special entities can share the same spot which might create bugs
+    // this find the first one (following visibility request)
+    const special = this._specialEntities.find(e => (e.visible || includeHiddenSpecial) && e.getXY()?.toString() == xy.toString())
+    if (special) return special
 
     const map = this._map[xy.toString()]
-    if (map && (map.visible || includeHidden)) return map
+    if (map && (map.visible || includeHiddenTerrain)) return map
 
     return null
   }
@@ -145,7 +151,13 @@ export default class MainLevel {
 
   removeSpecialEntity(entity: Entity) {
     this._specialEntities = this._specialEntities.filter(e => e != entity)
+    let terrainUnderEntity = this.getEntityAt(entity.getXY()!, false, true)
+    if (terrainUnderEntity) { terrainUnderEntity.visible = true; }
     this.draw(entity.getXY()!);
+  }
+
+  isSpecial(entity: Entity) {
+    return this._specialEntities.includes(entity)
   }
 
   updateFOV() {
@@ -162,11 +174,10 @@ export default class MainLevel {
 
     // draw new FOV
     fov.compute(player_x, player_y, fov_r, (x, y, r, visibility) => {
+      // don't include player
       if (r === 0) return;
-      let xy = new XY(x, y)
-      let e = this.getEntityAt(xy)
-      if (!e) { return; }
 
+      let xy = new XY(x, y)
       this._fovCells.push(xy);
       cb(x, y, r, visibility)
     });
@@ -190,18 +201,21 @@ export default class MainLevel {
     //   }
     // }
     // TODO change to json structure instead of text
+    // TODO update with full map when ready
+    let fullMap = mapData.fullMap(this.game).mapData.split("\n")
     let map = data.split("\n")
     for (let row = 0; row < this._size.y; row++) {
       for (let col = 0; col < this._size.x; col++) {
 
-        // skip empty
+        // empty spots are unknown but explorable
         let mapCh = map[row][col]
-        if (mapCh === " ") { continue; }
+        let ch = mapCh !== " " ? mapCh : fullMap[row][col]
 
         let xy = new XY(col, row);
         let existingEntity = this.getEntityAt(xy)
 
-        let newEntity = entityFromCh(mapCh, this.game)
+        let newEntity = entityFromCh(ch, this.game)
+        if (mapCh === " ") { newEntity.visible = false; }
         this.setEntity(newEntity, xy)
 
         // useful for example when swapping out crystal with clearing

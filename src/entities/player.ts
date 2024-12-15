@@ -64,11 +64,18 @@ export default class Player extends Entity implements SpeedActor {
 
     let dir = ROT.DIRS[4][action];
     let newXY = this.getXY()!.plus(new XY(dir[0], dir[1]));
-    let entity_at_xy = this.getLevel()!.getEntityAt(newXY);
+    let entity_at_xy = this.getLevel()!.getEntityAt(newXY, false, true);
 
-    if (!(entity_at_xy)) {
+    if (!entity_at_xy) {
+      // TODO should never happen any more with explorable unknown feature? But maybe at the edges
       this.getLevel()!.textBuffer.write("I'm not equipped to explore into the unknown.")
       return false
+    }
+
+    if (!entity_at_xy.visible) {
+      this.getLevel()!.textBuffer.write("I'm exploring into the unknown.")
+      entity_at_xy.visible = true
+      this.getLevel().draw(entity_at_xy.getXY()!)
     }
 
     if (entity_at_xy.onInteract(this)) {

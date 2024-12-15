@@ -1,6 +1,7 @@
 import Entity from "../entity";
+import Torch from "../entities/torch"
 import Game from "../game";
-import { map2 } from "../level-data";
+import XY from "../xy";
 
 
 export default class Log extends Entity {
@@ -81,13 +82,15 @@ I found footprints heading East.  I'll follow them momentarily, but I want to ch
 ---
 These crystal formations are incredible!  I've never seen anything like it.  I'm going to take a closer look.
 `.trim(),
-  onDiscover: (entity: Entity) => entity.getLevel().expandMap(map2)
+  onDiscover: (entity: Entity) => null
 }
 
 export const LO_BRIDGE = {
   text: `
 :COMMANDING OFFICER LO LOGS::
 
-The INTREPID's on the other side of this chasm.  Hanes, grab the extension bridge, we've got to hurry. Let's go, let's go!
+The INTREPID's on the other side of this chasm. Hanes, grab the extension bridge, we've got to hurry. Let's go, let's go!
+
+Dammit Agros, where's that torch?
 `.trim(), onDiscover: (entity: Entity) => null
 }
