@@ -6,13 +6,12 @@ import TextBuffer from "./textbuffer"
 import { entityFromCh } from "./entities";
 import Item from "./items";
 import TerminalItem from "./items/terminal";
-import { MapData } from "./level-data";
 import * as mapData from "./level-data";
 import TorchItem from "./items/torch";
 
 const DEBUG = 0
 function debug(level: MainLevel) {
-  // [mapData.fullMap].forEach(level.expandMap.bind(level))
+  // this._generateMap(mapData.fullMap)
   // level.addInventory(new TerminalItem(level))
   level.addInventory(new TorchItem(level))
   level.activateItem("1")
@@ -40,7 +39,11 @@ export default class MainLevel {
     this._map = {};
     this._size = new XY(110, 40);
 
-    this.expandMap(mapData.map0);
+    this.player = new Player(game);
+    // get's positioneed according to map in generateMap
+    this.player.setPosition(new XY(0, 0), this);
+
+    this._generateMap(mapData.map0);
 
     this.textBuffer = new TextBuffer(this.game);
 
@@ -51,10 +54,6 @@ export default class MainLevel {
       size: new XY(size.x, bufferSize)
     });
     this.textBuffer.clear();
-
-    this.player = new Player(game);
-    let playerStart = new XY(31, 17);
-    this.setSpecialEntity(this.player, playerStart)
 
     game.scheduler.clear();
     game.scheduler.add(this.player, true);
@@ -110,12 +109,6 @@ export default class MainLevel {
     if (!entity) { return; }
     let visual = entity.getVisual();
     this.game.display.draw(xy.x, xy.y, visual.ch, visual.fg);
-  }
-
-  expandMap(map: MapData) {
-    let { mapData, specialEntities } = map(this.game)
-    this._generateMap(mapData);
-    specialEntities?.forEach(({ entity, xy }) => this.setSpecialEntity(entity, xy))
   }
 
   addInventory(item: Item) {
@@ -194,32 +187,28 @@ export default class MainLevel {
 
 
   _generateMap(data: string) {
-    // Uncomment to debug full level size
-    // for (let i = 0; i < this._size.x; i++) {
-    //   for (let j = 0; j < this._size.y; j++) {
-    //     this.game.display.draw(i, j, "1", "#222");
-    //   }
-    // }
     // TODO change to json structure instead of text
-    // TODO update with full map when ready
-    let fullMap = mapData.fullMap(this.game).mapData.split("\n")
+    let fullMap = mapData.fullMap.split("\n")
     let map = data.split("\n")
     for (let row = 0; row < this._size.y; row++) {
       for (let col = 0; col < this._size.x; col++) {
 
         // empty spots are unknown but explorable
-        let mapCh = map[row][col]
-        let ch = mapCh !== " " ? mapCh : fullMap[row][col]
+        let isUnknown = map[row][col] == " "
+        let ch = fullMap[row][col]
 
         let xy = new XY(col, row);
         let existingEntity = this.getEntityAt(xy)
 
-        let newEntity = entityFromCh(ch, this.game)
-        if (mapCh === " ") { newEntity.visible = false; }
-        this.setEntity(newEntity, xy)
+        let { terrain: t, special: s } = entityFromCh(ch, this.game)
+        if (ch === "@") s = this.player
+
+        if (isUnknown) { t.visible = false; }
+        this.setEntity(t, xy)
+        if (s) this.setSpecialEntity(s, xy)
 
         // useful for example when swapping out crystal with clearing
-        if (existingEntity) { newEntity.visible = existingEntity.visible; }
+        if (existingEntity) { t.visible = existingEntity.visible; }
 
         this.draw(xy);
       }

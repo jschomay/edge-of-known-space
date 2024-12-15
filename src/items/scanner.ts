@@ -8,10 +8,10 @@ import Crystal from "../entities/crystal";
 import { Color } from "../../lib/rotjs";
 import Officer from "../entities/officer";
 
-export default class TorchItem implements Item {
-  key: string = "1"
-  name: string = "Torch"
-  color: string = "orange"
+export default class ScannerItem implements Item {
+  key: string = "2"
+  name: string = "Scanner"
+  color: string = "pink"
   active: boolean = false
 
   private _fov: FOV;
@@ -23,21 +23,13 @@ export default class TorchItem implements Item {
   }
 
   getFOV() {
-    return { r: 5, fov: this._fov, cb: this._FOVIlluminate };
+    return { r: 8, fov: this._fov, cb: this._FOVIlluminate };
   }
 
   _FOVLightPasses: LightPassesCallback = (x, y) => {
     let entity = this._level.getEntityAt(new XY(x, y), true, true)
     if (!entity) return false
-    if (entity instanceof Crystal) {
-      entity.visible = true
-      return entity.clearing
-    }
-    if (this._level.isSpecial(entity)) {
-      entity.visible = true
-      return false
-    }
-    if (!"=o".includes(entity.getVisual().ch)) return true
+    if ("#.".includes(entity.getVisual().ch)) return true
     return false
   }
 
