@@ -8,13 +8,15 @@ import Item from "./items";
 import TerminalItem from "./items/terminal";
 import * as mapData from "./level-data";
 import TorchItem from "./items/torch";
+import ScannerItem from "./items/scanner";
 
 const DEBUG = 0
 function debug(level: MainLevel) {
   // this._generateMap(mapData.fullMap)
   // level.addInventory(new TerminalItem(level))
   level.addInventory(new TorchItem(level))
-  level.activateItem("1")
+  level.addInventory(new ScannerItem(level))
+  // level.activateItem("2")
 
   // inspect helpers
   window._at = (x, y, ...rest) => level.getEntityAt(new XY(x, y), ...rest)

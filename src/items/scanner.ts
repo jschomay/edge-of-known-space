@@ -4,15 +4,17 @@ import MainLevel from "../level"
 import FOV from "../../lib/rotjs/fov/fov";
 import { LightPassesCallback, VisibilityCallback } from "../../lib/rotjs/fov/fov";
 import Item from "."
-import Crystal from "../entities/crystal";
 import { Color } from "../../lib/rotjs";
-import Officer from "../entities/officer";
+import Rubble from "../entities/rubble";
 
 export default class ScannerItem implements Item {
   key: string = "2"
   name: string = "Scanner"
-  color: string = "pink"
+  color: string = "#55f"
   active: boolean = false
+  _initialR: number = 1
+  _r: number = 1
+  _intervalID: number = -1
 
   private _fov: FOV;
   private _level: MainLevel
@@ -23,13 +25,14 @@ export default class ScannerItem implements Item {
   }
 
   getFOV() {
-    return { r: 8, fov: this._fov, cb: this._FOVIlluminate };
+    return { r: this._r, fov: this._fov, cb: this._FOVIlluminate };
   }
 
   _FOVLightPasses: LightPassesCallback = (x, y) => {
     let entity = this._level.getEntityAt(new XY(x, y), true, true)
     if (!entity) return false
-    if ("#.".includes(entity.getVisual().ch)) return true
+    if (entity instanceof Rubble) return true
+    if (".".includes(entity.getVisual().ch)) return true
     return false
   }
 
@@ -37,28 +40,35 @@ export default class ScannerItem implements Item {
     let xy = new XY(x, y)
     let e = this._level.getEntityAt(xy, true, true)
     if (!e) { return; }
+    let { ch, fg } = e.getVisual()
 
-    e.visible = true
+    if (e instanceof Rubble) {
+      e.visible = true
+      e.scanned = true
 
-    if (e instanceof Crystal && e.clearing) {
-      let fgBase = "#00f"
-      let multplier = Math.min(170, Math.round(255 * Math.pow((5 / r), 1) / 5))
-      let fg = Color.add(Color.fromString(fgBase), [multplier, multplier, Math.floor(multplier / 2)]);
-      this._level.game.display.draw(x, y, ".", Color.toHex(fg));
-
-    } else {
-      let { ch, fg } = e.getVisual()
-      let multplier = Math.min(170, Math.round(255 * Math.pow((5 / r), 1) / 5))
-      let fgBrighter = Color.add(Color.fromString(fg), [multplier, multplier, Math.floor(multplier / 2)]);
+    } else if (ch === ".") {
+      e.visible = true
+      let fgBrighter = Color.add(Color.fromString(fg), [0, 0, 200]);
       this._level.game.display.draw(x, y, ch, Color.toHex(fgBrighter))
     }
+
   }
 
   onActivate() {
+    // TODO lock the game loop so the player can't move
     this.active = true
+    this._intervalID = setInterval(() => {
+      this._r += 1
+      if (this._r >= 15) {
+        this._level.deactivateItem(this.key)
+      }
+      this._level.updateFOV()
+    }, 70)
   }
 
   onDeactivate() {
+    clearInterval(this._intervalID)
+    this._r = this._initialR
     this.active = false
   }
 }

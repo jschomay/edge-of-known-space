@@ -6,6 +6,7 @@ import Crystal from "./crystal";
 import Bridge from "./bridge";
 import Chasm from "./chasm";
 import Terminal from "./terminal";
+import Rubble from "./rubble";
 import Log from "./log";
 import Torch from "./torch";
 import Scanner from "./scanner";
@@ -13,12 +14,15 @@ import * as logs from "./log";
 import Officer from "./officer";
 import * as officer_logs from "./officer";
 
+const groundColor = "#430"
+
 const groundSpecial = new Map<string, (game: Game) => Entity>();
 groundSpecial.set("#", (game) => new Terminal(game));
 groundSpecial.set("v", (game) => new Torch(game));
 groundSpecial.set("1", (game) => new Log(game, logs.EMPTY_SHIP));
 groundSpecial.set("2", (game) => new Log(game, logs.SCIENCE_OFFICER_FIRST));
 groundSpecial.set("3", (game) => new Log(game, logs.LO_BRIDGE));
+groundSpecial.set("%", (game) => new Rubble(game));
 
 
 const crystalSpecial = new Map<string, (game: Game) => Entity>();
@@ -27,7 +31,7 @@ crystalSpecial.set("Y", (game) => new Scanner(game));
 
 
 const terrain = new Map<string, (game: Game) => Entity>();
-terrain.set(".", (game) => new Entity(game, { ch: ".", fg: "#444" }));
+terrain.set(".", (game) => new Entity(game, { ch: ".", fg: groundColor }));
 terrain.set("o", (game) => new Ship(game));
 terrain.set("=", (game) => new Cliff(game));
 terrain.set("/", (game) => new Crystal(game));
