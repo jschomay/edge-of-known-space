@@ -18,6 +18,18 @@ function debug(level: MainLevel) {
   level.addInventory(new ScannerItem(level))
   // level.activateItem("2")
 
+  const showFullMap = () => {
+    Object.values(level._map).forEach(e => e.visible = true);
+    level._specialEntities.forEach(e => e.visible = true)
+    for (let x = 0; x < level._size.x; x++) {
+      for (let y = 0; y < level._size.y; y++) {
+        const xy = new XY(x, y)
+        level.draw(xy)
+      }
+    }
+  }
+  showFullMap()
+
   // inspect helpers
   window._at = (x, y, ...rest) => level.getEntityAt(new XY(x, y), ...rest)
   level.game._container.addEventListener("click", e => console.log(level.getEntityAt(new XY(...level.game.display.eventToPosition(e)), true)))
