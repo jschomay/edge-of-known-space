@@ -10,7 +10,7 @@ export default class Log extends Entity {
   private onDiscover: (entity: Entity) => void
 
   constructor(game: Game, data: { text: string, onDiscover: (entity: Entity) => void }) {
-    super(game, { ch: "+", fg: "yellow" });
+    super(game, { ch: "?", fg: "yellow" });
     this.visible = false
     this.log = data.text
     this.onDiscover = data.onDiscover
@@ -93,4 +93,10 @@ The INTREPID's on the other side of this chasm. Hanes, grab the extension bridge
 
 Dammit Agros, where's that torch?
 `.trim(), onDiscover: (entity: Entity) => null
+}
+
+export const TODO = {
+  text: `
+::TODO::
+`, onDiscover: (entity: Entity) => null
 }

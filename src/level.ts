@@ -12,12 +12,6 @@ import ScannerItem from "./items/scanner";
 
 const DEBUG = 0
 function debug(level: MainLevel) {
-  // this._generateMap(mapData.fullMap)
-  // level.addInventory(new TerminalItem(level))
-  level.addInventory(new TorchItem(level))
-  level.addInventory(new ScannerItem(level))
-  // level.activateItem("2")
-
   const showFullMap = () => {
     Object.values(level._map).forEach(e => e.visible = true);
     level._specialEntities.forEach(e => e.visible = true)
@@ -29,6 +23,11 @@ function debug(level: MainLevel) {
     }
   }
   showFullMap()
+
+  level.addInventory(new TerminalItem(level))
+  level.addInventory(new TorchItem(level))
+  level.addInventory(new ScannerItem(level))
+  level.activateItem("1")
 
   // inspect helpers
   window._at = (x, y, ...rest) => level.getEntityAt(new XY(x, y), ...rest)
@@ -51,7 +50,7 @@ export default class MainLevel {
     this.game = game;
     this._specialEntities = []
     this._map = {};
-    this._size = new XY(110, 40);
+    this._size = new XY(110, 41);
 
     this.player = new Player(game);
     // get's positioneed according to map in generateMap

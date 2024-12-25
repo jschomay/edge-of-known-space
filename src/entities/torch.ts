@@ -4,7 +4,7 @@ import TorchItem from "../items/torch"
 
 export default class Torch extends Entity {
   constructor(game: Game) {
-    super(game, { ch: "A", fg: "orange" });
+    super(game, { ch: "?", fg: "yellow" });
     this.visible = false;
   }
 

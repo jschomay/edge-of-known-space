@@ -4,7 +4,7 @@ import TerminalItem from "../items/terminal"
 
 export default class Terminal extends Entity {
   constructor(game: Game) {
-    super(game, { ch: "#", fg: "green" });
+    super(game, { ch: "?", fg: "yellow" });
   }
 
 

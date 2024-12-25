@@ -16,14 +16,15 @@ export default class Game {
   constructor() {
     this.scheduler = new ROT.Scheduler.Speed();
     this.engine = new ROT.Engine(this.scheduler);
-    let fontSize = window.innerWidth / 90;
+    const scalar = 80
+    let fontSize = window.innerWidth / scalar;
     window.addEventListener("resize", () => {
-      fontSize = window.innerWidth / 90;
+      fontSize = window.innerWidth / scalar;
       this.display.setOptions({ fontSize });
     })
     this.display = new ROT.Display({ fontSize });
     this._container = this.display.getContainer()!
-    this._container.classList.add("max-h-screen", "max-w-full")
+    this._container.classList.add("max-h-screen", "max-w-full", "scale-y-90")
     document.body.appendChild(this._container);
 
     // TODO only for debugging

@@ -4,7 +4,7 @@ import ScannerItem from "../items/scanner";
 
 export default class Scanner extends Entity {
   constructor(game: Game) {
-    super(game, { ch: "Y", fg: "#55f" });
+    super(game, { ch: "?", fg: "yellow" });
     this.visible = false;
   }
 
