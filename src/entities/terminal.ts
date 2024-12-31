@@ -3,6 +3,8 @@ import Game from "../game";
 import TerminalItem from "../items/terminal"
 
 export default class Terminal extends Entity {
+  item: boolean = true
+
   constructor(game: Game) {
     super(game, { ch: "?", fg: "yellow" });
   }
@@ -14,7 +16,6 @@ export default class Terminal extends Entity {
       this.remove()
       const terminalItem = new TerminalItem(this.getLevel()!)
       level.addInventory(terminalItem)
-      level.activateItem(terminalItem.key)
     })
     return false;
   }

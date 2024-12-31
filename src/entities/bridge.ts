@@ -1,7 +1,10 @@
 import Entity from "../entity";
 import Game from "../game";
 
+// bridge is both the item to pick up and a deployed special entity
 export default class Bridge extends Entity {
+  item: boolean
+
   deployed: boolean
   broken: boolean
 
@@ -10,6 +13,7 @@ export default class Bridge extends Entity {
     this.broken = broken
     this.deployed = deployed
     this.visible = deployed
+    this.item = !deployed
   }
 
   getVisual() {

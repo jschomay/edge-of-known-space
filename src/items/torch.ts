@@ -9,7 +9,7 @@ import { Color } from "../../lib/rotjs";
 import Officer from "../entities/officer";
 
 export default class TorchItem implements Item {
-  key: string = "1"
+  key: string = "2"
   name: string = "Torch"
   color: string = "orange"
   active: boolean = false

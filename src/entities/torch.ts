@@ -3,6 +3,8 @@ import Game from "../game";
 import TorchItem from "../items/torch"
 
 export default class Torch extends Entity {
+  item: boolean = true
+
   constructor(game: Game) {
     super(game, { ch: "?", fg: "yellow" });
     this.visible = false;

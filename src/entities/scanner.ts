@@ -3,6 +3,8 @@ import Game from "../game";
 import ScannerItem from "../items/scanner";
 
 export default class Scanner extends Entity {
+  item: boolean = true
+
   constructor(game: Game) {
     super(game, { ch: "?", fg: "yellow" });
     this.visible = false;

@@ -118,8 +118,12 @@ export default class MainLevel {
 
 
   draw(xy: XY): void {
-    let entity = this.getEntityAt(xy);
+    let entity = this.getEntityAt(xy, true, true);
     if (!entity) { return; }
+    if (!entity.visible) {
+      this.game.display.draw(xy.x, xy.y, " ", "white");
+      return
+    }
     let visual = entity.getVisual();
     this.game.display.draw(xy.x, xy.y, visual.ch, visual.fg);
   }
@@ -185,6 +189,8 @@ export default class MainLevel {
 
       let xy = new XY(x, y)
       this._fovCells.push(xy);
+
+      // TODO reveal hidden entities
       cb(x, y, r, visibility)
     });
   }
@@ -192,9 +198,11 @@ export default class MainLevel {
   _drawInventory() {
     let { x, y } = this.getSize()
     for (let key in this._inventory) {
-      let index = parseInt(key) * Math.floor(x / 6) + 3
+      let index = (parseInt(key) - 1) * Math.floor(x / 6) + 3
       let activeIndicator = this.activeItem === key ? "* " : "  "
-      this.game.display.drawText(index, y - 1, `%c{${this._inventory[key].color}}[${key}]%c{} ` + activeIndicator + this._inventory[key].name)
+      let keyInfo = `%c{${this._inventory[key].color}}[${key}]%c{} `
+      let keyName = this._inventory[key].name
+      this.game.display.drawText(index, y - 1, keyInfo + activeIndicator + keyName)
     }
   }
 

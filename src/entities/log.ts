@@ -10,7 +10,7 @@ export default class Log extends Entity {
   private onDiscover: (entity: Entity) => void
 
   constructor(game: Game, data: { text: string, onDiscover: (entity: Entity) => void }) {
-    super(game, { ch: "?", fg: "yellow" });
+    super(game, { ch: "+", fg: "yellow" });
     this.visible = false
     this.log = data.text
     this.onDiscover = data.onDiscover

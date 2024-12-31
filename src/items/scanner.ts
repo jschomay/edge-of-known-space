@@ -8,7 +8,7 @@ import { Color } from "../../lib/rotjs";
 import Rubble from "../entities/rubble";
 
 export default class ScannerItem implements Item {
-  key: string = "2"
+  key: string = "3"
   name: string = "Scanner"
   color: string = "#55f"
   active: boolean = false

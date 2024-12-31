@@ -9,6 +9,7 @@ export default class Entity {
   private _xy?: XY;
   private _level!: Level;
   visible: boolean = true
+  item: boolean = false
   game: Game;
 
   constructor(game: Game, visual: Visual = { ch: "!", fg: "red" }) {
