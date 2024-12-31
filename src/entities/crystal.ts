@@ -14,7 +14,7 @@ export default class Crystal extends Entity {
   }
 
   onInteract(entity: Entity): boolean {
-    const torchKey = "1"
+    const torchKey = "2"
     const torchOn = this.getLevel().activeItem === torchKey
     if (!torchOn) {
       this.getLevel()!.textBuffer.write("Giant crystal formations grow like a dense forest, blocking out the light. It's impossible to safely pass through them.")

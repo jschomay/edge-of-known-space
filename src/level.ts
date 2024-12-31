@@ -118,13 +118,20 @@ export default class MainLevel {
 
 
   draw(xy: XY): void {
-    let entity = this.getEntityAt(xy, true, true);
-    if (!entity) { return; }
-    if (!entity.visible) {
+    let terrainEntity = this.getEntityAt(xy, false, true);
+    let specialEntity = this.getEntityAt(xy, true, false);
+    if (!terrainEntity && !specialEntity) { return; }
+
+    let atLeastOneExistsAndIsVisible = (terrainEntity?.visible || specialEntity?.visible)
+
+    if (!atLeastOneExistsAndIsVisible) {
+      // completely undiscovered
       this.game.display.draw(xy.x, xy.y, " ", "white");
       return
     }
-    let visual = entity.getVisual();
+
+    let entity = this.getEntityAt(xy);
+    let visual = entity!.getVisual();
     this.game.display.draw(xy.x, xy.y, visual.ch, visual.fg);
   }
 
@@ -190,7 +197,6 @@ export default class MainLevel {
       let xy = new XY(x, y)
       this._fovCells.push(xy);
 
-      // TODO reveal hidden entities
       cb(x, y, r, visibility)
     });
   }

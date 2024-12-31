@@ -70,12 +70,12 @@ terrain.set("I", (game) => new Bridge(game, true, true));
 export function entityFromCh(ch: string, game: Game): { terrain: Entity, special: Entity | null } {
   if (ch === "@") {
     // player gets set specially in level
-    return { terrain: new Entity(game, { ch: ".", fg: "#444" }), special: null }
+    return { terrain: new Entity(game, { ch: ".", fg: groundColor }), special: null }
   }
 
   if (specialEntitiesOnGroundTerrain.has(ch)) {
     let s = specialEntitiesOnGroundTerrain.get(ch)!
-    return { terrain: new Entity(game, { ch: ".", fg: "#444" }), special: s(game) }
+    return { terrain: new Entity(game, { ch: ".", fg: groundColor }), special: s(game) }
 
   } else if (specialEntitiesOnCrystalTerrain.has(ch)) {
     let s = specialEntitiesOnCrystalTerrain.get(ch)!

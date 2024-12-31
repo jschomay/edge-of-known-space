@@ -3,6 +3,7 @@ import Entity from "../entity";
 import XY from "../xy";
 import Game from "../game";
 import { SpeedActor } from "../../lib/rotjs";
+import Log from "./log";
 
 export default class Player extends Entity implements SpeedActor {
   private _keys: { [key: number]: number };
@@ -64,21 +65,38 @@ export default class Player extends Entity implements SpeedActor {
 
     let dir = ROT.DIRS[4][action];
     let newXY = this.getXY()!.plus(new XY(dir[0], dir[1]));
-    let entity_at_xy = this.getLevel()!.getEntityAt(newXY, false, true);
+    let terrainEntity = this.getLevel()!.getEntityAt(newXY, false, true);
+    let specialEntity = this.getLevel()!.getEntityAt(newXY, true, false);
 
-    if (!entity_at_xy) {
-      // TODO should never happen any more with explorable unknown feature? But maybe at the edges
-      this.getLevel()!.textBuffer.write("I'm not equipped to explore into the unknown.")
+    if (!terrainEntity && !specialEntity) {
+      // should never happen unless moving beyond map
       return false
     }
 
-    if (!entity_at_xy.visible) {
-      this.getLevel()!.textBuffer.write("I'm exploring into the unknown.")
-      entity_at_xy.visible = true
-      this.getLevel().draw(entity_at_xy.getXY()!)
+    let msg = ""
+    let madeDiscovery = false
+
+    if (terrainEntity && !terrainEntity.visible) {
+      terrainEntity.visible = true
+      msg = "I'm exploring into the unknown. "
     }
 
-    if (entity_at_xy.onInteract(this)) {
+    if (specialEntity && !specialEntity.visible && !(specialEntity instanceof Log)) {
+      specialEntity.visible = true;
+      msg = "I found something."
+      madeDiscovery = true
+    }
+
+
+    this.getLevel()!.textBuffer.write(msg)
+    this.getLevel().draw(newXY)
+
+    if (madeDiscovery) { return true }
+
+    let entity_at_xy = this.getLevel().getEntityAt(newXY)
+
+
+    if (entity_at_xy!.onInteract(this)) {
       this.moveTo(newXY);
       // BUG? this can draw over the displayBox, might have to check if it is open
       this.getLevel().updateFOV()
