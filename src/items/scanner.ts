@@ -6,6 +6,7 @@ import { LightPassesCallback, VisibilityCallback } from "../../lib/rotjs/fov/fov
 import Item from "."
 import { Color } from "../../lib/rotjs";
 import Rubble from "../entities/rubble";
+import Crystal from "../entities/crystal";
 
 export default class ScannerItem implements Item {
   key: string = "3"
@@ -18,6 +19,7 @@ export default class ScannerItem implements Item {
 
   private _fov: FOV;
   private _level: MainLevel
+  private _maxR = 10
 
   constructor(level: MainLevel) {
     this._level = level
@@ -29,28 +31,37 @@ export default class ScannerItem implements Item {
   }
 
   _FOVLightPasses: LightPassesCallback = (x, y) => {
-    let entity = this._level.getEntityAt(new XY(x, y), true, true)
-    if (!entity) return false
-    if (entity instanceof Rubble) return true
-    if (".".includes(entity.getVisual().ch)) return true
-    return false
+    return true
   }
 
   _FOVIlluminate: VisibilityCallback = (x, y, r, visibility) => {
     let xy = new XY(x, y)
+
+    // first check for rubble
     let e = this._level.getEntityAt(xy, true, true)
-    if (!e) { return; }
-    let { ch, fg } = e.getVisual()
-
-    if (e instanceof Rubble) {
-      e.visible = true
+    if (e && e instanceof Rubble) {
       e.scanned = true
-
-    } else if (ch === ".") {
-      e.visible = true
-      let fgBrighter = Color.add(Color.fromString(fg), [0, 0, 200]);
-      this._level.game.display.draw(x, y, ch, Color.toHex(fgBrighter))
     }
+
+    // second only interact with terrain
+    e = this._level.getEntityAt(xy, false, true)
+    if (!e) { return; }
+
+    let { ch } = e.getVisual()
+    let highlightColor = Color.fromString("cyan")
+
+    if (",.".includes(ch)) {
+      e.visible = true
+      highlightColor = Color.multiply(highlightColor, [150, 150, 150])
+      this._level.game.display.draw(x, y, ch, Color.toHex(highlightColor))
+
+    } else if (e instanceof Crystal) {
+      let m = Color.randomize([100, 100, 100], 100)
+      if (e.clearing) highlightColor = [50, 50, 50]
+      highlightColor = Color.add(highlightColor, m)
+      this._level.game.display.draw(x, y, ch, Color.toHex(highlightColor))
+    }
+    // TODO light up shard
 
   }
 
@@ -59,7 +70,7 @@ export default class ScannerItem implements Item {
     this.active = true
     this._intervalID = setInterval(() => {
       this._r += 1
-      if (this._r >= 15) {
+      if (this._r >= this._maxR) {
         this._level.deactivateItem(this.key)
       }
       this._level.updateFOV()

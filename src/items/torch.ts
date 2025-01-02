@@ -7,6 +7,7 @@ import Item from "."
 import Crystal from "../entities/crystal";
 import { Color } from "../../lib/rotjs";
 import Officer from "../entities/officer";
+import Log from "../entities/log";
 
 export default class TorchItem implements Item {
   key: string = "2"
@@ -33,7 +34,7 @@ export default class TorchItem implements Item {
       entity.visible = true
       return entity.clearing
     }
-    if (this._level.isSpecial(entity)) {
+    if (this._level.isSpecial(entity) && !(entity instanceof Log)) {
       entity.visible = true
       return false
     }
@@ -44,6 +45,9 @@ export default class TorchItem implements Item {
   _FOVIlluminate: VisibilityCallback = (x, y, r, visibility) => {
     let xy = new XY(x, y)
     let e = this._level.getEntityAt(xy, true, true)
+    if (e && e instanceof Log) {
+      e = this._level.getEntityAt(xy, false, true)
+    }
     if (!e) { return; }
 
     e.visible = true

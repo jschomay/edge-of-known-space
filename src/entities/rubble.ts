@@ -11,8 +11,7 @@ export default class Rubble extends Cliff {
   }
 
   getVisual(): Visual {
-    const ch = this.scanned ? "%" : "="
-    return { ch: ch, fg: "#950" }
+    return { ch: "=", fg: "#950" }
   }
 
   onInteract(entity: Entity): boolean {
@@ -20,7 +19,7 @@ export default class Rubble extends Cliff {
       return super.onInteract(entity)
     } else {
 
-      this.getLevel()!.textBuffer.write("This looks like loose rubble. I can clear it away.")
+      this.getLevel()!.textBuffer.write("There's a crack in the rock face here... I can push through.")
       this.remove()
       return false;
     }

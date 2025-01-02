@@ -101,6 +101,9 @@ export default class MainLevel {
   }
 
   activateItem(key: string) {
+    if (this.activeItem) {
+      this.deactivateItem(this.activeItem)
+    }
     let item = this._inventory[key]
     this.activeItem = item.key
     this._drawInventory()
