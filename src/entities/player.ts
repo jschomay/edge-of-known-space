@@ -4,6 +4,7 @@ import XY from "../xy";
 import Game from "../game";
 import { SpeedActor } from "../../lib/rotjs";
 import Log from "./log";
+import Cliff from "./cliff";
 
 export default class Player extends Entity implements SpeedActor {
   private _keys: { [key: number]: number };
@@ -85,6 +86,10 @@ export default class Player extends Entity implements SpeedActor {
       specialEntity.visible = true;
       msg = "I found something."
       madeDiscovery = true
+    }
+
+    if (specialEntity instanceof Cliff) {
+      msg = Cliff.msg
     }
 
 
