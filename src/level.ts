@@ -196,6 +196,8 @@ export default class MainLevel {
     fov.compute(player_x, player_y, fov_r, (x, y, r, visibility) => {
       // don't include player
       if (r === 0) return;
+      // don't render over top and bottom display
+      if(y < 3  || y > this._size.y - 2) return;
 
       let xy = new XY(x, y)
       this._fovCells.push(xy);
