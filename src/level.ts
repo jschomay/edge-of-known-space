@@ -9,8 +9,9 @@ import TerminalItem from "./items/terminal";
 import * as mapData from "./level-data";
 import TorchItem from "./items/torch";
 import ScannerItem from "./items/scanner";
+import BridgeItem from "./items/bridge";
 
-const DEBUG = 0
+const DEBUG = 1
 function debug(level: MainLevel) {
   const showFullMap = () => {
     Object.values(level._map).forEach(e => e.visible = true);
@@ -22,12 +23,13 @@ function debug(level: MainLevel) {
       }
     }
   }
-  showFullMap()
+  // showFullMap()
 
   level.addInventory(new TerminalItem(level))
   level.addInventory(new TorchItem(level))
   level.addInventory(new ScannerItem(level))
-  level.activateItem("1")
+  level.addInventory(new BridgeItem(level))
+  // level.activateItem("1")
 
   // inspect helpers
   window._at = (x, y, ...rest) => level.getEntityAt(new XY(x, y), ...rest)
@@ -121,6 +123,13 @@ export default class MainLevel {
 
 
   draw(xy: XY): void {
+    // player isn't tracked via getEntityAt
+    if (this.player.getXY()?.toString() === xy.toString()) {
+      let { ch, fg } = this.player.getVisual()
+      this.game.display.draw(xy.x, xy.y, ch, fg);
+      return
+    }
+
     let terrainEntity = this.getEntityAt(xy, false, true);
     let specialEntity = this.getEntityAt(xy, true, false);
     if (!terrainEntity && !specialEntity) { return; }
@@ -154,6 +163,7 @@ export default class MainLevel {
   getEntityAt(xy: XY, includeHiddenSpecial: boolean = false, includeHiddenTerrain: boolean = false): Entity | null {
     // NOTE special entities can share the same spot which might create bugs
     // this find the first one (following visibility request)
+    // this is probably only an issue for the player, so it ignores the player entity if requested
     const special = this._specialEntities.find(e => (e.visible || includeHiddenSpecial) && e.getXY()?.toString() == xy.toString())
     if (special) return special
 
@@ -197,7 +207,7 @@ export default class MainLevel {
       // don't include player
       if (r === 0) return;
       // don't render over top and bottom display
-      if(y < 3  || y > this._size.y - 2) return;
+      if (y < 3 || y > this._size.y - 2) return;
 
       let xy = new XY(x, y)
       this._fovCells.push(xy);
@@ -232,8 +242,13 @@ export default class MainLevel {
         let xy = new XY(col, row);
         let existingEntity = this.getEntityAt(xy)
 
+        // don't put the player in specialEntity (to avoid overlapping special entities)
+        if (ch === "@") {
+          this.player.setPosition(xy, this)
+          // drag ground underneath
+          ch = "."
+        }
         let { terrain: t, special: s } = entityFromCh(ch, this.game)
-        if (ch === "@") s = this.player
 
         if (isUnknown) { t.visible = false; }
         this.setEntity(t, xy)

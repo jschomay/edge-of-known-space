@@ -22,7 +22,7 @@ const specialEntitiesOnGroundTerrain = new Map<string, (game: Game) => Entity>()
 // items
 specialEntitiesOnGroundTerrain.set("t", (game) => new Terminal(game));
 specialEntitiesOnGroundTerrain.set("f", (game) => new Torch(game));
-specialEntitiesOnGroundTerrain.set("b", (game) => new Bridge(game));
+specialEntitiesOnGroundTerrain.set("b", (game) => new Bridge(game, { asItem: true }));
 specialEntitiesOnGroundTerrain.set("c", (game) => new Torch(game)); // TODO maybe this becomes a compass/tracker?
 // officers
 specialEntitiesOnGroundTerrain.set("S", (game) => new Officer(game, officer_logs.TODO));
@@ -63,7 +63,7 @@ terrain.set("/", (game) => new Crystal(game));
 terrain.set("\\", (game) => new Crystal(game, false, true)); // visible edge of crystal zone
 terrain.set(",", (game) => new Crystal(game, true));
 terrain.set("~", (game) => new Chasm(game));
-terrain.set("I", (game) => new Bridge(game, true, true));
+terrain.set("I", (game) => new Bridge(game, { broken: true }));
 
 
 // returns terrain and possible special entity

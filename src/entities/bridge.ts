@@ -1,5 +1,8 @@
 import Entity from "../entity";
 import Game from "../game";
+import BridgeItem from "../items/bridge";
+
+export type Opts = { broken?: boolean, asItem?: boolean, suspended?: boolean }
 
 // bridge is both the item to pick up and a deployed special entity
 export default class Bridge extends Entity {
@@ -7,32 +10,34 @@ export default class Bridge extends Entity {
 
   deployed: boolean
   broken: boolean
+  suspended: boolean
 
-  constructor(game: Game, deployed: boolean = false, broken: boolean = false) {
+  constructor(game: Game, opts: Opts) {
     super(game, { ch: "?", fg: "yellow" });
-    this.broken = broken
-    this.deployed = deployed
-    this.visible = deployed
-    this.item = !deployed
+    this.broken = !!opts.broken
+    this.suspended = !!opts.suspended // over river
+    this.deployed = !opts.asItem // deployed by default
+
+    this.item = !!opts.asItem
+    this.visible = !this.item // only hidden when item
   }
 
   getVisual() {
-    return this.deployed
-      ? { ch: "I", fg: "#aaa" }
-      : { ch: "?", fg: "yellow" }
+    return this.item
+      ? { ch: "?", fg: "yellow" }
+      : { ch: "I", fg: "#aaa" }
   }
 
   onInteract(entity: Entity): boolean {
     if (this.broken) {
-      this.getLevel()!.textBuffer.write("A bridge was set up across the chasm. However, it has collapsed.")
+      this.getLevel()!.textBuffer.write("A bridge was set up across the river. However, it has collapsed.")
       return false;
     } else if (!this.deployed) {
-      this.getLevel().textBuffer.displayBox("This is a portable, deployable bridge. Press %c{purple}[3]%c{} to use it.",
+      this.getLevel().textBuffer.displayBox("I now have a portable, deployable bridge. Press %c{purple}[4]%c{} near a river to deploy or retract it.",
         () => {
           this.remove()
-          // TODO
-          // const terminal = new TorchItem(this.getLevel()!)
-          // level.addInventory(terminal)
+          const bridge = new BridgeItem(this.getLevel())
+          this.getLevel().addInventory(bridge)
         })
       return false
     } else {
