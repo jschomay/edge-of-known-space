@@ -5,6 +5,7 @@ import Game from "../game";
 import { SpeedActor } from "../../lib/rotjs";
 import Log from "./log";
 import Cliff from "./cliff";
+import { KEY as EVKey } from "../items/ev";
 
 export default class Player extends Entity implements SpeedActor {
   private _keys: { [key: number]: number };
@@ -46,7 +47,10 @@ export default class Player extends Entity implements SpeedActor {
   onKeyDown(e: KeyboardEvent) {
     if (!this.ready) { return; }
 
-    let keyHandled = this._handleKey(e.keyCode);
+    let context = this.getLevel().activeItem === EVKey || this.getLevel().ev.playerIsRiding()
+      ? this.getLevel().ev
+      : this;
+    let keyHandled = context._handleKey(e.keyCode);
     if (keyHandled) {
       this.ready = false;
       this.game.engine.unlock();

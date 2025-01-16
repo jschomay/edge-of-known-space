@@ -15,6 +15,8 @@ import * as logs from "./log";
 import Officer from "./officer";
 import * as officer_logs from "./officer";
 import Boulder from "./boulder";
+import EVRemote from "./ev-remote";
+import EV from "./ev";
 
 const groundColor = "#430"
 
@@ -48,8 +50,8 @@ specialEntitiesOnCrystalTerrain.set("*", (game) => new Rubble(game)); // TODO cr
 const specialEntitiesOnRockyTerraine = new Map<string, (game: Game) => Entity>();
 specialEntitiesOnRockyTerraine.set("#", (game) => new Boulder(game));
 specialEntitiesOnRockyTerraine.set("B", (game) => new Officer(game, officer_logs.TODO));
-specialEntitiesOnRockyTerraine.set("r", (game) => new Torch(game)); // TODO EV remote
-specialEntitiesOnRockyTerraine.set("E", (game) => new Boulder(game)); // TODO EV
+specialEntitiesOnRockyTerraine.set("r", (game) => new EVRemote(game));
+specialEntitiesOnRockyTerraine.set("E", (game) => new EV(game));
 
 
 const terrain = new Map<string, (game: Game) => Entity>();

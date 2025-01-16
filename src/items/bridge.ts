@@ -4,10 +4,12 @@ import Bridge from "../entities/bridge";
 import Chasm from "../entities/chasm";
 import XY from "../xy";
 
+export const KEY = "4"
+
 export default class BridgeItem implements Item {
-  key: string = "4"
+  key: string = KEY
   name: string = "Bridge"
-  color: string = "purple"
+  color: string = "gray"
   active: boolean = false
 
   private _level: MainLevel

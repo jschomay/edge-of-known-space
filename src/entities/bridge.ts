@@ -1,6 +1,6 @@
 import Entity from "../entity";
 import Game from "../game";
-import BridgeItem from "../items/bridge";
+import BridgeItem, { KEY as BRIDGE_KEY } from "../items/bridge";
 
 export type Opts = { broken?: boolean, asItem?: boolean, suspended?: boolean }
 
@@ -33,7 +33,7 @@ export default class Bridge extends Entity {
       this.getLevel()!.textBuffer.write("A bridge was set up across the river. However, it has collapsed.")
       return false;
     } else if (!this.deployed) {
-      this.getLevel().textBuffer.displayBox("I now have a portable, deployable bridge. Press %c{purple}[4]%c{} near a river to deploy or retract it.",
+      this.getLevel().textBuffer.displayBox(`I now have a portable, deployable bridge. Press %c{gray}[${BRIDGE_KEY}]%c{} near a river to deploy or retract it.`,
         () => {
           this.remove()
           const bridge = new BridgeItem(this.getLevel())

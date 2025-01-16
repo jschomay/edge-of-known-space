@@ -1,3 +1,4 @@
+import RecursiveShadowcasting from "../lib/rotjs/fov/recursive-shadowcasting";
 import Entity from "./entity";
 import XY from "./xy";
 import Game from "./game";
@@ -9,7 +10,9 @@ import TerminalItem from "./items/terminal";
 import * as mapData from "./level-data";
 import TorchItem from "./items/torch";
 import ScannerItem from "./items/scanner";
-import BridgeItem from "./items/bridge";
+import BridgeItem, { KEY as BRIDGE_KEY } from "./items/bridge";
+import EVItem, { KEY as EV_KEY } from "./items/ev";
+import EV from "./entities/ev";
 
 const DEBUG = 1
 function debug(level: MainLevel) {
@@ -29,7 +32,11 @@ function debug(level: MainLevel) {
   level.addInventory(new TorchItem(level))
   level.addInventory(new ScannerItem(level))
   level.addInventory(new BridgeItem(level))
+  level.addInventory(new EVItem(level))
   // level.activateItem("1")
+
+  level.removeSpecialEntity(level.ev)
+  level.setSpecialEntity(level.ev, new XY(33, 24))
 
   // inspect helpers
   window._at = (x, y, ...rest) => level.getEntityAt(new XY(x, y), ...rest)
@@ -45,6 +52,7 @@ export default class MainLevel {
   textBuffer: TextBuffer;
   game: Game
   player: Player
+  ev!: EV
   _inventory: Record<string, Item> = {}
   activeItem: string | null = null
 
@@ -103,6 +111,13 @@ export default class MainLevel {
   }
 
   activateItem(key: string) {
+    if (this.ev.playerIsRiding()) {
+      if (key === BRIDGE_KEY) {
+        this.textBuffer.write("I have to get out of the EV to use the bridge.")
+        return
+      }
+    }
+
     if (this.activeItem) {
       this.deactivateItem(this.activeItem)
     }
@@ -124,7 +139,7 @@ export default class MainLevel {
 
   draw(xy: XY): void {
     // player isn't tracked via getEntityAt
-    if (this.player.getXY()?.toString() === xy.toString()) {
+    if (this.player.visible && this.player.getXY()?.toString() === xy.toString()) {
       let { ch, fg } = this.player.getVisual()
       this.game.display.draw(xy.x, xy.y, ch, fg);
       return
@@ -149,6 +164,9 @@ export default class MainLevel {
 
   addInventory(item: Item) {
     this._inventory[item.key] = item
+    if (item instanceof EVItem) {
+      this.ev.remote = item
+    }
     this._drawInventory()
   }
 
@@ -202,8 +220,7 @@ export default class MainLevel {
     let { x: player_x, y: player_y } = this.player.getXY()!
     let { r: fov_r, fov, cb } = item_fov
 
-    // draw new FOV
-    fov.compute(player_x, player_y, fov_r, (x, y, r, visibility) => {
+    let wrappedCb = (x, y, r, visibility) => {
       // don't include player
       if (r === 0) return;
       // don't render over top and bottom display
@@ -213,17 +230,27 @@ export default class MainLevel {
       this._fovCells.push(xy);
 
       cb(x, y, r, visibility)
-    });
+    }
+
+    // draw new FOV
+    if (fov instanceof RecursiveShadowcasting && this.ev.playerIsRiding()) {
+      fov.compute90(player_x, player_y, fov_r, this.ev.direction, wrappedCb);
+    } else {
+
+      fov.compute(player_x, player_y, fov_r, wrappedCb);
+    }
   }
 
   _drawInventory() {
     let { x, y } = this.getSize()
-    for (let key in this._inventory) {
-      let index = (parseInt(key) - 1) * Math.floor(x / 6) + 3
-      let activeIndicator = this.activeItem === key ? "* " : "  "
-      let keyInfo = `%c{${this._inventory[key].color}}[${key}]%c{} `
+    let offset = 10
+    for (let key of Object.keys(this._inventory).sort()) {
+      let activeIndicator = this.activeItem === key ? "*" : " "
+      let keyInfo = `%c{${this._inventory[key].color}}[${key}]%c{}`
       let keyName = this._inventory[key].name
-      this.game.display.drawText(index, y - 1, keyInfo + activeIndicator + keyName)
+      let text = keyInfo + activeIndicator + keyName
+      this.game.display.drawText(offset, y - 1, text, x)
+      offset += keyName.length + 10
     }
   }
 
@@ -249,6 +276,8 @@ export default class MainLevel {
           ch = "."
         }
         let { terrain: t, special: s } = entityFromCh(ch, this.game)
+
+        if (s instanceof EV) { this.ev = s }
 
         if (isUnknown) { t.visible = false; }
         this.setEntity(t, xy)

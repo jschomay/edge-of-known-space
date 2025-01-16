@@ -11,7 +11,9 @@ export default class Rubble extends Cliff {
   }
 
   getVisual(): Visual {
-    return { ch: "=", fg: "#950" }
+    return {
+      ch: this.scanned ? "≠" : "=", fg: "#950"
+    }
   }
 
   onInteract(entity: Entity): boolean {

@@ -37,10 +37,11 @@ export default class ScannerItem implements Item {
   _FOVIlluminate: VisibilityCallback = (x, y, r, visibility) => {
     let xy = new XY(x, y)
 
-    // first check for rubble
+    // first check for rubble 
     let e = this._level.getEntityAt(xy, true, true)
     if (e && e instanceof Rubble) {
       e.scanned = true
+      return
     }
 
     // second only interact with terrain
