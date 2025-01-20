@@ -8,6 +8,7 @@ import Crystal from "../entities/crystal";
 import { Color } from "../../lib/rotjs";
 import Officer from "../entities/officer";
 import Log from "../entities/log";
+import Bridge from "../entities/bridge";
 
 export default class TorchItem implements Item {
   key: string = "2"
@@ -34,6 +35,8 @@ export default class TorchItem implements Item {
       entity.visible = true
       return entity.clearing
     }
+    if (entity instanceof Bridge) return true
+
     if (this._level.isSpecial(entity) && !(entity instanceof Log)) {
       entity.visible = true
       return false
