@@ -34,4 +34,7 @@ TO BE CONTINUED...
 --END OF CONTENT--
 `.trim()
 
+export const BARNES = `
+BARNES. Dead, rockslide.
+`
 export const TODO = `TODO`

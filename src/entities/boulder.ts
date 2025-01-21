@@ -1,5 +1,6 @@
 import Entity from "../entity";
 import Game from "../game";
+import EV from "./ev";
 
 export default class Boulder extends Entity {
   constructor(game: Game) {
@@ -8,8 +9,13 @@ export default class Boulder extends Entity {
   }
 
   onInteract(entity: Entity): boolean {
-    this.getLevel()!.textBuffer.write("This is a large boulder, I can't move it.")
-    return false;
+    if (entity === this.getLevel().player) {
+      this.getLevel()!.textBuffer.write("This is a large boulder, I can't move it.")
+      return false
+    } else if (entity === this.getLevel().ev) {
+      return (entity as EV).load(this)
+    }
+    return false
   }
 
 }

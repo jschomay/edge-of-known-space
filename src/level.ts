@@ -31,12 +31,11 @@ function debug(level: MainLevel) {
   level.addInventory(new TerminalItem(level))
   level.addInventory(new TorchItem(level))
   level.addInventory(new ScannerItem(level))
-  level.addInventory(new BridgeItem(level))
-  level.addInventory(new EVItem(level))
-  // level.activateItem("1")
+  // level.addInventory(new BridgeItem(level))
+  // level.addInventory(new EVItem(level))
 
-  level.removeSpecialEntity(level.ev)
-  level.setSpecialEntity(level.ev, new XY(33, 24))
+  // level.removeSpecialEntity(level.ev)
+  // level.setSpecialEntity(level.ev, new XY(33, 24))
 
   // inspect helpers
   window._at = (x, y, ...rest) => level.getEntityAt(new XY(x, y), ...rest)
@@ -108,6 +107,9 @@ export default class MainLevel {
     } else {
       this.player.onKeyDown(e)
     }
+
+    // debug active item and ev state
+    // this.textBuffer.write(`EV: ${this.ev.playerIsRiding() ? "riding" : "not riding"}, EV loaded: ${!!this.ev._loaded}, EV in range: ${this.ev.inRange()}, active item: ${this.activeItem}`)
   }
 
   activateItem(key: string) {
@@ -130,8 +132,8 @@ export default class MainLevel {
 
   deactivateItem(key: string) {
     let item = this._inventory[key]
-    item.onDeactivate()
     this.activeItem = null
+    item.onDeactivate()
     this._drawInventory()
     this.updateFOV()
   }

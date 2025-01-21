@@ -1,6 +1,6 @@
 import Entity from "../entity";
 import Game from "../game";
-import EVItem from "../items/ev";
+import EVItem, { KEY as EVKey, COLOR as EVColor } from "../items/ev";
 
 export default class EVRemote extends Entity {
   item: boolean = true
@@ -13,10 +13,12 @@ export default class EVRemote extends Entity {
 
   onInteract(entity: Entity): boolean {
     let level = entity.getLevel()
-    level.textBuffer.displayBox("This looks like a remote for Electric Vehicle 2. Press %c{#d00}[5]%c{} to activate it.", () => {
+    level.textBuffer.displayBox(`This looks like a remote for Electric Vehicle 2. Press %c{${EVColor}}[${EVKey}]%c{} to activate it.`, () => {
       this.remove()
       const remote = new EVItem(this.getLevel()!)
       level.addInventory(remote)
+      level.ev.visible = true
+      level.draw(level.ev.getXY()!)
     })
     return false;
   }

@@ -7,6 +7,7 @@ import Item from "."
 import { Color } from "../../lib/rotjs";
 import Rubble from "../entities/rubble";
 import Crystal from "../entities/crystal";
+import Boulder from "../entities/boulder";
 
 export default class ScannerItem implements Item {
   key: string = "3"
@@ -37,28 +38,31 @@ export default class ScannerItem implements Item {
   _FOVIlluminate: VisibilityCallback = (x, y, r, visibility) => {
     let xy = new XY(x, y)
 
-    // first check for rubble 
-    let e = this._level.getEntityAt(xy, true, true)
-    if (e && e instanceof Rubble) {
-      e.scanned = true
+    // first check for rubble
+    let special = this._level.getEntityAt(xy, true, false)
+    if (special && special instanceof Rubble) {
+      special.scanned = true
       return
     }
 
-    // second only interact with terrain
-    e = this._level.getEntityAt(xy, false, true)
-    if (!e) { return; }
+    // special technically is special or terrain, so check
+    if (special && this._level.isSpecial(special)) return
 
-    let { ch } = e.getVisual()
+    // second only interact with terrain
+    let terrain = this._level.getEntityAt(xy, false, true)
+    if (!terrain) { return; }
+
+    let { ch } = terrain.getVisual()
     let highlightColor = Color.fromString("cyan")
 
     if (",.".includes(ch)) {
-      e.visible = true
+      terrain.visible = true
       highlightColor = Color.multiply(highlightColor, [150, 150, 150])
       this._level.game.display.draw(x, y, ch, Color.toHex(highlightColor))
 
-    } else if (e instanceof Crystal) {
+    } else if (terrain instanceof Crystal) {
       let m = Color.randomize([100, 100, 100], 100)
-      if (e.clearing) highlightColor = [50, 50, 50]
+      if (terrain.clearing) highlightColor = [50, 50, 50]
       highlightColor = Color.add(highlightColor, m)
       this._level.game.display.draw(x, y, ch, Color.toHex(highlightColor))
     }

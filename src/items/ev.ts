@@ -52,16 +52,25 @@ export default class EVItem implements Item {
   }
 
   onActivate() {
-    if (this._level.ev.isLoaded()) {
+    // only happens when player is riding
+    if (this._level.ev.playerIsRiding()) {
       this._level.ev.unload()
       this._level.deactivateItem(this.key)
     } else {
+      this._fovCells = []
       this.active = true
     }
   }
 
   onDeactivate() {
-    this._fovCells = []
-    this.active = false
+    // happens when non player is loaded
+    if (this._level.ev.isLoaded()) {
+      this._level.ev.unload()
+      this._level.activateItem(this.key)
+      this.active = true
+    } else {
+      this._fovCells = []
+      this.active = false
+    }
   }
 }
