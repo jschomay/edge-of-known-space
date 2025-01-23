@@ -8,6 +8,7 @@ import { Color } from "../../lib/rotjs";
 import Rubble from "../entities/rubble";
 import Crystal from "../entities/crystal";
 import Boulder from "../entities/boulder";
+import Log from "../entities/log";
 
 export default class ScannerItem implements Item {
   key: string = "3"
@@ -38,24 +39,31 @@ export default class ScannerItem implements Item {
   _FOVIlluminate: VisibilityCallback = (x, y, r, visibility) => {
     let xy = new XY(x, y)
 
-    // first check for rubble
     let special = this._level.getEntityAt(xy, true, false)
+    let terrain = this._level.getEntityAt(xy, false, true)
+
     if (special && special instanceof Rubble) {
       special.scanned = true
       return
     }
 
-    // special technically is special or terrain, so check
-    if (special && this._level.isSpecial(special)) return
+    // officers and items and ev show up white
+    if (special && (special.item || "xO".includes(special.getVisual().ch))) {
+      special.visible = true
+      console.log("drawing", special.getVisual().ch)
+      this._level.draw(special.getXY()!)
+      return
+    }
 
-    // second only interact with terrain
-    let terrain = this._level.getEntityAt(xy, false, true)
+    // other specials (like rocks) block the scanner (only logs let it pass)
+    if (special && this._level.isSpecial(special) && !(special instanceof Log)) return
     if (!terrain) { return; }
+
 
     let { ch } = terrain.getVisual()
     let highlightColor = Color.fromString("cyan")
 
-    if (",.".includes(ch)) {
+    if ("^.".includes(ch)) {
       terrain.visible = true
       highlightColor = Color.multiply(highlightColor, [150, 150, 150])
       this._level.game.display.draw(x, y, ch, Color.toHex(highlightColor))

@@ -4,7 +4,7 @@ import EV from "./ev";
 
 export default class Rocky extends Entity {
   constructor(game: Game) {
-    super(game, { ch: ",", fg: "#540" });
+    super(game, { ch: "^", fg: "#540" });
   }
 
   onInteract(entity: Entity): boolean {

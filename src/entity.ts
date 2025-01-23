@@ -11,6 +11,7 @@ export default class Entity {
   visible: boolean = true
   item: boolean = false
   game: Game;
+  name: string | null = null
 
   constructor(game: Game, visual: Visual = { ch: "!", fg: "red" }) {
     this.game = game

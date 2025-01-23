@@ -5,18 +5,12 @@ import Game from "../game";
 export default class Officer extends Entity {
   message: string
 
-  constructor(game: Game, message: string) {
-    super(game, { ch: "?", fg: "yellow" });
+  constructor(game: Game, name: string) {
+    let initial = name[0]
+    super(game, { ch: "x", fg: "white" });
     this.visible = false
-    this.message = message
+    this.message = MESSAGES[name] || "TODO"
   }
-
-  getVisual() {
-    return this.visible
-      ? { ch: "?", fg: "yellow" }
-      : { ch: "x", fg: "yellow" }
-  }
-
 
   onInteract(entity: Entity): boolean {
     this.getLevel()!.textBuffer.displayBox(this.message, () =>
@@ -26,7 +20,8 @@ export default class Officer extends Entity {
   }
 }
 
-export const BALTHAR = `
+const MESSAGES: Record<string, string> = {}
+MESSAGES["Balthar"] = `
 It's Balthar.  She's dead.
 
 TO BE CONTINUED...
@@ -34,7 +29,6 @@ TO BE CONTINUED...
 --END OF CONTENT--
 `.trim()
 
-export const BARNES = `
+MESSAGES["Barnes"] = `
 BARNES. Dead, rockslide.
 `
-export const TODO = `TODO`

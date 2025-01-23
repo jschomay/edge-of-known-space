@@ -13,7 +13,7 @@ export default class Bridge extends Entity {
   suspended: boolean
 
   constructor(game: Game, opts: Opts) {
-    super(game, { ch: "?", fg: "yellow" });
+    super(game, { ch: "?", fg: "white" });
     this.broken = !!opts.broken
     this.suspended = !!opts.suspended // over river
     this.deployed = !opts.asItem // deployed by default
@@ -24,7 +24,7 @@ export default class Bridge extends Entity {
 
   getVisual() {
     return this.item
-      ? { ch: "?", fg: "yellow" }
+      ? { ch: "?", fg: "white" }
       : { ch: "I", fg: "#aaa" }
   }
 

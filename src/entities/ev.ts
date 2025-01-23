@@ -37,7 +37,7 @@ export default class EV extends Entity {
     let loaded3 = "0"
     return {
       ch: this._loaded ? loaded2 : "O",
-      fg: this.inRange() ? "yellow" : "gray"
+      fg: this.inRange() ? "yellow" : "white"
     };
   }
 
@@ -82,7 +82,7 @@ export default class EV extends Entity {
   unload() {
     let firstValidUnloadSpot = ROT.DIRS[4].find(([x, y]) => {
       let spot = this.getLevel().getEntityAt(this.getXY()!.plus(new XY(x, y)))
-      let valid_exits = this.playerIsRiding() ? "." : ",."
+      let valid_exits = this.playerIsRiding() ? "." : "^."
       return valid_exits.includes(spot?.getVisual().ch || "")
     })
 

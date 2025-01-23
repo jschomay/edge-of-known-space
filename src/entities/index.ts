@@ -27,8 +27,8 @@ specialEntitiesOnGroundTerrain.set("f", (game) => new Torch(game));
 specialEntitiesOnGroundTerrain.set("b", (game) => new Bridge(game, { asItem: true }));
 // specialEntitiesOnGroundTerrain.set("c", (game) => new Torch(game)); // TODO maybe this becomes a compass/tracker?
 // officers
-specialEntitiesOnGroundTerrain.set("S", (game) => new Officer(game, officer_logs.TODO));
-specialEntitiesOnGroundTerrain.set("H", (game) => new Officer(game, officer_logs.TODO));
+specialEntitiesOnGroundTerrain.set("S", (game) => new Officer(game, "Survivor 1"));
+specialEntitiesOnGroundTerrain.set("H", (game) => new Officer(game, "Hane"));
 specialEntitiesOnGroundTerrain.set("r", (game) => new EVRemote(game));
 // logs
 specialEntitiesOnGroundTerrain.set("1", (game) => new Log(game, logs.EMPTY_SHIP));
@@ -44,13 +44,13 @@ specialEntitiesOnGroundTerrain.set("$", (game) => new Rubble(game)); // TODO lev
 
 
 const specialEntitiesOnCrystalTerrain = new Map<string, (game: Game) => Entity>();
-specialEntitiesOnCrystalTerrain.set("D", (game) => new Officer(game, officer_logs.BALTHAR));
+specialEntitiesOnCrystalTerrain.set("D", (game) => new Officer(game, "Balthar"));
 specialEntitiesOnCrystalTerrain.set("s", (game) => new Scanner(game));
 specialEntitiesOnCrystalTerrain.set("*", (game) => new Rubble(game)); // TODO crystal shard
 
 const specialEntitiesOnRockyTerraine = new Map<string, (game: Game) => Entity>();
 specialEntitiesOnRockyTerraine.set("#", (game) => new Boulder(game));
-specialEntitiesOnRockyTerraine.set("B", (game) => new Officer(game, officer_logs.BARNES));
+specialEntitiesOnRockyTerraine.set("B", (game) => new Officer(game, "Argo"));
 specialEntitiesOnRockyTerraine.set("E", (game) => new EV(game));
 
 
