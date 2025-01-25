@@ -36,7 +36,7 @@ export default class EV extends Entity {
     let loaded2 = "θ"
     let loaded3 = "0"
     return {
-      ch: this._loaded ? loaded2 : "O",
+      ch: this._loaded ? loaded1 : "O",
       fg: this.inRange() ? "yellow" : "white"
     };
   }

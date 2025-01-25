@@ -1,5 +1,5 @@
+import { FOV } from "../../lib/rotjs";
 import Entity from "../entity";
-import Torch from "../entities/torch"
 import Game from "../game";
 import XY from "../xy";
 
@@ -93,6 +93,32 @@ The INTREPID's on the other side of this chasm. Hanes, grab the extension bridge
 
 Dammit Agros, where's that torch?
 `.trim(), onDiscover: (entity: Entity) => null
+}
+
+
+export const ARGOS = {
+  text: `I can see for miles and miles and miles...`,
+  onDiscover: (entity: Entity) => {
+    const fov = new FOV.RecursiveShadowcasting(() => true, { topology: 8 })
+    const speed = 50
+    const { x, y } = entity.getLevel()!.getSize()
+    const levelHeight = y
+    let r = 0
+    const intervalId = setInterval(() => {
+      r += 1
+      if (r > Math.max(x, y)) clearInterval(intervalId)
+
+      fov.compute(entity.getXY()!.x, entity.getXY()!.y, r, (x, y, r, visible) => {
+        if (y < 3 || y > levelHeight - 2) return
+        let xy = new XY(x, y)
+        let terrain = entity.getLevel()!.getEntityAt(xy, false, true)
+        let special = entity.getLevel()!.getEntityAt(xy, true, false,)
+        if (terrain) terrain.visible = true
+        if (special) special.visible = true
+        entity.getLevel().draw(xy)
+      })
+    }, speed)
+  }
 }
 
 export const TODO = {

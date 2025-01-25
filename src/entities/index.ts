@@ -36,7 +36,7 @@ specialEntitiesOnGroundTerrain.set("2", (game) => new Log(game, logs.SCIENCE_OFF
 specialEntitiesOnGroundTerrain.set("3", (game) => new Log(game, logs.LO_BRIDGE));
 specialEntitiesOnGroundTerrain.set("4", (game) => new Log(game, logs.TODO));
 specialEntitiesOnGroundTerrain.set("5", (game) => new Log(game, logs.TODO));
-specialEntitiesOnGroundTerrain.set("6", (game) => new Log(game, logs.TODO));
+specialEntitiesOnGroundTerrain.set("6", (game) => new Log(game, logs.ARGOS));
 specialEntitiesOnGroundTerrain.set("7", (game) => new Log(game, logs.TODO));
 // features
 specialEntitiesOnGroundTerrain.set("%", (game) => new Rubble(game));
