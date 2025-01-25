@@ -11,9 +11,8 @@ export default class Boulder extends Entity {
   onInteract(entity: Entity): boolean {
     if (entity === this.getLevel().player) {
       this.getLevel()!.textBuffer.write("This is a large boulder, I can't move it.")
-      return false
     } else if (entity === this.getLevel().ev) {
-      return (entity as EV).load(this)
+      (entity as EV).load(this)
     }
     return false
   }

@@ -143,8 +143,6 @@ export default class EV extends Entity {
 
     if (entity.onInteract(this)) {
       this.moveTo(newXY);
-    } else {
-      this.getLevel().textBuffer.write("I can't take the EV that way.")
     }
 
     if (!this.getLevel().textBuffer.showing) {
