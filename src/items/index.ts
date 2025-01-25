@@ -6,6 +6,6 @@ export default interface Item {
   color: string
   active: boolean
   getFOV(): { r: number, fov: FOV, cb: VisibilityCallback } | null
-  onActivate(...any: any): void
-  onDeactivate(): void
+  onActivate(...any: any): boolean
+  onDeactivate(): boolean
 }

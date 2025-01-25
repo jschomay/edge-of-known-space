@@ -83,7 +83,7 @@ export default class EV extends Entity {
     let firstValidUnloadSpot = ROT.DIRS[4].find(([x, y]) => {
       let spot = this.getLevel().getEntityAt(this.getXY()!.plus(new XY(x, y)))
       let valid_exits = this.playerIsRiding() ? "." : "^."
-      return valid_exits.includes(spot?.getVisual().ch || "")
+      return valid_exits.includes(spot?.getVisual().ch || "XXX")
     })
 
     if (firstValidUnloadSpot) {

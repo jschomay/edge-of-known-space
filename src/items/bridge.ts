@@ -84,9 +84,12 @@ export default class BridgeItem implements Item {
   }
 
   onActivate() {
-    // always deactivate
-    this._level.deactivateItem(this.key)
-    if (this._timeoutId) return
+    if (this._level.ev.playerIsRiding()) {
+      this._level.textBuffer.write("I have to get out of the EV to use the bridge.")
+      return false
+    }
+
+    if (this._timeoutId) return false
 
     let playerXY = this._level.player.getXY()!
     let entityUnderPlayer = this._level.getEntityAt(playerXY)!
@@ -125,7 +128,10 @@ export default class BridgeItem implements Item {
     }
 
     if (msg) this._level.textBuffer.write(msg)
+
+    // never activate item
+    return false
   }
 
-  onDeactivate() { }
+  onDeactivate() { return false }
 }

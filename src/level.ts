@@ -31,11 +31,11 @@ function debug(level: MainLevel) {
   level.addInventory(new TerminalItem(level))
   level.addInventory(new TorchItem(level))
   level.addInventory(new ScannerItem(level))
-  // level.addInventory(new BridgeItem(level))
-  // level.addInventory(new EVItem(level))
+  level.addInventory(new BridgeItem(level))
+  level.addInventory(new EVItem(level))
 
-  // level.removeSpecialEntity(level.ev)
-  // level.setSpecialEntity(level.ev, new XY(33, 24))
+  level.removeSpecialEntity(level.ev)
+  level.setSpecialEntity(level.ev, new XY(33, 24))
 
   // inspect helpers
   window._at = (x, y, ...rest) => level.getEntityAt(new XY(x, y), ...rest)
@@ -113,27 +113,22 @@ export default class MainLevel {
   }
 
   activateItem(key: string) {
-    if (this.ev.playerIsRiding()) {
-      if (key === BRIDGE_KEY) {
-        this.textBuffer.write("I have to get out of the EV to use the bridge.")
-        return
-      }
-    }
+    let item = this._inventory[key]
+    if (!item.onActivate()) return
 
     if (this.activeItem) {
       this.deactivateItem(this.activeItem)
     }
-    let item = this._inventory[key]
     this.activeItem = item.key
     this._drawInventory()
-    item.onActivate()
     this.updateFOV()
   }
 
   deactivateItem(key: string) {
     let item = this._inventory[key]
+    if (!item.onDeactivate()) return
+
     this.activeItem = null
-    item.onDeactivate()
     this._drawInventory()
     this.updateFOV()
   }

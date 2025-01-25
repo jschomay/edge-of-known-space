@@ -52,25 +52,40 @@ export default class EVItem implements Item {
   }
 
   onActivate() {
-    // only happens when player is riding
-    if (this._level.ev.playerIsRiding()) {
-      this._level.ev.unload()
-      this._level.deactivateItem(this.key)
-    } else {
+    // when unloaded, activates fov
+    // when loaded with non-player, fov should already be active so this shouldn't hit
+    // when loaded with player, fov is inactive, so this should hit
+    // // attempt to unload player, don't activate fov at all
+    let ev = this._level.ev
+
+    if (!ev.isLoaded()) {
       this._fovCells = []
       this.active = true
+      return true
     }
+
+    if (!ev.playerIsRiding()) throw "unexpected onActivate while ev was loaded with non-player";
+
+    ev.unload()
+    return false
   }
 
   onDeactivate() {
-    // happens when non player is loaded
-    if (this._level.ev.isLoaded()) {
-      this._level.ev.unload()
-      this._level.activateItem(this.key)
-      this.active = true
-    } else {
+    // when unloaded, deactivates fov
+    // when loaded with non-player, fov should already be active so this hits
+    // // attempt to unload, don't deactivate fov at all
+    // when loaded with player, fov is inactive, so this shouldn't hit
+    let ev = this._level.ev
+
+    if (!ev.isLoaded()) {
       this._fovCells = []
       this.active = false
+      return true
     }
+
+    if (ev.playerIsRiding()) throw "unexpected onDeactivate while ev was loaded with player"
+
+    ev.unload()
+    return false
   }
 }

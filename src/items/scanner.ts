@@ -50,7 +50,6 @@ export default class ScannerItem implements Item {
     // officers and items and ev show up white
     if (special && (special.item || "xO".includes(special.getVisual().ch))) {
       special.visible = true
-      console.log("drawing", special.getVisual().ch)
       this._level.draw(special.getXY()!)
       return
     }
@@ -88,11 +87,13 @@ export default class ScannerItem implements Item {
       }
       this._level.updateFOV()
     }, 70)
+    return true
   }
 
   onDeactivate() {
     clearInterval(this._intervalID)
     this._r = this._initialR
     this.active = false
+    return true
   }
 }

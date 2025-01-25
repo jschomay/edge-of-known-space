@@ -71,9 +71,11 @@ export default class TorchItem implements Item {
 
   onActivate() {
     this.active = true
+    return true
   }
 
   onDeactivate() {
     this.active = false
+    return true
   }
 }

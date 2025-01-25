@@ -78,10 +78,12 @@ export default class TerminalItem implements Item {
       }
       this._level.updateFOV()
     }, this._FOVSpeed)
+    return true
   }
 
   onDeactivate() {
     clearInterval(this._intervalID)
     this.active = false
+    return true
   }
 }
