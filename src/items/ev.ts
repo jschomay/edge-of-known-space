@@ -44,7 +44,7 @@ export default class EVItem implements Item {
     this._fovCells.push(xy.toString())
 
     let { ch } = e.getVisual()
-    let fg = "red"
+    let fg = "darkred"
     if (e instanceof EV) {
       fg = e.getVisual().fg
     }
@@ -86,6 +86,8 @@ export default class EVItem implements Item {
     if (ev.playerIsRiding()) throw "unexpected onDeactivate while ev was loaded with player"
 
     ev.unload()
+    // draw FOV over unloaded item
+    this._level.updateFOV()
     return false
   }
 }

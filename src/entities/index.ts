@@ -17,6 +17,7 @@ import * as officer_logs from "./officer";
 import Boulder from "./boulder";
 import EVRemote from "./ev-remote";
 import EV from "./ev";
+import CrystalShard from "./crystal-shard";
 
 const groundColor = "#430"
 
@@ -25,7 +26,6 @@ const specialEntitiesOnGroundTerrain = new Map<string, (game: Game) => Entity>()
 specialEntitiesOnGroundTerrain.set("t", (game) => new Terminal(game));
 specialEntitiesOnGroundTerrain.set("f", (game) => new Torch(game));
 specialEntitiesOnGroundTerrain.set("b", (game) => new Bridge(game, { asItem: true }));
-// specialEntitiesOnGroundTerrain.set("c", (game) => new Torch(game)); // TODO maybe this becomes a compass/tracker?
 // officers
 specialEntitiesOnGroundTerrain.set("S", (game) => new Officer(game, "Survivor 1"));
 specialEntitiesOnGroundTerrain.set("H", (game) => new Officer(game, "Hane"));
@@ -40,17 +40,16 @@ specialEntitiesOnGroundTerrain.set("6", (game) => new Log(game, logs.ARGOS));
 specialEntitiesOnGroundTerrain.set("7", (game) => new Log(game, logs.TODO));
 // features
 specialEntitiesOnGroundTerrain.set("%", (game) => new Rubble(game));
-specialEntitiesOnGroundTerrain.set("$", (game) => new Rubble(game)); // TODO level 2 rubble
 
 
 const specialEntitiesOnCrystalTerrain = new Map<string, (game: Game) => Entity>();
 specialEntitiesOnCrystalTerrain.set("D", (game) => new Officer(game, "Balthar"));
 specialEntitiesOnCrystalTerrain.set("s", (game) => new Scanner(game));
-specialEntitiesOnCrystalTerrain.set("*", (game) => new Rubble(game)); // TODO crystal shard
+specialEntitiesOnCrystalTerrain.set("*", (game) => new CrystalShard(game));
 
 const specialEntitiesOnRockyTerraine = new Map<string, (game: Game) => Entity>();
 specialEntitiesOnRockyTerraine.set("#", (game) => new Boulder(game));
-specialEntitiesOnRockyTerraine.set("B", (game) => new Officer(game, "Argo"));
+specialEntitiesOnRockyTerraine.set("A", (game) => new Officer(game, "Argos"));
 specialEntitiesOnRockyTerraine.set("E", (game) => new EV(game));
 
 

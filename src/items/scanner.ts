@@ -47,8 +47,8 @@ export default class ScannerItem implements Item {
       return
     }
 
-    // officers and items and ev show up white
-    if (special && (special.item || "xO".includes(special.getVisual().ch))) {
+    // officers, crystal shards, and items and ev show up white
+    if (special && (special.item || "xO*".includes(special.getVisual().ch))) {
       special.visible = true
       this._level.draw(special.getXY()!)
       return
