@@ -5,23 +5,19 @@ import Game from "../game";
 export default class Officer extends Entity {
   message: string
 
-  constructor(game: Game, name: string) {
-    let initial = name[0]
+  constructor(game: Game, msg: string) {
     super(game, { ch: "x", fg: "white" });
     this.visible = false
-    this.message = MESSAGES[name] || "TODO"
+    this.message = msg
   }
 
   onInteract(entity: Entity): boolean {
-    this.getLevel()!.textBuffer.displayBox(this.message, () =>
-      true
-    )
+    this.getLevel()!.textBuffer.displayBox(this.message, () => true)
     return false;
   }
 }
 
-const MESSAGES: Record<string, string> = {}
-MESSAGES["Balthar"] = `
+export const BALTHAR = `
 It's Balthar.  She's dead.
 
 TO BE CONTINUED...
@@ -29,6 +25,18 @@ TO BE CONTINUED...
 --END OF CONTENT--
 `.trim()
 
-MESSAGES["Barnes"] = `
-BARNES. Dead, rockslide.
-`
+export const ARGOS = `
+ARGOS. Dead, rockslide.
+`.trim()
+
+export const LO = `
+x
+`.trim()
+
+export const INTREPID1 = `
+x
+`.trim()
+
+export const INTREPID2 = `
+x
+`.trim()

@@ -3,18 +3,20 @@ import Game from "../game";
 
 let interactionCount = 0;
 
-export default class Ship extends Entity {
+export default class Intrepid extends Entity {
   constructor(game: Game) {
-    super(game, { ch: "O", fg: "white" });
+    super(game, { ch: "o", fg: "white" });
   }
 
   onInteract(entity: Entity): boolean {
     if (interactionCount === 0) {
       this.getLevel()!.textBuffer.displayBox(`
-The ship's main power core has been damaged beyond repair. I'm stranded and I'm alone.
+I found ship wreckage...
+---
+It's the Interpid!
 `.trim())
     } else {
-      this.getLevel()!.textBuffer.write("Our ship's power core is still broken.")
+      this.getLevel()!.textBuffer.write("The Intrepid is destroyed beyond repair.")
     }
     interactionCount++;
     return false;

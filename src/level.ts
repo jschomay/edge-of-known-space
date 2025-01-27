@@ -14,7 +14,7 @@ import BridgeItem, { KEY as BRIDGE_KEY } from "./items/bridge";
 import EVItem, { KEY as EV_KEY } from "./items/ev";
 import EV from "./entities/ev";
 
-const DEBUG = 0
+const DEBUG = 1
 function debug(level: MainLevel) {
   const showFullMap = () => {
     Object.values(level._map).forEach(e => e.visible = true);
@@ -26,16 +26,18 @@ function debug(level: MainLevel) {
       }
     }
   }
-  // showFullMap()
+  showFullMap()
 
   level.addInventory(new TerminalItem(level))
   level.addInventory(new TorchItem(level))
   level.addInventory(new ScannerItem(level))
   level.addInventory(new BridgeItem(level))
-  // level.addInventory(new EVItem(level))
+  level.addInventory(new EVItem(level))
 
   // level.removeSpecialEntity(level.ev)
   // level.setSpecialEntity(level.ev, new XY(33, 24))
+
+  // level.player.setPosition(new XY(87, 27))
 
   // inspect helpers
   window._at = (x, y, ...rest) => level.getEntityAt(new XY(x, y), ...rest)

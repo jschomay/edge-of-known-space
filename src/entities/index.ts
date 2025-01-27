@@ -1,6 +1,8 @@
 import Game from "../game";
 import Entity from "../entity";
 import Ship from "./ship";
+import Intrepid from "./intrepid";
+import PowerCore from "./power-core";
 import Cliff from "./cliff";
 import Crystal from "./crystal";
 import Bridge from "./bridge";
@@ -27,8 +29,9 @@ specialEntitiesOnGroundTerrain.set("t", (game) => new Terminal(game));
 specialEntitiesOnGroundTerrain.set("f", (game) => new Torch(game));
 specialEntitiesOnGroundTerrain.set("b", (game) => new Bridge(game, { asItem: true }));
 // officers
-specialEntitiesOnGroundTerrain.set("S", (game) => new Officer(game, "Survivor 1"));
-specialEntitiesOnGroundTerrain.set("H", (game) => new Officer(game, "Hane"));
+specialEntitiesOnGroundTerrain.set("X", (game) => new Officer(game, officer_logs.INTREPID1));
+specialEntitiesOnGroundTerrain.set("Y", (game) => new Officer(game, officer_logs.INTREPID2));
+specialEntitiesOnGroundTerrain.set("L", (game) => new Officer(game, officer_logs.LO));
 specialEntitiesOnGroundTerrain.set("r", (game) => new EVRemote(game));
 // logs
 specialEntitiesOnGroundTerrain.set("1", (game) => new Log(game, logs.EMPTY_SHIP));
@@ -43,22 +46,22 @@ specialEntitiesOnGroundTerrain.set("%", (game) => new Rubble(game));
 
 
 const specialEntitiesOnCrystalTerrain = new Map<string, (game: Game) => Entity>();
-specialEntitiesOnCrystalTerrain.set("D", (game) => new Officer(game, "Balthar"));
+specialEntitiesOnCrystalTerrain.set("D", (game) => new Officer(game, officer_logs.BALTHAR));
 specialEntitiesOnCrystalTerrain.set("s", (game) => new Scanner(game));
 specialEntitiesOnCrystalTerrain.set("*", (game) => new CrystalShard(game));
 
 const specialEntitiesOnRockyTerraine = new Map<string, (game: Game) => Entity>();
 specialEntitiesOnRockyTerraine.set("#", (game) => new Boulder(game));
-specialEntitiesOnRockyTerraine.set("A", (game) => new Officer(game, "Argos"));
+specialEntitiesOnRockyTerraine.set("A", (game) => new Officer(game, officer_logs.ARGOS));
 specialEntitiesOnRockyTerraine.set("E", (game) => new EV(game));
 
 
 const terrain = new Map<string, (game: Game) => Entity>();
 terrain.set(".", (game) => new Entity(game, { ch: ".", fg: groundColor }));
 terrain.set("`", (game) => new Rocky(game));
-terrain.set("o", (game) => new Ship(game));
-terrain.set("i", (game) => new Ship(game)); // TODO intrepid ship
-terrain.set("^", (game) => new Ship(game)); // TODO reactor
+terrain.set("O", (game) => new Ship(game));
+terrain.set("o", (game) => new Intrepid(game));
+terrain.set("^", (game) => new PowerCore(game));
 terrain.set("=", (game) => new Cliff(game));
 terrain.set("/", (game) => new Crystal(game));
 terrain.set("\\", (game) => new Crystal(game, false, true)); // visible edge of crystal zone
