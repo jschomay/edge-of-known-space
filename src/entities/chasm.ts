@@ -14,7 +14,7 @@ export default class Chasm extends Entity {
     if (entityUnderPlayer instanceof Bridge) {
       this.getLevel()!.textBuffer.write("Careful!")
     } else {
-      this.getLevel()!.textBuffer.write("A river of lava cuts across the ground here. I'll need to find some other way across.")
+      this.getLevel()!.textBuffer.write("A deep crimson river cuts across the ground here. I'll need to find some other way across.")
     }
     return false;
   }

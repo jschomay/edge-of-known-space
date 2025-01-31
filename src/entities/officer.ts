@@ -18,25 +18,49 @@ export default class Officer extends Entity {
 }
 
 export const BALTHAR = `
-It's Balthar.  She's dead.
+It's Dr. Balthar. She's dead.
+---
+The cause is unclear. If I had to guess, I'd say it happened fairly recently.
 
-TO BE CONTINUED...
+---
+%c{#098}
+::SCIENCE OFFICER BALTHAR PERSONAL LOGS::
 
---END OF CONTENT--
+These crystal formations are incredible! I've never seen anything like it. They seem to resonate with energy patterns beyond my scanner's operational range. This discovery could fundamentally change the limits of our technology as we know it.
+
+I'm going to try to extract a sample...
+
+::LOGS CORRUPTED::
 `.trim()
 
 export const ARGOS = `
-ARGOS. Dead, rockslide.
+Oh no, it's Argos, the security officer. He's crushed under a giant boulder. It looks like he got caught in a rockslide.
+`.trim()
+
+export const INTREPID1 = `
+I found one of the crew of the Intrepid. She's been dead for a long time.
+
+---
+%c{#098}
+::PERSONAL LOGS::
+
+We're out of food.
+--
+We're out of power. 
+--
+We're out of luck.
+`.trim()
+
+export const INTREPID2 = `
+Another Intrepid crewmember, also long dead.
+
+---
+%c{#098}
+::PERSONAL LOGS::
+I still can't believe what happened. Yorq new how volatile the crystals are, he would have known to be cautious. For such a large explosion to happen, he must have been extremely careless. All our research, gone. We'll be gone soon too now.
 `.trim()
 
 export const LO = `
 x
 `.trim()
 
-export const INTREPID1 = `
-x
-`.trim()
-
-export const INTREPID2 = `
-x
-`.trim()

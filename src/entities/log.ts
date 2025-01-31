@@ -42,26 +42,26 @@ export const EMPTY_SHIP = {
 
 ::MISSION OBJECTIVE::
 
-Distress signal detected from deep-space research vessel INTREPID (DSRV-890). Deployed to the edge of known space for priority research of potential new energy resource.
+Distress signal detected from deep-space research vessel INTREPID (DSRV-890).
 
-Primary objective: locate INTREPID and recover classified research data.  
+Primary objective: Locate and recover INTREPID vessle and crew.  
 ---
-::CREW MANIFEST::  
+::PERSONEL MANIFEST::  
 
-- Commanding Officer: Lo  
-- Science Officer: Balthar  
-- Engineering Officer: Dax  
-- Security Officer: Hanes  
-- Security Officer: Argos (reassignment logged)  
+- Commanding Officer Lo  
+- Science Officer Balthar  
+- Engineering Officer Dax  
+- Security Officer Hanes (reassignment)
+- Security Officer Argos  
 ---
-::MISSION LOGS (LEVEL 5+)::  
+::CRITICAL MISSION LOGS::  
 
 ...
 5671008 - Atmospheric entry initiated; ALERT: velocity exceeds safe parameters.  
-5671147 - INTREPID emergency beacon detected to the Southeast.
+5671147 - INTREPID emergency beacon detected.
 5671203 - Cryosleep pods A, D, E: activation sequence initiated.  
 5672724 - Reserve power systems engaged.  
-5679114 - Cryosleep pod C: activation sequence completed.  
+5679114 - Cryosleep pod C: activation sequence initiated.  
 5682989 - WARNING: Reserve power levels at 50%.  
 5684026 - Emergency override triggered: Cryosleep pod B activated.  
 5684035 - CRITICAL WARNING: Reserve power depleted. System shutdown imminent.  
@@ -74,55 +74,74 @@ Primary objective: locate INTREPID and recover classified research data.
 
 export const SCIENCE_OFFICER_FIRST = {
   text: `
-::SCIENCE OFFICER BALTHAR LOGS::
+::SCIENCE OFFICER BALTHAR LOG BEACON::
 
-Something went wrong. I woke up and Lo and the sec goons were gone.  I debated waking Dax, but we don't know what happened to the INTREPID's crew.  It may be safer to locate the others and scan for dangers first.
+Something went wrong. I awoke but Lo and the sec goons were gone.  Why wouldn't they wake us?
+Dax is still out. I debated waking him, but there's too many unknowns, I determined it would be safer to locate the others and scan for dangers first.
 ---
-I found footprints heading East.  I'll follow them momentarily, but I want to check out some strong energy signatures I'm reading to the West.
----
-These crystal formations are incredible!  I've never seen anything like it.  I'm going to take a closer look.
+I'm detecting strong abnormal energy signatures. I will attempt to investigate.
 `.trim(),
   onDiscover: (entity: Entity) => null
 }
 
 export const LO_BRIDGE = {
   text: `
-:COMMANDING OFFICER LO LOGS::
+:COMMANDING OFFICER LO TRANSMISSION::
 
-The INTREPID's on the other side of this chasm. Hanes, grab the extension bridge, we've got to hurry. Let's go, let's go!
+The Intrepid's on the other side of this river. Hanes, grab the extension bridge, let's get this over with.
+---
+Dammit, my torchlamp fell off somewhere. Never mind, we'll get it on the way back.
+`.trim(), onDiscover: (entity: Entity) => null
+}
 
-Dammit Agros, where's that torch?
+export const LO_EXPLORE = {
+  text: `
+:COMMANDING OFFICER LO TRANSMISSION::
+
+Argos, take EV2 and explore the area, make sure we're alone. Keep me posted.
+Hanes, you're with me.
+We'll rendezvous back at the ship and awake the others.'
 `.trim(), onDiscover: (entity: Entity) => null
 }
 
 
-export const ARGOS = {
-  text: `I can see for miles and miles and miles...`,
-  onDiscover: (entity: Entity) => {
-    const fov = new FOV.RecursiveShadowcasting(() => true, { topology: 8 })
-    const speed = 50
-    const { x, y } = entity.getLevel()!.getSize()
-    const levelHeight = y
-    let r = 0
-    const intervalId = setInterval(() => {
-      r += 1
-      if (r > Math.max(x, y)) clearInterval(intervalId)
-
-      fov.compute(entity.getXY()!.x, entity.getXY()!.y, r, (x, y, r, visible) => {
-        if (y < 3 || y > levelHeight - 2) return
-        let xy = new XY(x, y)
-        let terrain = entity.getLevel()!.getEntityAt(xy, false, true)
-        let special = entity.getLevel()!.getEntityAt(xy, true, false,)
-        if (terrain) terrain.visible = true
-        if (special) special.visible = true
-        entity.getLevel().draw(xy)
-      })
-    }, speed)
-  }
-}
-
-export const TODO = {
+export const LO_REPORT = {
   text: `
-::TODO::
-`, onDiscover: (entity: Entity) => null
+:COMMANDING OFFICER LO TRANSMISSION::
+
+Argos, report, where the hell are you?
+`.trim(), onDiscover: (entity: Entity) => null
 }
+
+export const ARGOS_UNSTABLE = {
+  text: `
+:SECURITY OFFICER ARGOS TRANSMISSION::
+
+There's definitely something up here, but it's slow going. The ground is unstable.
+`.trim(), onDiscover: (entity: Entity) => null
+}
+
+// export const ARGOS = {
+//   text: `I can see for miles and miles and miles...`,
+//   onDiscover: (entity: Entity) => {
+//     const fov = new FOV.RecursiveShadowcasting(() => true, { topology: 8 })
+//     const speed = 50
+//     const { x, y } = entity.getLevel()!.getSize()
+//     const levelHeight = y
+//     let r = 0
+//     const intervalId = setInterval(() => {
+//       r += 1
+//       if (r > Math.max(x, y)) clearInterval(intervalId)
+
+//       fov.compute(entity.getXY()!.x, entity.getXY()!.y, r, (x, y, r, visible) => {
+//         if (y < 3 || y > levelHeight - 2) return
+//         let xy = new XY(x, y)
+//         let terrain = entity.getLevel()!.getEntityAt(xy, false, true)
+//         let special = entity.getLevel()!.getEntityAt(xy, true, false,)
+//         if (terrain) terrain.visible = true
+//         if (special) special.visible = true
+//         entity.getLevel().draw(xy)
+//       })
+//     }, speed)
+//   }
+// }

@@ -37,10 +37,10 @@ specialEntitiesOnGroundTerrain.set("r", (game) => new EVRemote(game));
 specialEntitiesOnGroundTerrain.set("1", (game) => new Log(game, logs.EMPTY_SHIP));
 specialEntitiesOnGroundTerrain.set("2", (game) => new Log(game, logs.SCIENCE_OFFICER_FIRST));
 specialEntitiesOnGroundTerrain.set("3", (game) => new Log(game, logs.LO_BRIDGE));
-specialEntitiesOnGroundTerrain.set("4", (game) => new Log(game, logs.TODO));
-specialEntitiesOnGroundTerrain.set("5", (game) => new Log(game, logs.TODO));
-specialEntitiesOnGroundTerrain.set("6", (game) => new Log(game, logs.ARGOS));
-specialEntitiesOnGroundTerrain.set("7", (game) => new Log(game, logs.TODO));
+specialEntitiesOnGroundTerrain.set("4", (game) => new Log(game, logs.LO_EXPLORE));
+specialEntitiesOnGroundTerrain.set("5", (game) => new Log(game, logs.LO_REPORT));
+specialEntitiesOnGroundTerrain.set("6", (game) => new Log(game, logs.ARGOS_UNSTABLE));
+// specialEntitiesOnGroundTerrain.set("6", (game) => new Log(game, logs.ARGOS));
 // features
 specialEntitiesOnGroundTerrain.set("%", (game) => new Rubble(game));
 
