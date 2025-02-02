@@ -88,7 +88,7 @@ export const LO_BRIDGE = {
   text: `
 :COMMANDING OFFICER LO TRANSMISSION::
 
-The Intrepid's on the other side of this river. Hanes, grab the extension bridge, let's get this over with.
+The Intrepid's on the other side of this river. Hanes, set up the energy bridge, let's get this over with.
 ---
 Dammit, my torchlamp fell off somewhere. Never mind, we'll get it on the way back.
 `.trim(), onDiscover: (entity: Entity) => null

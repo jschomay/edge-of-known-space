@@ -33,7 +33,7 @@ export default class Bridge extends Entity {
       this.getLevel()!.textBuffer.write("A bridge was set up across the river. However, it has collapsed.")
       return false;
     } else if (!this.deployed) {
-      this.getLevel().textBuffer.displayBox(`I now have a portable, deployable bridge. Press %c{gray}[${BRIDGE_KEY}]%c{} near a river to deploy or retract it.`,
+      this.getLevel().textBuffer.displayBox(`I now have a portable, deployable energy bridge. Press %c{gray}[${BRIDGE_KEY}]%c{} near a river to deploy or retract it.`,
         () => {
           this.remove()
           const bridge = new BridgeItem(this.getLevel())
