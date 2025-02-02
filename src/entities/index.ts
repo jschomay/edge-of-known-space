@@ -65,7 +65,8 @@ terrain.set("/", (game) => new Crystal(game));
 terrain.set(",", (game) => new Crystal(game, true));
 terrain.set("]", (game) => new Crystal(game, false, true));
 terrain.set("|", (game) => new Crystal(game, true, true));
-terrain.set("~", (game) => new Chasm(game));
+terrain.set("~", (game) => new Chasm(game, true));
+terrain.set(" ", (game) => new Chasm(game));
 terrain.set("I", (game) => new Bridge(game, { broken: true }));
 
 

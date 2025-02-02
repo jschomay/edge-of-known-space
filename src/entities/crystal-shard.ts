@@ -19,7 +19,7 @@ export default class CrystalShard extends Entity {
 
   onInteract(entity: Entity): boolean {
     const xy = this.getXY()
-    this.getLevel()!.textBuffer.displayBox("Another crystal shard! I can feel it buzzing with energy. My equipment seems to respond as well...", () => {
+    this.getLevel()!.textBuffer.displayBox("A crystal shard! I can feel it buzzing with energy. My equipment seems to respond as well...", () => {
       this.remove()
       // TODO power up
     })
