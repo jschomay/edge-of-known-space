@@ -17,7 +17,7 @@ export default class EVItem implements Item {
 
   private _fov: FOV;
   private _level: MainLevel
-  private _r: number = 7
+  private _r: number = 4
   private _fovCells: string[] = []
 
   constructor(level: MainLevel) {
