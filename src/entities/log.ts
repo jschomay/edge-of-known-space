@@ -59,12 +59,11 @@ Primary objective: Locate and recover INTREPID vessle and crew.
 ...
 5671008 - Atmospheric entry initiated; ALERT: velocity exceeds safe parameters.  
 5671147 - INTREPID emergency beacon detected.
-5671203 - Cryosleep pods A, D, E: activation sequence initiated.  
-5672724 - Reserve power systems engaged.  
-5679114 - Cryosleep pod C: activation sequence initiated.  
-5682989 - WARNING: Reserve power levels at 50%.  
-5684026 - Emergency override triggered: Cryosleep pod B activated.  
-5684035 - CRITICAL WARNING: Reserve power depleted. System shutdown imminent.  
+5671203 - Cryosleep pods A, D, E activated.
+5672724 - Shuttle undocking process initiated.
+5679007 - Emergency cryospleep pod activation sequence initiated.
+5679114 - Cryosleep pod C: activated.
+5684026 - Cryosleep pod B: activated.  
 
 
 ::END LOGS::
@@ -77,9 +76,10 @@ export const SCIENCE_OFFICER_FIRST = {
 ::SCIENCE OFFICER BALTHAR LOG BEACON::
 
 Something went wrong. I awoke but Lo and the sec goons were gone.  Why wouldn't they wake us?
+---
 Dax is still out. I debated waking him, but there's too many unknowns, I determined it would be safer to locate the others and scan for dangers first.
 ---
-I'm detecting strong abnormal energy signatures. I will attempt to investigate.
+I'm detecting unusually strong energy signatures near by. I will attempt to investigate.
 `.trim(),
   onDiscover: (entity: Entity) => null
 }

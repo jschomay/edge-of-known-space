@@ -11,10 +11,10 @@ export default class Ship extends Entity {
   onInteract(entity: Entity): boolean {
     if (interactionCount === 0) {
       this.getLevel()!.textBuffer.displayBox(`
-The ship's main power core has been damaged. And the shuttle is missing too. No one else from the crew is in sight. I'm stranded and I'm alone. What's going on here?
+That's strange, our shuttle is missing. No one else from the crew is in sight. I'm stranded and I'm alone. What's going on here?
 `.trim())
     } else {
-      this.getLevel()!.textBuffer.write("Our ship's power core is still broken.")
+      this.getLevel()!.textBuffer.write("I can't go anywhere without finding the rest of the crew.")
     }
     interactionCount++;
     return false;

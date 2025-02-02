@@ -9,7 +9,7 @@
                                                                                                               
                                                                                                               
                                                                                                               
-           *beep* Warning, reserve power levels depleted.  All systems shutting down. *beep*                  
+            *beep* Warning, emergency cryosleep pod activation sequence initiated *beep*                  
                                                                                                               
              \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\                        
                                                                                                               
@@ -17,7 +17,7 @@
                                  ===                                                                          
          -----------------------|+@+|---------------------------------------------------                      
                                  ===                                                                          
-                             Wait, what was that about reserve power?                                         
+                             Wait, what was that about an emergency?                                         
                                                          ===                                                  
         ------------------------------------------------|x x|-----------------------------                    
                                                          ===                                                  
@@ -36,5 +36,5 @@
                                                                                                               
                 ////////////////////////////////////////////////////////////////////                          
                                                                                                               
-                                    Press [Enter] to leave the ship...                                        
+                                Press [Enter] to leave the ship...                                        
                                                                                                               
