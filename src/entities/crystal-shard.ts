@@ -9,7 +9,7 @@ export default class CrystalShard extends Entity {
     super(game, { ch: "*", fg: "purple" });
     setInterval(() => {
       let multiplier = RNG.getUniform() * 150 + 10
-      let colorString = RNG.getItem(["drakgray", "blue"])
+      let colorString = RNG.getItem(["darkgray", "blue"])
       let color = Color.add(Color.fromString(colorString!), [multiplier, multiplier, multiplier])
 
       this.setVisual({ fg: Color.toRGB(color) })
@@ -18,9 +18,12 @@ export default class CrystalShard extends Entity {
   }
 
   onInteract(entity: Entity): boolean {
-    this.getLevel()!.textBuffer.displayBox("Whoooaaa")
-    // power up
-    return true;
+    const xy = this.getXY()
+    this.getLevel()!.textBuffer.displayBox("Another crystal shard! I can feel it buzzing with energy. My equipment seems to respond as well...", () => {
+      this.remove()
+      // TODO power up
+    })
+    return false;
   }
 
 }

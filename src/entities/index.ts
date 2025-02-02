@@ -40,15 +40,14 @@ specialEntitiesOnGroundTerrain.set("3", (game) => new Log(game, logs.LO_BRIDGE))
 specialEntitiesOnGroundTerrain.set("4", (game) => new Log(game, logs.LO_EXPLORE));
 specialEntitiesOnGroundTerrain.set("5", (game) => new Log(game, logs.LO_REPORT));
 specialEntitiesOnGroundTerrain.set("6", (game) => new Log(game, logs.ARGOS_UNSTABLE));
-// specialEntitiesOnGroundTerrain.set("6", (game) => new Log(game, logs.ARGOS));
 // features
 specialEntitiesOnGroundTerrain.set("%", (game) => new Rubble(game));
+specialEntitiesOnGroundTerrain.set("*", (game) => new CrystalShard(game));
 
 
 const specialEntitiesOnCrystalTerrain = new Map<string, (game: Game) => Entity>();
 specialEntitiesOnCrystalTerrain.set("D", (game) => new Officer(game, officer_logs.BALTHAR));
 specialEntitiesOnCrystalTerrain.set("s", (game) => new Scanner(game));
-specialEntitiesOnCrystalTerrain.set("*", (game) => new CrystalShard(game));
 
 const specialEntitiesOnRockyTerraine = new Map<string, (game: Game) => Entity>();
 specialEntitiesOnRockyTerraine.set("#", (game) => new Boulder(game));
@@ -61,11 +60,11 @@ terrain.set(".", (game) => new Entity(game, { ch: ".", fg: groundColor }));
 terrain.set("`", (game) => new Rocky(game));
 terrain.set("O", (game) => new Ship(game));
 terrain.set("o", (game) => new Intrepid(game));
-terrain.set("^", (game) => new PowerCore(game));
 terrain.set("=", (game) => new Cliff(game));
 terrain.set("/", (game) => new Crystal(game));
-terrain.set("\\", (game) => new Crystal(game, false, true)); // visible edge of crystal zone
 terrain.set(",", (game) => new Crystal(game, true));
+terrain.set("]", (game) => new Crystal(game, false, true));
+terrain.set("|", (game) => new Crystal(game, true, true));
 terrain.set("~", (game) => new Chasm(game));
 terrain.set("I", (game) => new Bridge(game, { broken: true }));
 

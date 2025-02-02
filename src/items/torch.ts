@@ -9,9 +9,12 @@ import { Color } from "../../lib/rotjs";
 import Officer from "../entities/officer";
 import Log from "../entities/log";
 import Bridge from "../entities/bridge";
+import CrystalShard from "../entities/crystal-shard";
+
+export const KEY = "2"
 
 export default class TorchItem implements Item {
-  key: string = "2"
+  key: string = KEY
   name: string = "Torch"
   color: string = "orange"
   active: boolean = false
@@ -31,11 +34,15 @@ export default class TorchItem implements Item {
   _FOVLightPasses: LightPassesCallback = (x, y) => {
     let entity = this._level.getEntityAt(new XY(x, y), true, true)
     if (!entity) return false
+
+    if (entity instanceof Bridge) return true
+    if (entity instanceof CrystalShard) return true
+
     if (entity instanceof Crystal) {
       entity.visible = true
+      if (entity.dense) return false
       return entity.clearing
     }
-    if (entity instanceof Bridge) return true
 
     if (this._level.isSpecial(entity) && !(entity instanceof Log)) {
       entity.visible = true

@@ -26,7 +26,7 @@ function debug(level: MainLevel) {
       }
     }
   }
-  showFullMap()
+  // showFullMap()
 
   level.addInventory(new TerminalItem(level))
   level.addInventory(new TorchItem(level))
@@ -37,7 +37,7 @@ function debug(level: MainLevel) {
   // level.removeSpecialEntity(level.ev)
   // level.setSpecialEntity(level.ev, new XY(33, 24))
 
-  // level.player.setPosition(new XY(87, 27))
+  // level.player.setPosition(new XY(97, 34))
 
   // inspect helpers
   window._at = (x, y, ...rest) => level.getEntityAt(new XY(x, y), ...rest)
