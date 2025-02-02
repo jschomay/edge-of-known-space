@@ -4,7 +4,8 @@ import EV from "./ev";
 
 export default class Boulder extends Entity {
   constructor(game: Game) {
-    super(game, { ch: "#", fg: "#530" });
+
+    super(game, { ch: "#", fg: "#962" });
     this.visible = false
   }
 

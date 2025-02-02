@@ -44,7 +44,7 @@ export default class EVItem implements Item {
     this._fovCells.push(xy.toString())
 
     let { ch } = e.getVisual()
-    let fg = "darkred"
+    let fg = ".^".includes(e.getVisual().ch) ? "darkred" : "red"
     if (e instanceof EV) {
       fg = e.getVisual().fg
     }
