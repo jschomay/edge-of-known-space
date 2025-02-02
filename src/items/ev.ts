@@ -60,6 +60,7 @@ export default class EVItem implements Item {
 
     if (!ev.isLoaded()) {
       this._fovCells = []
+      this._fovCells.push(this._level.player.getXY()!.toString())
       this.active = true
       return true
     }

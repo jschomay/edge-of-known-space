@@ -64,6 +64,11 @@ export default class EV extends Entity {
       return false
 
     } else if (e === this.getLevel().player) {
+      if (this.remote?.active) {
+        this.getLevel().textBuffer.write("If I turn off the remote I can board the EV for manual control.")
+        return false
+      }
+
       this._loaded = e
       e.visible = false
       if (this.getLevel().activeItem) this.getLevel().deactivateItem(this.getLevel().activeItem!)
@@ -82,6 +87,8 @@ export default class EV extends Entity {
   unload() {
     let firstValidUnloadSpot = ROT.DIRS[4].find(([x, y]) => {
       let spot = this.getLevel().getEntityAt(this.getXY()!.plus(new XY(x, y)))
+      if (!spot) return false
+      if (this.getLevel().player.getXY()?.toString() === spot.getXY()!.toString()) return false
       let valid_exits = this.playerIsRiding() ? "." : "^."
       return valid_exits.includes(spot?.getVisual().ch || "XXX")
     })
@@ -120,8 +127,7 @@ export default class EV extends Entity {
     let entity = this.getLevel()!.getEntityAt(newXY);
 
     if (newXY.toString() === this.getLevel().player.getXY()?.toString()) {
-      this.getLevel().textBuffer.write("If I turn off the remote I can board the EV for manual control.")
-      return false
+      return this.load(this.getLevel().player)
     }
 
     if (!entity) {
