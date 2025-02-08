@@ -78,8 +78,8 @@ export default class EV extends Entity {
     } else {
       this._loaded = e
       this.getLevel().removeSpecialEntity(e)
-      let name = e.name || "item"
-      this.getLevel().textBuffer.write(`The ${name} has been loaded into the EV. Press %c{${EVColor}}[${EVKey}]%c{} to unload.`)
+      let name = e.name || "The item"
+      this.getLevel().textBuffer.write(`${name} has been loaded into the EV. Press %c{${EVColor}}[${EVKey}]%c{} to unload.`)
       return true
     }
   }

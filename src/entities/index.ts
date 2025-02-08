@@ -13,6 +13,7 @@ import Rocky from "./rocky";
 import Log from "./log";
 import Torch from "./torch";
 import Scanner from "./scanner";
+import Lo from "./lo";
 import * as logs from "./log";
 import Officer from "./officer";
 import * as officer_logs from "./officer";
@@ -31,7 +32,7 @@ specialEntitiesOnGroundTerrain.set("b", (game) => new Bridge(game, { asItem: tru
 // officers
 specialEntitiesOnGroundTerrain.set("X", (game) => new Officer(game, officer_logs.INTREPID1));
 specialEntitiesOnGroundTerrain.set("Y", (game) => new Officer(game, officer_logs.INTREPID2));
-specialEntitiesOnGroundTerrain.set("L", (game) => new Officer(game, officer_logs.LO));
+specialEntitiesOnGroundTerrain.set("L", (game) => new Lo(game));
 specialEntitiesOnGroundTerrain.set("r", (game) => new EVRemote(game));
 // logs
 specialEntitiesOnGroundTerrain.set("1", (game) => new Log(game, logs.EMPTY_SHIP));

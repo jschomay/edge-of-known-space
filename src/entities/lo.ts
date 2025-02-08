@@ -1,19 +1,24 @@
 import Entity, { Visual } from "../entity";
 import Game from "../game";
+import EV from "./ev";
 
+export const KEY = "Z"
 
 export default class Lo extends Entity {
-  concious: boolean = false
+  concious: boolean = true
+  name = "Commander Lo"
 
   constructor(game: Game) {
-    super(game, { ch: "C", fg: "yellow" });
+    super(game, { ch: KEY, fg: "yellow" });
   }
 
   onInteract(entity: Entity): boolean {
     if (this.concious) {
       this.getLevel()!.textBuffer.displayBox(dialog, () => true)
       this.concious = false
-    } else {
+    } else if (entity === this.getLevel().ev) {
+      (entity as EV).load(this)
+    } else if (entity === this.getLevel().player) {
       this.getLevel()!.textBuffer.write("I have to get him back to the ship, but he's too heavy for me to carry.")
     }
     return false;

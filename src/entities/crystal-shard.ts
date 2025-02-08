@@ -2,12 +2,14 @@ import { Color, RNG } from "../../lib/rotjs";
 import Entity from "../entity";
 import Game from "../game";
 
+export const KEY = "∆"
+
 export default class CrystalShard extends Entity {
   visible = false
   intervalId: number = -1
 
   constructor(game: Game) {
-    super(game, { ch: "*", fg: "purple" });
+    super(game, { ch: KEY, fg: "purple" });
     this.intervalId = setInterval(() => {
       let multiplier = RNG.getUniform() * 150 + 10
       let colorString = RNG.getItem(["darkgray", "blue"])

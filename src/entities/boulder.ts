@@ -3,6 +3,8 @@ import Game from "../game";
 import EV from "./ev";
 
 export default class Boulder extends Entity {
+  name = "The boulder"
+
   constructor(game: Game) {
 
     super(game, { ch: "#", fg: "#962" });

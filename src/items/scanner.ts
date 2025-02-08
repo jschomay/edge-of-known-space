@@ -7,7 +7,8 @@ import Item from "."
 import { Color } from "../../lib/rotjs";
 import Rubble from "../entities/rubble";
 import Crystal from "../entities/crystal";
-import Boulder from "../entities/boulder";
+import { KEY as SHARD_KEY } from "../entities/crystal-shard";
+import { KEY as OFFICER_KEY } from "../entities/officer";
 import Log from "../entities/log";
 
 export default class ScannerItem implements Item {
@@ -47,8 +48,8 @@ export default class ScannerItem implements Item {
       return
     }
 
-    // officers, crystal shards, and items and ev show up white
-    if (special && (special.item || "xO*".includes(special.getVisual().ch))) {
+    // officers, crystal shards, ships and items and ev show up white
+    if (special && (special.item || (OFFICER_KEY + "Oo" + SHARD_KEY).includes(special.getVisual().ch))) {
       special.visible = true
       this._level.draw(special.getXY()!)
       return

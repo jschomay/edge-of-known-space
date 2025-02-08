@@ -1,12 +1,13 @@
 import Entity, { Visual } from "../entity";
 import Game from "../game";
 
+export const KEY = "X"
 
 export default class Officer extends Entity {
   message: string
 
   constructor(game: Game, msg: string) {
-    super(game, { ch: "x", fg: "white" });
+    super(game, { ch: KEY, fg: "white" });
     this.visible = false
     this.message = msg
   }
@@ -60,7 +61,4 @@ Another Intrepid crewmember, also long dead.
 I still can't believe what happened. Yorq new how volatile the crystals are, he would have known to be cautious. For such a large explosion to happen, he must have been extremely careless. All our research, gone. We'll be gone soon too now.
 `.trim()
 
-export const LO = `
-x
-`.trim()
 

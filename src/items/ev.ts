@@ -5,6 +5,8 @@ import FOV from "../../lib/rotjs/fov/fov";
 import { LightPassesCallback, VisibilityCallback } from "../../lib/rotjs/fov/fov";
 import Item from "."
 import EV from "../entities/ev";
+import { KEY as LO_KEY } from "../entities/lo"
+import { KEY as OFFICER_KEY } from "../entities/officer";
 
 export const KEY = "5"
 export const COLOR = "#d00"
@@ -44,7 +46,11 @@ export default class EVItem implements Item {
     this._fovCells.push(xy.toString())
 
     let { ch } = e.getVisual()
-    let fg = ".^".includes(e.getVisual().ch) ? "darkred" : "red"
+    let fg = "red"
+    if (".^".includes(e.getVisual().ch)) fg = "darkred"
+    if ((LO_KEY + OFFICER_KEY + "Oo+?").includes(e.getVisual().ch)) fg = "yellow"
+    if ("~".includes(e.getVisual().ch)) fg = "black"
+
     if (e instanceof EV) {
       fg = e.getVisual().fg
     }
