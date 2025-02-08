@@ -25,7 +25,7 @@ export default class CrystalShard extends Entity {
     this.getLevel()!.textBuffer.displayBox("A crystal shard! I can feel it buzzing with energy. My equipment seems to respond as well...", () => {
       this.remove()
       clearInterval(this.intervalId)
-      // TODO power up
+      this.getLevel().powerLevel++
     })
     return false;
   }

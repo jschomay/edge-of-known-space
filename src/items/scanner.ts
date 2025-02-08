@@ -22,11 +22,16 @@ export default class ScannerItem implements Item {
 
   private _fov: FOV;
   private _level: MainLevel
-  private _maxR = 10
+  private _maxR: number = 10
 
   constructor(level: MainLevel) {
     this._level = level
+    this.setPower()
     this._fov = new ROT.FOV.RecursiveShadowcasting(this._FOVLightPasses, { topology: 8 })
+  }
+
+  setPower() {
+    this._maxR = { 1: 10, 2: 15, 3: 20, 4: 30 }[this._level.powerLevel] || 10
   }
 
   getFOV() {

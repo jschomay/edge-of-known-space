@@ -24,7 +24,12 @@ export default class EVItem implements Item {
 
   constructor(level: MainLevel) {
     this._level = level
+    this.setPower()
     this._fov = new ROT.FOV.RecursiveShadowcasting(this._FOVLightPasses, { topology: 8 })
+  }
+
+  setPower(): void {
+    this._r = { 1: 4, 2: 8, 3: 12, 4: 20 }[this._level.powerLevel] || 4
   }
 
   getFOV() {

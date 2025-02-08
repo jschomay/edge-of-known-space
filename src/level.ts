@@ -26,7 +26,7 @@ function debug(level: MainLevel) {
       }
     }
   }
-  // showFullMap()
+  showFullMap()
 
   level.addInventory(new TerminalItem(level))
   level.addInventory(new TorchItem(level))
@@ -35,13 +35,25 @@ function debug(level: MainLevel) {
   level.addInventory(new EVItem(level))
 
   // level.removeSpecialEntity(level.ev)
-  // level.setSpecialEntity(level.ev, new XY(33, 24))
+  // level.setSpecialEntity(level.ev, new XY(88, 33))
 
-  // level.player.setPosition(new XY(52, 32))
+  // level.player.setPosition(new XY(96, 31))
+
 
   // inspect helpers
   window._at = (x, y, ...rest) => level.getEntityAt(new XY(x, y), ...rest)
   level.game._container.addEventListener("click", e => console.log(level.getEntityAt(new XY(...level.game.display.eventToPosition(e)), true)))
+
+  window.addEventListener("keyup", (e) => {
+    if (e.key === "8") {
+      level.powerLevel = (level.powerLevel + 1)
+      if (level.powerLevel > 4) level.powerLevel = 1
+      level.activeItem && level._inventory[level.activeItem].setPower()
+      level.drawPower()
+      level.updateFOV()
+      return
+    }
+  })
 }
 
 
@@ -56,6 +68,7 @@ export default class MainLevel {
   ev!: EV
   _inventory: Record<string, Item> = {}
   activeItem: string | null = null
+  powerLevel = 1
 
   constructor(game: Game) {
     this.game = game;
@@ -68,6 +81,7 @@ export default class MainLevel {
     this.player.setPosition(new XY(0, 0), this);
 
     this._generateMap(mapData.map0);
+    this.drawPower()
 
     this.textBuffer = new TextBuffer(this.game);
 
@@ -113,6 +127,7 @@ export default class MainLevel {
 
   activateItem(key: string) {
     let item = this._inventory[key]
+    item.setPower()
     if (!item.onActivate()) return
 
     if (this.activeItem) {
@@ -239,7 +254,7 @@ export default class MainLevel {
 
   _drawInventory() {
     let { x, y } = this.getSize()
-    let offset = 10
+    let offset = 20
     for (let key of Object.keys(this._inventory).sort()) {
       let activeIndicator = this.activeItem === key ? "*" : " "
       let keyInfo = `%c{${this._inventory[key].color}}[${key}]%c{}`
@@ -248,6 +263,20 @@ export default class MainLevel {
       this.game.display.drawText(offset, y - 1, text, x)
       offset += keyName.length + 10
     }
+  }
+
+  drawPower() {
+    console.log(this.powerLevel)
+    let text = ""
+    for (let index = 0; index < this.powerLevel - 1; index++) {
+      text += "*"
+    }
+    let color = "white"
+    let { x, y } = this.getSize()
+    let row = y - 1
+    let offset = 5
+    this.game.display.drawText(offset - 1, row, "[........]", x,)
+    this.game.display.drawText(offset, row, `%c{${color}}` + text, x,)
   }
 
 

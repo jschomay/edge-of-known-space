@@ -18,17 +18,23 @@ export default class TorchItem implements Item {
   name: string = "Torch"
   color: string = "orange"
   active: boolean = false
+  r: number = 5
 
   private _fov: FOV;
   private _level: MainLevel
 
   constructor(level: MainLevel) {
     this._level = level
+    this.setPower()
     this._fov = new ROT.FOV.RecursiveShadowcasting(this._FOVLightPasses, { topology: 8 })
   }
 
+  setPower() {
+    this.r = { 1: 5, 2: 6, 3: 7, 4: 8 }[this._level.powerLevel] || 5
+  }
+
   getFOV() {
-    return { r: 5, fov: this._fov, cb: this._FOVIlluminate };
+    return { r: this.r, fov: this._fov, cb: this._FOVIlluminate };
   }
 
   _FOVLightPasses: LightPassesCallback = (x, y) => {
@@ -40,8 +46,15 @@ export default class TorchItem implements Item {
 
     if (entity instanceof Crystal) {
       entity.visible = true
-      if (entity.dense) return false
-      return entity.clearing
+      if (entity.dense) {
+        if (entity.clearing) return this._level.powerLevel > 1
+        return false
+
+      } else {
+        let dist = this._level.player.getXY()!.dist8(new XY(x, y))
+        if (this._level.powerLevel > 1 && dist < 3) return true
+        return entity.clearing
+      }
     }
 
     if (this._level.isSpecial(entity) && !(entity instanceof Log)) {
@@ -71,6 +84,8 @@ export default class TorchItem implements Item {
     } else {
       let { ch, fg } = e.getVisual()
       let multplier = Math.min(170, Math.round(255 * Math.pow((5 / r), 1) / 5))
+      multplier += 10 * (this._level.powerLevel - 1)
+
       let fgBrighter = Color.add(Color.fromString(fg), [multplier, multplier, Math.floor(multplier / 2)]);
       this._level.game.display.draw(x, y, ch, Color.toHex(fgBrighter))
     }

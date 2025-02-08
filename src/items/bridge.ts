@@ -14,7 +14,7 @@ export default class BridgeItem implements Item {
 
   private _level: MainLevel
   private _deployed: boolean = false
-  private _maxLength: number
+  private _maxLength: number = 2
   private _timeoutId: number | null = null
   private _deploySpeed: number
 
@@ -22,8 +22,12 @@ export default class BridgeItem implements Item {
 
   constructor(level: MainLevel) {
     this._level = level
-    this._maxLength = 2
+    this.setPower()
     this._deploySpeed = 300
+  }
+
+  setPower() {
+    this._maxLength = { 1: 2, 2: 3, 3: 4, 4: 5 }[this._level.powerLevel] || 2
   }
 
   _getChasmSize(dir: XY) {

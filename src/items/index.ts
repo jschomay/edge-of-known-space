@@ -8,4 +8,5 @@ export default interface Item {
   getFOV(): { r: number, fov: FOV, cb: VisibilityCallback } | null
   onActivate(...any: any): boolean
   onDeactivate(): boolean
+  setPower(): void
 }

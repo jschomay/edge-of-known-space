@@ -20,7 +20,7 @@ export default class TerminalItem implements Item {
   private _intervalID?: number
   private _initR = 1;
   private _FOVGrawRate = 1
-  private _FOVMaxRadius = 15
+  private _FOVMaxRadius: number = 10
   private _FOVSpeed = 30
   private _FOVWidth = 2
 
@@ -28,10 +28,14 @@ export default class TerminalItem implements Item {
 
   constructor(level: MainLevel) {
     this._level = level
+    this.setPower()
     // use RecursiveShadowcasting for circular fov
     this._fov = new ROT.FOV.DiscreteShadowcasting(this._FOVLightPasses, { topology: 4 })
   }
 
+  setPower() {
+    this._FOVMaxRadius = { 1: 10, 2: 15, 3: 20, 4: 30 }[this._level.powerLevel] || 10
+  }
 
   getFOV() {
     return { r: this._r || 1, fov: this._fov, cb: this._FOVIlluminate };
@@ -45,6 +49,7 @@ export default class TerminalItem implements Item {
   _FOVIlluminate: VisibilityCallback = (x, y, r, visibility) => {
     let xy = new XY(x, y)
     let e = this._level.getEntityAt(xy, true, true)
+    let color = this._level.powerLevel > 1 ? "#808" : "#880"
     if (!e) { return; }
 
     // Use this for circular fov
@@ -54,7 +59,7 @@ export default class TerminalItem implements Item {
         e.visible = true
       } else {
         let multplier = 190 * this._FOVMaxRadius / r
-        let fg = ROT.Color.multiply(ROT.Color.fromString("#880"), [multplier, multplier, multplier]);
+        let fg = ROT.Color.multiply(ROT.Color.fromString(color), [multplier, multplier, multplier]);
         this._level.game.display.draw(x, y, "+", ROT.Color.toHex(fg));
       }
     } else {
