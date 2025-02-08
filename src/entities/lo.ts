@@ -6,6 +6,7 @@ export const KEY = "Z"
 
 export default class Lo extends Entity {
   concious: boolean = true
+  visible = false
   name = "Commander Lo"
 
   constructor(game: Game) {
