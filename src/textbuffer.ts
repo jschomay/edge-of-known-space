@@ -5,6 +5,7 @@ import Game from "./game";
 export default class TextBuffer {
   public showing: boolean;
   private _data: string[];
+  private _multiText: string[];
   private displayBoxPos: XY;
   private displayBoxSize: XY
   private _options: { display: Display | null, position: XY, size: XY };
@@ -53,7 +54,12 @@ export default class TextBuffer {
   }
 
   displayBox(text: string, cb: (() => any) | null = null) {
+    this._multiText = text.split("---")
     this._cb = cb;
+    this._renderDisplayBox(this._multiText.shift()!);
+  }
+
+  _renderDisplayBox(text: string) {
     this.showing = true;
     let o = this._options;
     let d = o.display!;
@@ -65,7 +71,8 @@ export default class TextBuffer {
     for (let i = 0; i < size.x; i++) {
       for (let j = 0; j < size.y; j++) {
         if (i === 0 || i === size.x - 1 || j === 0 || j === size.y - 1) {
-          d.draw(pos.x + i, pos.y + j, "-");
+          let border = i === 0 || i === size.x - 1 ? "+" : "=";
+          d.draw(pos.x + i, pos.y + j, border);
         } else {
           d.draw(pos.x + i, pos.y + j, " ");
         }
@@ -96,9 +103,16 @@ export default class TextBuffer {
       }
     }
 
-    if (this._cb !== null) {
+
+    let nextText = this._multiText.shift()!
+    if (nextText) {
+      this._renderDisplayBox(nextText);
+      return
+    }
+    if (this._cb) {
       this._cb();
       this._cb = null;
     }
+    this.game.level.updateFOV()
   }
 }

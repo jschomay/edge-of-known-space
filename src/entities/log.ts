@@ -17,20 +17,13 @@ export default class Log extends Entity {
   }
 
   onInteract(entity: Entity): boolean {
-    let logs = this.log.split("---")
-    let showLog = () => {
-      this.getLevel().textBuffer.displayBox("%c{#098}" + logs.shift(), () => {
-        if (logs.length > 0) {
-          setTimeout(showLog.bind(this), 0);
-        } else {
-          if (!this.discovered) this.onDiscover(this)
-          this.discovered = true
-          this.setVisual({ ch: '+', fg: "#aa0" })
-          // this.remove()
-        }
-      })
-    }
-    showLog()
+    this.getLevel().textBuffer.displayBox("%c{#098}" + this.log, () => {
+      if (!this.discovered) this.onDiscover(this)
+      this.discovered = true
+      this.setVisual({ ch: '+', fg: "#aa0" })
+      this.getLevel().draw(this.getXY()!)
+      // this.remove()
+    })
     return false;
   }
 
