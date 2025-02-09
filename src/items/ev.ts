@@ -80,6 +80,7 @@ export default class EVItem implements Item {
     if (!ev.playerIsRiding()) throw "unexpected onActivate while ev was loaded with non-player";
 
     ev.unload()
+    this._level.updateFOV()
     return false
   }
 
