@@ -115,6 +115,8 @@ export default class MainLevel {
   }
 
   onKeyDown(e: KeyboardEvent) {
+    this.textBuffer.clear()
+
     if (this.textBuffer.showing) {
       if (e.key === "Enter") {
         this.textBuffer.clearDisplayBox()
