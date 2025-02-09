@@ -11,6 +11,7 @@ import CrystalShard from "../entities/crystal-shard";
 import { KEY as SHARD_KEY } from "../entities/crystal-shard";
 import { KEY as OFFICER_KEY } from "../entities/officer";
 import Log from "../entities/log";
+import Passage from "../entities/passage";
 
 export default class ScannerItem implements Item {
   key: string = "3"
@@ -50,6 +51,11 @@ export default class ScannerItem implements Item {
     let terrain = this._level.getEntityAt(xy, false, true)
 
     if (special && special instanceof Rubble) {
+      special.scanned = true
+      return
+    }
+
+    if (special && special instanceof Passage && this._level.powerLevel > 1) {
       special.scanned = true
       return
     }

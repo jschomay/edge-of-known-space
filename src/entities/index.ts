@@ -21,6 +21,7 @@ import Boulder from "./boulder";
 import EVRemote from "./ev-remote";
 import EV from "./ev";
 import CrystalShard from "./crystal-shard";
+import Passage from "./passage";
 
 const groundColor = "#430"
 
@@ -43,6 +44,7 @@ specialEntitiesOnGroundTerrain.set("5", (game) => new Log(game, logs.LO_REPORT))
 specialEntitiesOnGroundTerrain.set("6", (game) => new Log(game, logs.ARGOS_UNSTABLE));
 // features
 specialEntitiesOnGroundTerrain.set("%", (game) => new Rubble(game));
+specialEntitiesOnGroundTerrain.set("$", (game) => new Passage(game));
 specialEntitiesOnGroundTerrain.set("*", (game) => new CrystalShard(game));
 
 
