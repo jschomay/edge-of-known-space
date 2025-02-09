@@ -38,13 +38,13 @@ It's Commander Lo! He's been shot. He's barely conscious, but he is alive.
 ---
 "That information in the wong hands is catastrophic. Dax, we need to get back home and warn them."
 ---
-"Wait... I found something in this grove. A crystal shard. At least we can bring that back. Dax..."
+"I found something in this grove. A crystal shard. At least we can bring that back. Dax..."
 ---
 He slumps over.
 ---
 ...
 ---
-He's unconscious. I can't just leave him, I have to bring him back with me. But he's too heavy in his suit to move without injuring him, I'll have to load him in the Ev.""
+He's unconscious. I can't just leave him, I have to bring him back with me.""
 ---
 Hang in there Commander.
 `
