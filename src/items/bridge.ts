@@ -92,6 +92,10 @@ export default class BridgeItem implements Item {
       this._level.textBuffer.write("I have to get out of the EV to use the bridge.")
       return false
     }
+    if (this._level.ev.remote?.active) {
+      this._level.textBuffer.write("I can't use the bridge and pilot the EV at the same time.")
+      return false
+    }
 
     if (this._timeoutId) return false
 
