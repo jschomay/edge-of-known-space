@@ -29,7 +29,7 @@ export default class EVItem implements Item {
   }
 
   setPower(): void {
-    this._r = { 1: 4, 2: 8, 3: 12, 4: 20 }[this._level.powerLevel] || 4
+    this._r = { 1: 4, 2: 8, 3: 12, 4: 13 }[this._level.powerLevel] || 4
   }
 
   getFOV() {

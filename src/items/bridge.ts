@@ -27,7 +27,7 @@ export default class BridgeItem implements Item {
   }
 
   setPower() {
-    this._maxLength = { 1: 2, 2: 3, 3: 4, 4: 5 }[this._level.powerLevel] || 2
+    this._maxLength = this._level.powerLevel > 1 ? 6 : 2
   }
 
   _getChasmSize(dir: XY) {
@@ -118,7 +118,7 @@ export default class BridgeItem implements Item {
     } else {
       // not deployed
       if (!(chasmToRight || chasmToLeft)) {
-        msg = "I need to be near a river to deploy the bridge."
+        msg = "No point using the bridge on solid ground."
 
       } else if (chasmToRight == 999 || chasmToLeft == 999) {
         msg = "I can't see the other side!"

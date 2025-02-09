@@ -30,10 +30,10 @@ export default class Bridge extends Entity {
 
   onInteract(entity: Entity): boolean {
     if (this.broken) {
-      this.getLevel()!.textBuffer.write("A bridge was set up across the river. However, it has collapsed.")
+      this.getLevel()!.textBuffer.write("An energy bridge was set up across the river. However, it isn't working, mabye the power is drained.")
       return false;
     } else if (!this.deployed) {
-      this.getLevel().textBuffer.displayBox(`I now have a portable, deployable energy bridge. Press %c{gray}[${BRIDGE_KEY}]%c{} near a river to deploy or retract it.`,
+      this.getLevel().textBuffer.displayBox(`I now have a deployable energy bridge. Press %c{gray}[${BRIDGE_KEY}]%c{} near a river to deploy or retract it.`,
         () => {
           this.remove()
           const bridge = new BridgeItem(this.getLevel())

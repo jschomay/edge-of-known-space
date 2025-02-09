@@ -7,6 +7,7 @@ import Item from "."
 import { Color } from "../../lib/rotjs";
 import Rubble from "../entities/rubble";
 import Crystal from "../entities/crystal";
+import CrystalShard from "../entities/crystal-shard";
 import { KEY as SHARD_KEY } from "../entities/crystal-shard";
 import { KEY as OFFICER_KEY } from "../entities/officer";
 import Log from "../entities/log";
@@ -22,7 +23,7 @@ export default class ScannerItem implements Item {
 
   private _fov: FOV;
   private _level: MainLevel
-  private _maxR: number = 10
+  private _maxR: number = 15
 
   constructor(level: MainLevel) {
     this._level = level
@@ -31,7 +32,7 @@ export default class ScannerItem implements Item {
   }
 
   setPower() {
-    this._maxR = { 1: 10, 2: 15, 3: 20, 4: 30 }[this._level.powerLevel] || 10
+    this._maxR = { 1: 15, 2: 15, 3: 20, 4: 30 }[this._level.powerLevel] || 15
   }
 
   getFOV() {
@@ -53,33 +54,34 @@ export default class ScannerItem implements Item {
       return
     }
 
-    // officers, crystal shards, ships and items and ev show up white
-    if (special && (special.item || (OFFICER_KEY + "Oo" + SHARD_KEY).includes(special.getVisual().ch))) {
+    // officers, ships and items and ev show up white
+    if (special && (special.item || (OFFICER_KEY + "Oo").includes(special.getVisual().ch))) {
       special.visible = true
       this._level.draw(special.getXY()!)
       return
     }
 
     // other specials (like rocks) block the scanner (only logs let it pass)
-    if (special && this._level.isSpecial(special) && !(special instanceof Log)) return
+    let shardLocation = special && special instanceof CrystalShard
+    if (!shardLocation && special && this._level.isSpecial(special) && !(special instanceof Log)) return
     if (!terrain) { return; }
 
 
     let { ch } = terrain.getVisual()
     let highlightColor = Color.fromString("cyan")
 
-    if ("^.".includes(ch)) {
+    if ("^.".includes(ch) && !shardLocation) {
       terrain.visible = true
       highlightColor = Color.multiply(highlightColor, [150, 150, 150])
       this._level.game.display.draw(x, y, ch, Color.toHex(highlightColor))
 
-    } else if (terrain instanceof Crystal) {
+    } else if (terrain instanceof Crystal || shardLocation) {
+      let key = shardLocation ? SHARD_KEY : ch
       let m = Color.randomize([100, 100, 100], 100)
       if (terrain.clearing) highlightColor = [50, 50, 50]
       highlightColor = Color.add(highlightColor, m)
-      this._level.game.display.draw(x, y, ch, Color.toHex(highlightColor))
+      this._level.game.display.draw(x, y, key, Color.toHex(highlightColor))
     }
-    // TODO light up shard
 
   }
 

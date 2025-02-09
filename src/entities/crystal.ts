@@ -23,14 +23,21 @@ export default class Crystal extends Entity {
       return false
     }
 
+    let denseMsg = "These crystal formations are even denser, it's impossible to pass through without more light."
+    if (this.dense && this.getLevel().powerLevel === 1) {
+      this.getLevel()!.textBuffer.write(denseMsg)
+      return false
+    }
+
     if (!torchOn) {
       let msg = this.dense
-        ? "These crystal formations are even denser, it's impossible to pass through without more light."
+        ? denseMsg
         : "Giant crystal formations grow like a dense forest, blocking out the light. It's impossible to safely pass through them."
       this.getLevel()!.textBuffer.write(msg)
     } else if (!this.clearing) {
       this.getLevel()!.textBuffer.write("Solid crystals block the path.")
     }
+
     return this.clearing && torchOn
   }
 }

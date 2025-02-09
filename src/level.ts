@@ -43,6 +43,15 @@ function debug(level: MainLevel) {
   // inspect helpers
   window._at = (x, y, ...rest) => level.getEntityAt(new XY(x, y), ...rest)
   level.game._container.addEventListener("click", e => console.log(level.getEntityAt(new XY(...level.game.display.eventToPosition(e)), true)))
+  level.game._container.addEventListener("click", e => {
+    let xy = new XY(...level.game.display.eventToPosition(e))
+    let oldXy = level.player.getXY()
+    level.player.setPosition(xy)
+    level.draw(oldXy)
+    level.draw(xy)
+    level.updateFOV()
+  }
+  )
 
   window.addEventListener("keyup", (e) => {
     if (e.key === "8") {
@@ -225,8 +234,13 @@ export default class MainLevel {
       this.draw(this._fovCells.pop()!);
     }
 
-    let item_fov = this.activeItem && this._inventory[this.activeItem].getFOV()
+    let item = this.activeItem && this._inventory[this.activeItem]
+    if (!item) { return; }
+    item.setPower()
+
+    let item_fov = item && item.getFOV()
     if (!item_fov) { return; }
+
 
     let { x: player_x, y: player_y } = this.player.getXY()!
     let { r: fov_r, fov, cb } = item_fov
