@@ -5,7 +5,7 @@ let interactionCount = 0;
 
 export default class Ship extends Entity {
   constructor(game: Game) {
-    super(game, { ch: "O", fg: "white" });
+    super(game, { ch: "{", fg: "white" });
   }
 
   onInteract(entity: Entity): boolean {
