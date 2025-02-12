@@ -13,6 +13,7 @@ import ScannerItem from "./items/scanner";
 import BridgeItem, { KEY as BRIDGE_KEY } from "./items/bridge";
 import EVItem, { KEY as EV_KEY } from "./items/ev";
 import EV from "./entities/ev";
+import CrystalShard from "./entities/crystal-shard";
 
 const DEBUG = 1
 function debug(level: MainLevel) {

@@ -25,7 +25,7 @@ export default class Passage extends Cliff {
       return false
 
     } else {
-      this.getLevel()!.textBuffer.write("There's a narrow passage here, I'm surprised I didn't notice it before.")
+      this.getLevel()!.textBuffer.write("There's a narrow passage in the cliffs here.")
       this.remove()
       return true;
     }

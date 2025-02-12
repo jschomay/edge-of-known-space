@@ -27,6 +27,7 @@ export default class CrystalShard extends Entity {
       clearInterval(this.intervalId)
       this.getLevel().powerLevel++
       this.getLevel().drawPower()
+      this.getLevel().drawNewShard()
       this.getLevel().updateFOV()
     })
     return false;

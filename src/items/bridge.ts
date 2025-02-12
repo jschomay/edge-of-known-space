@@ -37,6 +37,8 @@ export default class BridgeItem implements Item {
       chasmSize++
       target = this._level.getEntityAt(target.getXY()!.plus(dir))
     }
+    if (chasmSize === 0) return 0
+
     if (!target || target.getVisual().ch !== ".") {
       // can't see other side or no land
       return 999

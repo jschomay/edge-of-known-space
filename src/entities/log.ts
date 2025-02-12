@@ -100,9 +100,9 @@ export const LO_EXPLORE = {
 %c{#098}
 :COMMANDING OFFICER LO TRANSMISSION::
 
-Argos, take EV2 and explore the area, make sure we're alone. Keep me posted.
+Argos, take EV2 and explore the area, make sure we're alone. Keep me posted. We'll rendezvous back at the ship and awake the others.'
+---
 Hanes, you're with me.
-We'll rendezvous back at the ship and awake the others.'
 `.trim(), onDiscover: (entity: Entity) => null
 }
 

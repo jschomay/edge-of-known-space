@@ -54,8 +54,6 @@ export default class EVItem implements Item {
     let fg = "red"
     if (".^".includes(e.getVisual().ch)) fg = "darkred"
     if ((LO_KEY + OFFICER_KEY + "{o+?").includes(e.getVisual().ch)) fg = "yellow"
-    if ("~".includes(e.getVisual().ch)) fg = "#500"
-    if ("/\\|[".includes(e.getVisual().ch)) fg = "#500"
 
     if (e instanceof EV) {
       fg = e.getVisual().fg

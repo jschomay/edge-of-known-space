@@ -2,7 +2,7 @@ import Entity, { Visual } from "../entity";
 import Game from "../game";
 import EV from "./ev";
 
-export const KEY = "Z"
+export const KEY = "&"
 
 export default class Lo extends Entity {
   concious: boolean = true
@@ -44,7 +44,7 @@ He slumps over.
 ---
 ...
 ---
-He's unconscious. I can't just leave him, I have to bring him back with me.""
+He's unconscious. I have to get thim back to the ship's med bay.
 ---
 Hang in there Commander.
 `
