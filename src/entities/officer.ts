@@ -47,8 +47,10 @@ I found one of the crew of the Intrepid. She's been dead for a long time.
 
 We're out of food.
 ---
+%c{#098}
 We're out of power. 
 ---
+%c{#098}
 We're out of luck.
 `.trim()
 
@@ -59,7 +61,7 @@ Another Intrepid crewmember, also long dead.
 %c{#098}
 ::PERSONAL LOGS::
 
-I still can't believe what happened. Yorq new how volatile the crystals are, he would have known to be cautious. For such a large explosion to happen, he must have been extremely careless. All our research, gone. We'll be gone soon too now.
+I still can't believe what happened. Yorq knew how volatile the crystals are, he would have known to be cautious. For such a large explosion to happen, he must have been extremely careless. All our research, gone. We'll be gone soon too now.
 `.trim()
 
 
