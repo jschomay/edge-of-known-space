@@ -37,9 +37,10 @@ export default class BridgeItem implements Item {
       chasmSize++
       target = this._level.getEntityAt(target.getXY()!.plus(dir))
     }
-    if (!target) {
-      // can't see other side
+    if (!target || target.getVisual().ch !== ".") {
+      // can't see other side or no land
       return 999
+
     } else {
       // found ground
       return chasmSize
@@ -125,7 +126,7 @@ export default class BridgeItem implements Item {
         msg = "No point using the bridge on solid ground."
 
       } else if (chasmToRight == 999 || chasmToLeft == 999) {
-        msg = "I can't see the other side!"
+        msg = "There's no safe space on the other side to anchor to."
       } else if ((chasmToRight > this._maxLength || chasmToLeft > this._maxLength)) {
         msg = "The river here is too wide for the bridge."
 
