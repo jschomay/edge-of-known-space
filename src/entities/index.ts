@@ -40,8 +40,6 @@ specialEntitiesOnGroundTerrain.set("1", (game) => new Log(game, logs.EMPTY_SHIP)
 specialEntitiesOnGroundTerrain.set("2", (game) => new Log(game, logs.SCIENCE_OFFICER_FIRST));
 specialEntitiesOnGroundTerrain.set("3", (game) => new Log(game, logs.LO_BRIDGE));
 specialEntitiesOnGroundTerrain.set("4", (game) => new Log(game, logs.LO_EXPLORE));
-specialEntitiesOnGroundTerrain.set("5", (game) => new Log(game, logs.LO_REPORT));
-specialEntitiesOnGroundTerrain.set("6", (game) => new Log(game, logs.ARGOS_UNSTABLE));
 // features
 specialEntitiesOnGroundTerrain.set("%", (game) => new Rubble(game));
 specialEntitiesOnGroundTerrain.set("$", (game) => new Passage(game));
@@ -56,6 +54,9 @@ const specialEntitiesOnRockyTerraine = new Map<string, (game: Game) => Entity>()
 specialEntitiesOnRockyTerraine.set("#", (game) => new Boulder(game));
 specialEntitiesOnRockyTerraine.set("A", (game) => new Officer(game, officer_logs.ARGOS));
 specialEntitiesOnRockyTerraine.set("E", (game) => new EV(game));
+// Logs
+specialEntitiesOnRockyTerraine.set("5", (game) => new Log(game, logs.LO_REPORT));
+specialEntitiesOnRockyTerraine.set("6", (game) => new Log(game, logs.ARGOS_UNSTABLE));
 
 
 const terrain = new Map<string, (game: Game) => Entity>();

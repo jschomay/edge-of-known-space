@@ -64,7 +64,7 @@ Primary objective: Locate and recover INTREPID vessle and crew.
 
 ::END LOGS::
 `.trim(),
-  onDiscover: (entity: Entity) => entity.getLevel().game.display.draw(90, 30, "!", "red")
+  onDiscover: (entity: Entity) => null
 }
 
 export const SCIENCE_OFFICER_FIRST = {

@@ -11,7 +11,7 @@ export default class Ship extends Entity {
   onInteract(entity: Entity): boolean {
     if (interactionCount === 0) {
       this.getLevel()!.textBuffer.displayBox(`
-That's strange, our shuttle is missing. No one else from the crew is in sight. I'm stranded and I'm alone. What's going on here?
+The ship appears to be fully functional. But our shuttle is missing. What happened while I was out?
 `.trim())
     } else {
       this.getLevel()!.textBuffer.write("I can't go anywhere without finding the rest of the crew.")

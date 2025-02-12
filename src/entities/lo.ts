@@ -32,13 +32,13 @@ It's Commander Lo! He's been shot. He's barely conscious, but he is alive.
 ---
 "Dax... I'm glad to see you. Where is Balthar and Argos? Never mind, I need you to listen carefully."
 ---
-"This was more than a salvage mission. I was under confidential orders to retrieve the critical reseach the Intrepid crew was working on. Per security clearance protocols, I couldn't wake you until assessing the situation."
+"This was more than a salvage mission. The Intrepid crew were working on classified research and I was under confidential orders to retrieve it. Per security clearance protocols, I couldn't wake you until assessing the situation."
 ---
-"It doesn't matter now. Hanes turned on us. When we recovered whatever research we could find, he shot me. He stole it and took our shuttle. There's no finding him now."
+"It doesn't matter now. Hanes turned on us. When we recovered whatever research we could find, he shot me and left me to die. He stole the research and took our shuttle."
 ---
-"That information in the wong hands is catastrophic. Dax, we need to get back home and warn them."
+"That information in the wong hands is bad news. We need to get back home and warn command."
 ---
-"I found something in this grove. A crystal shard. At least we can bring that back. Dax..."
+"At least one thing went our way -- I found something in this grove. A chunk of these crystals. We can bring that back. Dax..."
 ---
 He slumps over.
 ---

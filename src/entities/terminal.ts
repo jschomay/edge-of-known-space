@@ -12,7 +12,7 @@ export default class Terminal extends Entity {
 
   onInteract(entity: Entity): boolean {
     let level = entity.getLevel()
-    level.textBuffer.displayBox("I found a terminal reader. It is now in my inventory. Press %c{green}[1]%c{} to activate or deactivate it. When activated, it can reveal hidden logs (%c{yellow}+%c{}) and other equipment near me.", () => {
+    level.textBuffer.displayBox("I found a terminal reader. It is now in my inventory. Press %c{green}[1]%c{} to activate or deactivate it. When activated, it can reveal hidden logs (%c{yellow}+%c{}) near me.", () => {
       this.remove()
       const terminalItem = new TerminalItem(this.getLevel()!)
       level.addInventory(terminalItem)

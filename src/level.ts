@@ -281,23 +281,39 @@ export default class MainLevel {
     }
   }
 
-  drawPower() {
-    console.log(this.powerLevel)
-    let text = ""
-    for (let index = 0; index < this.powerLevel - 1; index++) {
-      text += "*"
-    }
-    let color = "white"
+  drawNewShard() {
+    let offset = 2 + this.powerLevel
     let { x, y } = this.getSize()
     let row = y - 1
-    let offset = 5
-    this.game.display.drawText(offset - 1, row, "[........]", x,)
-    this.game.display.drawText(offset, row, `%c{${color}}` + text, x,)
+    let xy = new XY(offset, row)
+    let shard = new CrystalShard(this.game)
+    shard.visible = true
+    this.setSpecialEntity(shard, xy)
+    this.draw(xy)
+  }
+
+  drawPower() {
+    let dot = (x, y) => {
+      let color = "#0f0"
+      if (this.battery < 4) color = "#fa0"
+      if (this.battery < 2) color = "#f00"
+      this.game.display.draw(x, y, ".", color)
+    }
+    if (Object.keys(this._inventory).length == 0) return
+    let { x, y } = this.getSize()
+    let row = y - 1
+    let powerBarOffset = 9
+    let powerBarRange = 5
+
+    this.game.display.draw(powerBarOffset - 1, row, "[")
+    this.game.display.draw(powerBarOffset + powerBarRange, row, "]")
+    for (let i = 0; i < this.battery; i++) {
+      dot(powerBarOffset + i, row)
+    }
   }
 
 
   _generateMap(data: string) {
-    // TODO change to json structure instead of text
     let fullMap = mapData.fullMap.split("\n")
     let map = data.split("\n")
     for (let row = 0; row < this._size.y; row++) {
@@ -313,7 +329,7 @@ export default class MainLevel {
         // don't put the player in specialEntity (to avoid overlapping special entities)
         if (ch === "@") {
           this.player.setPosition(xy, this)
-          // drag ground underneath
+          // draw ground underneath
           ch = "."
         }
         let { terrain: t, special: s } = entityFromCh(ch, this.game)
