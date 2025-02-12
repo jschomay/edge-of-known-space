@@ -4,6 +4,7 @@ import XY from "../xy";
 import Game from "../game";
 import EVItem, { KEY as EVKey, COLOR as EVColor } from "../items/ev"
 import Player from "./player";
+import Lo from "./lo";
 
 export default class EV extends Entity {
 
@@ -43,6 +44,10 @@ export default class EV extends Entity {
 
 
   onInteract(player: Player): boolean {
+    if (this.carryingLo()) {
+      this.getLevel().textBuffer.write("Commander Lo is in the EV. I don't want to move him unnecessarily.")
+      return false
+    }
     return this.load(player)
   }
 
@@ -56,6 +61,10 @@ export default class EV extends Entity {
 
   playerIsRiding(): boolean {
     return this._loaded === this.getLevel().player
+  }
+
+  carryingLo(): boolean {
+    return this._loaded instanceof Lo
   }
 
   load(e: Entity): boolean {
@@ -79,7 +88,9 @@ export default class EV extends Entity {
       this._loaded = e
       this.getLevel().removeSpecialEntity(e)
       let name = e.name || "The item"
-      this.getLevel().textBuffer.write(`${name} has been loaded into the EV. Press %c{${EVColor}}[${EVKey}]%c{} to unload.`)
+      let msg = `${name} has been loaded into the EV. Press %c{${EVColor}}[${EVKey}]%c{} to unload.`
+      if (e instanceof Lo) msg = "Commander Lo is safely inside the EV. Now to get him to the ship."
+      this.getLevel().textBuffer.write(msg)
       return true
     }
   }
