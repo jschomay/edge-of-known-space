@@ -1,5 +1,6 @@
 import * as ROT from "../lib/rotjs"
 import Scheduler from "../lib/rotjs/scheduler/speed"
+import EndScreen from "./end-screen";
 import MainLevel from "./level"
 import StartScreen from "./start-screen"
 import XY from "./xy";
@@ -28,8 +29,9 @@ export default class Game {
     document.body.appendChild(this._container);
 
     // TODO only for debugging
-    let level = new MainLevel(this);
+    // let level = new MainLevel(this);
     // let level = new StartScreen(this);
+    let level = new EndScreen(this);
     this.level = level;
     this.switchLevel(level);
     this.engine.start();
@@ -43,7 +45,7 @@ export default class Game {
   }
 
 
-  switchLevel(level: MainLevel | StartScreen): void {
+  switchLevel(level: MainLevel | StartScreen | EndScreen): void {
     this.level = level;
     let size = level.getSize();
     this.display.setOptions({ width: size.x, height: size.y });

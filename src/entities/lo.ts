@@ -15,6 +15,7 @@ export default class Lo extends Entity {
 
   onInteract(entity: Entity): boolean {
     if (this.concious) {
+      this.getLevel().loDiscovered = true
       this.getLevel()!.textBuffer.displayBox(dialog, () => true)
       this.concious = false
     } else if (entity === this.getLevel().ev) {

@@ -15,13 +15,13 @@ import EVItem, { KEY as EV_KEY } from "./items/ev";
 import EV from "./entities/ev";
 import CrystalShard from "./entities/crystal-shard";
 
-const DEBUG = 1
+const DEBUG = 0
 function debug(level: MainLevel) {
   const showFullMap = () => {
     Object.values(level._map).forEach(e => e.visible = true);
     level._specialEntities.forEach(e => e.visible = true)
     for (let x = 0; x < level._size.x; x++) {
-      for (let y = 0; y < level._size.y; y++) {
+      for (let y = 0; y < level._size.y - 1; y++) {
         const xy = new XY(x, y)
         level.draw(xy)
       }
@@ -29,14 +29,14 @@ function debug(level: MainLevel) {
   }
   showFullMap()
 
-  level.addInventory(new TerminalItem(level))
+  // level.addInventory(new TerminalItem(level))
   level.addInventory(new TorchItem(level))
   level.addInventory(new ScannerItem(level))
   level.addInventory(new BridgeItem(level))
   level.addInventory(new EVItem(level))
 
   // level.removeSpecialEntity(level.ev)
-  // level.setSpecialEntity(level.ev, new XY(88, 33))
+  // level.setSpecialEntity(level.ev, new XY(42, 20))
 
   // level.player.setPosition(new XY(96, 31))
 
@@ -59,6 +59,7 @@ function debug(level: MainLevel) {
       level.powerLevel = (level.powerLevel + 1)
       if (level.powerLevel > 4) level.powerLevel = 1
       level.activeItem && level._inventory[level.activeItem].setPower()
+      level.drawNewShard()
       level.drawPower()
       level.updateFOV()
       return
@@ -79,6 +80,9 @@ export default class MainLevel {
   _inventory: Record<string, Item> = {}
   activeItem: string | null = null
   powerLevel = 1
+  battery = 3
+  loDiscovered = false
+  loOnShip = false
 
   constructor(game: Game) {
     this.game = game;
@@ -190,6 +194,7 @@ export default class MainLevel {
     if (item instanceof EVItem) {
       this.ev.remote = item
     }
+    this.drawPower()
     this._drawInventory()
   }
 
@@ -272,6 +277,10 @@ export default class MainLevel {
   _drawInventory() {
     let { x, y } = this.getSize()
     let offset = 20
+    for (let i = offset; i < x - 1; i++) {
+      this.game.display.draw(i, y - 1, " ", null, null);
+    }
+
     for (let key of Object.keys(this._inventory).sort()) {
       let activeIndicator = this.activeItem === key ? "*" : " "
       let keyInfo = `%c{${this._inventory[key].color}}[${key}]%c{}`
