@@ -51,17 +51,11 @@ export default class EndScreen {
         let map = this._levelData.split("\n")
         let ch = map[row][col]
 
-        if (this._state === 1) {
-          this.game.display.drawText(32, 38, "%c{#ff0}Press [Enter] to wake up from cryosleep...")
-        }
+        this.game.display.drawText(42, 38, "%c{#ff0}Thank you for playing!")
 
 
-        if (this._state === 2) {
-          this.game.display.drawText(32, 38, "%c{#ff0}Press [Enter] to continue...")
-        }
 
-
-        let color = ch === "#" ? "#950" : "white"
+        let color = ch === "#" ? "#950" : ch === "white" ? "." : ch === "." ? "orange" : ch === "~" ? "red" : "white"
         if (ch === "/") {
           ch = RNG.getUniform() > 0.5 ? "/" : "\\"
           color = RNG.getUniform() > 0.5 ? "#a0e" : "#0ae"

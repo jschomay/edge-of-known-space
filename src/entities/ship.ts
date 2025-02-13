@@ -42,7 +42,11 @@ The ship appears to be fully functional. But our shuttle is missing. What happen
     }
     if (this.getLevel().loDiscovered) {
       this.getLevel().textBuffer.displayBox(`
-Lo is healing in the med bay. All systems ready. These crystals are doing something to the engines I've never seen before. Let's go home!
+Lo is healing in the med bay. All systems ready. Let's go home!
+---
+These crystals are doing something to the engines I've never seen before. The readout says it will only take a 2 months to get back.
+---
+I think this time I'll stay awake.
 `.trim(), () => {
         this.game.switchLevel(new EndScreen(this.game))
       })
