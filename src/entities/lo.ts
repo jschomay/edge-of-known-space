@@ -35,9 +35,9 @@ It's Commander Lo! He's been shot. He's barely conscious, but he is alive.
 ---
 "This was more than a salvage mission. The Intrepid crew were working on classified research and I was under confidential orders to retrieve it. Per security clearance protocols, I couldn't wake you until assessing the situation."
 ---
-"It doesn't matter now. Hanes turned on us. When we recovered whatever research we could find, he shot me and left me to die. He stole the research and took our shuttle."
+"It doesn't matter now. Hanes turned on us. When we recovered whatever research we could find, he shot me, took the EV, and stole the research. I heard our shuttle launch, so he's most likely well into unknown space by now."
 ---
-"That information in the wong hands is bad news. We need to get back home and warn command."
+"That information in the wrong hands is bad news. We need to get back home and warn command."
 ---
 "At least one thing went our way -- I found something in this grove. A chunk of these crystals. We can bring that back. Dax..."
 ---
