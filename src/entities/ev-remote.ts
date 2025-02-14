@@ -6,7 +6,7 @@ export default class EVRemote extends Entity {
   item: boolean = true
 
   constructor(game: Game) {
-    super(game, { ch: "?", fg: "white" });
+    super(game, { ch: "?", fg: EVColor });
     this.visible = false;
   }
 

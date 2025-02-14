@@ -6,7 +6,7 @@ export default class Scanner extends Entity {
   item: boolean = true
 
   constructor(game: Game) {
-    super(game, { ch: "?", fg: "white" });
+    super(game, { ch: "?", fg: "#55f" });
     this.visible = false;
   }
 
