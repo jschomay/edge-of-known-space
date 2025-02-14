@@ -16,18 +16,19 @@ export default class Ship extends Entity {
 The ship appears to be fully functional. But our shuttle is missing. What happened while I was out?
 `.trim())
       interactionCount++;
+      return false
     }
 
     if (entity instanceof EV) {
       if (entity.carryingLo()) {
         // messy, but good enough for the ending
+        this.getLevel().ev._loaded = null
         entity.remove()
         this.getLevel()!.textBuffer.write("Lo is safely loaded back on the ship. We're ready to go home!")
         let remoteKey = this.getLevel().activeItem!
         this.getLevel().deactivateItem(remoteKey)
         delete this.getLevel()._inventory[remoteKey]
         this.getLevel()._drawInventory()
-        this.getLevel().ev._loaded = null
         this.getLevel().ev.remote.active = false
         this.getLevel().loOnShip = true
         return false

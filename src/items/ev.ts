@@ -64,7 +64,6 @@ export default class EVItem implements Item {
   onActivate() {
     // when unloaded, activates fov
     // when loaded with non-player, fov should already be active so this shouldn't hit
-    // unless loaded with Lo, then just activate
     // when loaded with player, fov is inactive, so this should hit
     // // attempt to unload player, don't activate fov at all
     let ev = this._level.ev
@@ -76,9 +75,7 @@ export default class EVItem implements Item {
       return true
     }
 
-    if (ev.carryingLo()) return true
     if (!ev.playerIsRiding()) throw "unexpected onActivate while ev was loaded with non-player";
-
 
     ev.unload()
     this._level.updateFOV()
@@ -88,7 +85,6 @@ export default class EVItem implements Item {
   onDeactivate() {
     // when unloaded, deactivates fov
     // when loaded with non-player, fov should already be active so this hits
-    // // if loaded with Lo, just deactivate and not unload
     // // attempt to unload, don't deactivate fov at all
     // when loaded with player, fov is inactive, so this shouldn't hit
     let ev = this._level.ev
@@ -100,8 +96,6 @@ export default class EVItem implements Item {
     }
 
     if (ev.playerIsRiding()) throw "unexpected onDeactivate while ev was loaded with player"
-
-    if (ev.carryingLo()) return true
 
     ev.unload()
     // draw FOV over unloaded item

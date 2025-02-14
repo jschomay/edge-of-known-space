@@ -44,10 +44,6 @@ export default class EV extends Entity {
 
 
   onInteract(player: Player): boolean {
-    if (this.carryingLo()) {
-      this.getLevel().textBuffer.write("Commander Lo is in the EV. I don't want to move him unnecessarily.")
-      return false
-    }
     return this.load(player)
   }
 
