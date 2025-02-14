@@ -14,7 +14,8 @@ export default class Game {
 
   _container: HTMLElement
 
-  constructor() {
+  constructor(startBgTrack: () => void) {
+    this.startBgTrack = startBgTrack
     this.scheduler = new ROT.Scheduler.Speed();
     this.engine = new ROT.Engine(this.scheduler);
     const scalar = 80
@@ -30,8 +31,8 @@ export default class Game {
 
     // TODO only for debugging
     // let level = new MainLevel(this);
-    // let level = new StartScreen(this);
-    let level = new EndScreen(this);
+    // let level = new EndScreen(this);
+    let level = new StartScreen(this);
     this.level = level;
     this.switchLevel(level);
     this.engine.start();
@@ -47,6 +48,7 @@ export default class Game {
 
   switchLevel(level: MainLevel | StartScreen | EndScreen): void {
     this.level = level;
+    if (level instanceof MainLevel) this.startBgTrack()
     let size = level.getSize();
     this.display.setOptions({ width: size.x, height: size.y });
   }
