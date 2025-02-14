@@ -46,16 +46,20 @@ export default class EndScreen {
   }
 
   _generateMap() {
+    let stars = []
+
+    let map = this._levelData.split("\n")
     for (let row = 0; row < this.size.y; row++) {
       for (let col = 0; col < this.size.x; col++) {
-        let map = this._levelData.split("\n")
         let ch = map[row][col]
+        if (ch === "*") { stars.push([col, row]) }
+        if (ch === "." || ch === "}") continue
 
         this.game.display.drawText(42, 38, "%c{#ff0}Thank you for playing!")
 
 
 
-        let color = ch === "#" ? "#950" : ch === "white" ? "." : ch === "." ? "orange" : ch === "~" ? "red" : "white"
+        let color = ch === "#" ? "#950" : ch === "." ? "orange" : ch === "~" ? "red" : "white"
         if (ch === "/") {
           ch = RNG.getUniform() > 0.5 ? "/" : "\\"
           color = RNG.getUniform() > 0.5 ? "#a0e" : "#0ae"
@@ -64,6 +68,26 @@ export default class EndScreen {
         this.game.display.draw(col, row, ch, color);
       }
     }
+
+    let row = this.size.y - 5
+    let i = setInterval(() => {
+      for (let col = 0; col < this.size.x; col++) {
+        let ch = map[row][col]
+
+        if (".}".includes(ch)) {
+          let color = ch === "." ? "orange" : "white"
+          this.game.display.draw(col, row, ch, color);
+        }
+      }
+      row--
+      if (row === 0) clearInterval(i)
+    }, 70)
+
+    setInterval(() => {
+      let r = RNG.getItem(stars)
+      let color = RNG.getItem(["#aaa", "white"])
+      this.game.display.draw(r[0], r[1], "*", color)
+    }, 50)
   }
 
 }

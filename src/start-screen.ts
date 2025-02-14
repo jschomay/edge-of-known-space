@@ -51,9 +51,9 @@ export default class StartScreen {
   }
 
   _generateMap() {
+    let map = this._levelData.split("\n")
     for (let row = 0; row < this.size.y; row++) {
       for (let col = 0; col < this.size.x; col++) {
-        let map = this._levelData.split("\n")
         let ch = map[row][col]
 
         if (this._state === 1) {
