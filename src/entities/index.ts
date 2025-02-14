@@ -22,11 +22,13 @@ import EVRemote from "./ev-remote";
 import EV from "./ev";
 import CrystalShard from "./crystal-shard";
 import Passage from "./passage";
+import PowerDrain from "./power-drain";
 
 const groundColor = "#430"
 
 const specialEntitiesOnGroundTerrain = new Map<string, (game: Game) => Entity>();
 // items
+specialEntitiesOnGroundTerrain.set("p", (game) => new PowerCore(game));
 specialEntitiesOnGroundTerrain.set("t", (game) => new Terminal(game));
 specialEntitiesOnGroundTerrain.set("f", (game) => new Torch(game));
 specialEntitiesOnGroundTerrain.set("b", (game) => new Bridge(game, { asItem: true }));
@@ -72,6 +74,10 @@ terrain.set("|", (game) => new Crystal(game, true, true));
 terrain.set("~", (game) => new Chasm(game, true));
 terrain.set(" ", (game) => new Chasm(game));
 terrain.set("I", (game) => new Bridge(game, { broken: true }));
+terrain.set("z", (game) => new PowerDrain(game, "z"));
+terrain.set("x", (game) => new PowerDrain(game, "x"));
+terrain.set("c", (game) => new PowerDrain(game, "c"));
+terrain.set("v", (game) => new PowerDrain(game, "v"));
 
 
 // returns terrain and possible special entity

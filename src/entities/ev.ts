@@ -44,6 +44,10 @@ export default class EV extends Entity {
 
 
   onInteract(player: Player): boolean {
+    if (this.getLevel().battery === 0) {
+      this.getLevel().textBuffer.write("There's no power to run it.")
+      return false
+    }
     return this.load(player)
   }
 

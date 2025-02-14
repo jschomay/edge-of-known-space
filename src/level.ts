@@ -29,14 +29,15 @@ function debug(level: MainLevel) {
   }
   showFullMap()
 
+  // level.battery = 5
   // level.addInventory(new TerminalItem(level))
-  level.addInventory(new TorchItem(level))
-  level.addInventory(new ScannerItem(level))
-  level.addInventory(new BridgeItem(level))
-  level.addInventory(new EVItem(level))
+  // level.addInventory(new TorchItem(level))
+  // level.addInventory(new ScannerItem(level))
+  // level.addInventory(new BridgeItem(level))
+  // level.addInventory(new EVItem(level))
 
-  // level.removeSpecialEntity(level.ev)
-  // level.setSpecialEntity(level.ev, new XY(42, 20))
+  level.removeSpecialEntity(level.ev)
+  level.setSpecialEntity(level.ev, new XY(76, 16))
 
   // level.player.setPosition(new XY(96, 31))
 
@@ -80,7 +81,7 @@ export default class MainLevel {
   _inventory: Record<string, Item> = {}
   activeItem: string | null = null
   powerLevel = 1
-  battery = 3
+  battery = 0
   loDiscovered = false
   loOnShip = false
 
@@ -95,7 +96,6 @@ export default class MainLevel {
     this.player.setPosition(new XY(0, 0), this);
 
     this._generateMap(mapData.map0);
-    this.drawPower()
 
     this.textBuffer = new TextBuffer(this.game);
 
@@ -142,6 +142,10 @@ export default class MainLevel {
   }
 
   activateItem(key: string) {
+    if (this.battery === 0) {
+      this.textBuffer.write("The power cell is dead.")
+      return
+    }
     let item = this._inventory[key]
     item.setPower()
     if (!item.onActivate()) return
@@ -303,22 +307,23 @@ export default class MainLevel {
   }
 
   drawPower() {
-    let dot = (x, y) => {
-      let color = "#0f0"
-      if (this.battery < 4) color = "#fa0"
-      if (this.battery < 2) color = "#f00"
-      this.game.display.draw(x, y, ".", color)
-    }
-    if (Object.keys(this._inventory).length == 0) return
     let { x, y } = this.getSize()
     let row = y - 1
     let powerBarOffset = 9
     let powerBarRange = 5
 
+    let dot = (i) => {
+      let color = "#0f0"
+      if (this.battery < 4) color = "#fa0"
+      if (this.battery < 3) color = "#f00"
+      let ch = i < this.battery ? "." : " "
+      this.game.display.draw(powerBarOffset + i, row, ch, color)
+    }
+
     this.game.display.draw(powerBarOffset - 1, row, "[")
     this.game.display.draw(powerBarOffset + powerBarRange, row, "]")
-    for (let i = 0; i < this.battery; i++) {
-      dot(powerBarOffset + i, row)
+    for (let i = 0; i < powerBarRange; i++) {
+      dot(i)
     }
   }
 

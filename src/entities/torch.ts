@@ -13,10 +13,12 @@ export default class Torch extends Entity {
 
   onInteract(entity: Entity): boolean {
     let level = entity.getLevel()
-    level.textBuffer.displayBox("I found a torch. Press %c{orange}[2]%c{} to activate or deactivate it.", () => {
+    level.textBuffer.displayBox("I found a torch. Plus it has a little extra power in the cell. Press %c{orange}[2]%c{} to activate or deactivate it.", () => {
       this.remove()
       const terminal = new TorchItem(this.getLevel()!)
       level.addInventory(terminal)
+      level.battery = 4
+      level.drawPower()
     })
     return false;
   }
