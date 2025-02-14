@@ -8,7 +8,10 @@ window.addEventListener("load", handleEvent);
 function handleEvent(e: Event) {
   switch (e.type) {
     case "load":
-      loadFile("public/bg.ogg").then((track) => new Game(() => startBgMusic(track)));
+      loadFile("public/bg.ogg").then((track) => {
+        document.querySelector("p")?.remove()
+        new Game(() => startBgMusic(track))
+      });
   }
   window.removeEventListener("load", handleEvent);
 }
