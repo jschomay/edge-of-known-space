@@ -11,14 +11,6 @@ export default class Ship extends Entity {
   }
 
   onInteract(entity: Entity): boolean {
-    if (interactionCount === 0) {
-      this.getLevel()!.textBuffer.displayBox(`
-The ship appears to be fully functional. But our shuttle is missing. What happened while I was out?
-`.trim())
-      interactionCount++;
-      return false
-    }
-
     if (entity instanceof EV) {
       if (entity.carryingLo()) {
         // messy, but good enough for the ending
@@ -41,7 +33,7 @@ The ship appears to be fully functional. But our shuttle is missing. What happen
       this.getLevel()!.textBuffer.write("I won't leave until I get Commander Lo back on board.")
       return false
     }
-    if (this.getLevel().loDiscovered) {
+    if (this.getLevel().loDiscovered && this.getLevel().loOnShip) {
       this.getLevel().textBuffer.displayBox(`
 Lo is healing in the med bay. All systems ready. Let's go home!
 ---
@@ -53,6 +45,15 @@ I think this time I'll stay awake.
       })
       return false
     }
+
+    if (interactionCount === 0) {
+      this.getLevel()!.textBuffer.displayBox(`
+The ship appears to be fully functional. But our shuttle is missing. What happened while I was out?
+`.trim())
+      interactionCount++;
+      return false
+    }
+
 
     this.getLevel()!.textBuffer.write("I can't go anywhere without finding the rest of the crew.")
     return false;
