@@ -45,7 +45,7 @@ He slumps over.
 ---
 ...
 ---
-He's unconscious. I have to get thim back to the ship's med bay.
+He's unconscious. I have to get him back to the ship's med bay.
 ---
 Hang in there Commander.
 `

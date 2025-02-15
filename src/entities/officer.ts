@@ -55,7 +55,7 @@ We're out of luck.
 `.trim()
 
 export const INTREPID2 = `
-Another Intrepid crewmember, also long dead.
+Another Intrepid crew member, also long dead.
 
 ---
 %c{#098}

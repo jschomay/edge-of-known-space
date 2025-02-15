@@ -42,10 +42,10 @@ export const EMPTY_SHIP = {
 
 Distress signal detected from deep-space research vessel INTREPID (DSRV-890).
 
-Primary objective: Locate and recover INTREPID vessle and crew.  
+Primary objective: Locate and recover INTREPID vessel and crew.  
 ---
 %c{#098}
-::PERSONEL MANIFEST::  
+::PERSONNEL MANIFEST::  
 
 - Commanding Officer Lo  
 - Science Officer Balthar  
@@ -136,10 +136,10 @@ I picked up a decaying log signal. This one happened a while ago.
 %c{#b80}
 ::WARNING BEACON::
 
-We came in search of effcient power. What we found was beyound imagination.
+We came in search of efficient power. What we found was beyond imagination.
 ---
 %c{#b80}
-The power of these crystals is too great. Humanitity cannot be trusted.
+The power of these crystals is too great. Humanity cannot be trusted.
 ---
 %c{#b80}
 On behalf of the Let Stars Be activist group, I Yorq, now commit this research back to the stars. Goodbye all.
