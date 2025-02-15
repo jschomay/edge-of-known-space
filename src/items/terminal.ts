@@ -55,7 +55,7 @@ export default class TerminalItem implements Item {
     // Use this for circular fov
     // let preciseR = e.getXY()!.dist(this._level.player.getXY()!)
     if (this._r - r < this._FOVWidth) {
-      if (e instanceof Log) {
+      if (e instanceof Log && e.level <= this._level.powerLevel) {
         e.visible = true
       } else {
         let multplier = 190 * this._FOVMaxRadius / r

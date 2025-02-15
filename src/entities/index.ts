@@ -42,6 +42,10 @@ specialEntitiesOnGroundTerrain.set("1", (game) => new Log(game, logs.EMPTY_SHIP)
 specialEntitiesOnGroundTerrain.set("2", (game) => new Log(game, logs.SCIENCE_OFFICER_FIRST));
 specialEntitiesOnGroundTerrain.set("3", (game) => new Log(game, logs.LO_BRIDGE));
 specialEntitiesOnGroundTerrain.set("4", (game) => new Log(game, logs.LO_EXPLORE));
+specialEntitiesOnGroundTerrain.set("7", (game) => new Log(game, logs.YORQ, 2));
+specialEntitiesOnGroundTerrain.set("8", (game) => new Log(game, logs.DENSE, 2));
+specialEntitiesOnGroundTerrain.set("9", (game) => new Log(game, logs.HANES, 2));
+specialEntitiesOnGroundTerrain.set("0", (game) => new Log(game, logs.DISTRESS, 2));
 // features
 specialEntitiesOnGroundTerrain.set("%", (game) => new Rubble(game));
 specialEntitiesOnGroundTerrain.set("$", (game) => new Passage(game));
@@ -52,13 +56,13 @@ const specialEntitiesOnCrystalTerrain = new Map<string, (game: Game) => Entity>(
 specialEntitiesOnCrystalTerrain.set("D", (game) => new Officer(game, officer_logs.BALTHAR));
 specialEntitiesOnCrystalTerrain.set("s", (game) => new Scanner(game));
 
-const specialEntitiesOnRockyTerraine = new Map<string, (game: Game) => Entity>();
-specialEntitiesOnRockyTerraine.set("#", (game) => new Boulder(game));
-specialEntitiesOnRockyTerraine.set("A", (game) => new Officer(game, officer_logs.ARGOS));
-specialEntitiesOnRockyTerraine.set("E", (game) => new EV(game));
+const specialEntitiesOnRockyTerrain = new Map<string, (game: Game) => Entity>();
+specialEntitiesOnRockyTerrain.set("#", (game) => new Boulder(game));
+specialEntitiesOnRockyTerrain.set("A", (game) => new Officer(game, officer_logs.ARGOS));
+specialEntitiesOnRockyTerrain.set("E", (game) => new EV(game));
 // Logs
-specialEntitiesOnRockyTerraine.set("5", (game) => new Log(game, logs.LO_REPORT));
-specialEntitiesOnRockyTerraine.set("6", (game) => new Log(game, logs.ARGOS_UNSTABLE));
+specialEntitiesOnRockyTerrain.set("5", (game) => new Log(game, logs.LO_REPORT));
+specialEntitiesOnRockyTerrain.set("6", (game) => new Log(game, logs.ARGOS_UNSTABLE));
 
 
 const terrain = new Map<string, (game: Game) => Entity>();
@@ -96,8 +100,8 @@ export function entityFromCh(ch: string, game: Game): { terrain: Entity, special
     return { terrain: new Crystal(game, true), special: s(game) }
   }
 
-  else if (specialEntitiesOnRockyTerraine.has(ch)) {
-    let s = specialEntitiesOnRockyTerraine.get(ch)!
+  else if (specialEntitiesOnRockyTerrain.has(ch)) {
+    let s = specialEntitiesOnRockyTerrain.get(ch)!
     return { terrain: new Rocky(game), special: s(game) }
   }
 
