@@ -48,6 +48,10 @@ export default class EV extends Entity {
       this.getLevel().textBuffer.write("There's no power to run it.")
       return false
     }
+    if (this.carryingLo()) {
+      this.getLevel().textBuffer.write("Commander Lo is in the EV. I don't want to move him unnecessarily.")
+      return false
+    }
     return this.load(player)
   }
 
