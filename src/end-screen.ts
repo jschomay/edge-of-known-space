@@ -53,7 +53,10 @@ export default class EndScreen {
       for (let col = 0; col < this.size.x; col++) {
         let ch = map[row][col]
         if (ch === "*") { stars.push([col, row]) }
-        if (ch === "." || ch === "}") continue
+        if (ch === "." || ch === "}") {
+          this.game.display.draw(col, row, " ");
+          continue
+        }
 
         this.game.display.drawText(42, 38, "%c{#ff0}Thank you for playing!")
 

@@ -106,6 +106,7 @@ export const LO_EXPLORE = {
 
 Argos, take EV2 and explore the area, make sure we're alone. Keep me posted. We'll rendezvous back at the ship and awake the others.'
 ---
+%c{#098}
 Hanes, you're with me.
 `.trim(), onDiscover: (entity: Entity) => null
 }

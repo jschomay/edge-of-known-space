@@ -93,15 +93,13 @@ export default class EVItem implements Item {
     // when loaded with player, fov is inactive, so this shouldn't hit
     let ev = this._level.ev
 
-    if (!ev.isLoaded()) {
+    if (!ev.isLoaded() || ev.carryingLo()) {
       this._fovCells = []
       this.active = false
       return true
     }
 
     if (ev.playerIsRiding()) throw "unexpected onDeactivate while ev was loaded with player"
-
-    if (ev.carryingLo()) return true
 
     ev.unload()
     // draw FOV over unloaded item

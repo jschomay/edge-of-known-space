@@ -12,6 +12,7 @@ import { KEY as SHARD_KEY } from "../entities/crystal-shard";
 import { KEY as OFFICER_KEY } from "../entities/officer";
 import Log from "../entities/log";
 import Passage from "../entities/passage";
+import Boulder from "../entities/boulder";
 
 export default class ScannerItem implements Item {
   key: string = "3"
@@ -24,7 +25,7 @@ export default class ScannerItem implements Item {
 
   private _fov: FOV;
   private _level: MainLevel
-  private _maxR: number = 15
+  private _maxR: number = 7
 
   constructor(level: MainLevel) {
     this._level = level
@@ -33,7 +34,7 @@ export default class ScannerItem implements Item {
   }
 
   setPower() {
-    this._maxR = { 1: 15, 2: 15, 3: 20, 4: 30 }[this._level.powerLevel] || 15
+    this._maxR = { 1: 7, 2: 15, 3: 20, 4: 30 }[this._level.powerLevel] || 7
   }
 
   getFOV() {
@@ -49,6 +50,7 @@ export default class ScannerItem implements Item {
 
     let special = this._level.getEntityAt(xy, true, false)
     let terrain = this._level.getEntityAt(xy, false, true)
+    let highlightColor = Color.fromString("cyan")
 
     if (special && special instanceof Rubble) {
       special.scanned = true
@@ -67,14 +69,21 @@ export default class ScannerItem implements Item {
       return
     }
 
-    // other specials (like rocks) block the scanner (only logs let it pass)
+    if (special && special instanceof Boulder) {
+      let { ch } = special.getVisual()
+      special.visible = true
+      highlightColor = Color.multiply(highlightColor, [150, 150, 150])
+      this._level.game.display.draw(x, y, ch, Color.toHex(highlightColor))
+      return
+    }
+
+    // specials block the scanner (not log)
     let shardLocation = special && special instanceof CrystalShard
     if (!shardLocation && special && this._level.isSpecial(special) && !(special instanceof Log)) return
     if (!terrain) { return; }
 
 
     let { ch } = terrain.getVisual()
-    let highlightColor = Color.fromString("cyan")
 
     if ("^.".includes(ch) && !shardLocation) {
       terrain.visible = true

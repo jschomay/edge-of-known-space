@@ -28,6 +28,7 @@ export default class PowerDrain extends Entity {
 
         this.getLevel().textBuffer.displayBox("I ran out of power! Guess it's back to going on foot again.", () => {
           if (!this.getLevel().ev.unload()) throw "Failed to unload EV on power drain"
+          this.getLevel().deactivateItem(this.getLevel().activeItem)
         })
         return false
       }

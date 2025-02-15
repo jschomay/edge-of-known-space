@@ -34,7 +34,7 @@ export default class TerminalItem implements Item {
   }
 
   setPower() {
-    this._FOVMaxRadius = { 1: 10, 2: 15, 3: 20, 4: 30 }[this._level.powerLevel] || 10
+    this._FOVMaxRadius = { 1: 10, 2: 18, 3: 24, 4: 38 }[this._level.powerLevel] || 10
   }
 
   getFOV() {

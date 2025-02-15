@@ -27,19 +27,19 @@ function debug(level: MainLevel) {
       }
     }
   }
-  showFullMap()
+  // showFullMap()
 
-  // level.battery = 5
-  // level.addInventory(new TerminalItem(level))
-  // level.addInventory(new TorchItem(level))
-  // level.addInventory(new ScannerItem(level))
-  // level.addInventory(new BridgeItem(level))
-  // level.addInventory(new EVItem(level))
+  level.battery = 1
+  level.addInventory(new TerminalItem(level))
+  level.addInventory(new TorchItem(level))
+  level.addInventory(new ScannerItem(level))
+  level.addInventory(new BridgeItem(level))
+  level.addInventory(new EVItem(level))
 
   level.removeSpecialEntity(level.ev)
-  level.setSpecialEntity(level.ev, new XY(76, 16))
+  level.setSpecialEntity(level.ev, new XY(99, 31))
 
-  // level.player.setPosition(new XY(96, 31))
+  level.player.setPosition(new XY(99, 30))
 
 
   // inspect helpers
