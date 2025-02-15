@@ -49,7 +49,7 @@ export default class TorchItem implements Item {
     if (entity instanceof Crystal) {
       entity.visible = true
       if (entity.dense) {
-        if (entity.clearing) return this._level.powerLevel > 2
+        if (entity.clearing) return this._level.powerLevel > 3
         return false
 
       } else {
