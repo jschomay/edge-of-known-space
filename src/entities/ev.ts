@@ -83,6 +83,7 @@ export default class EV extends Entity {
       }
 
       this._loaded = e
+      this.getLevel()._drawInventory()
       e.visible = false
       if (this.getLevel().activeItem) this.getLevel().deactivateItem(this.getLevel().activeItem!)
       this.getLevel().textBuffer.write(`Let's roll. Press %c{${EVColor}}[${EVKey}]%c{} to exit.`)
@@ -90,6 +91,7 @@ export default class EV extends Entity {
 
     } else {
       this._loaded = e
+      this.getLevel()._drawInventory()
       this.getLevel().removeSpecialEntity(e)
       let name = e.name || "The item"
       let msg = `${name} has been loaded into the EV. Press %c{${EVColor}}[${EVKey}]%c{} to unload.`
@@ -120,6 +122,7 @@ export default class EV extends Entity {
       }
 
       this._loaded = null
+      this.getLevel()._drawInventory()
       this.getLevel().draw(spot)
       this.getLevel().draw(this.getXY()!)
       return true

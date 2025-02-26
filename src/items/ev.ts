@@ -10,10 +10,11 @@ import { KEY as OFFICER_KEY } from "../entities/officer";
 
 export const KEY = "5"
 export const COLOR = "#d00"
+export const NAME = "EV2 remote"
 
 export default class EVItem implements Item {
   key: string = KEY
-  name: string = "EV2 remote"
+  name: string = NAME
   color: string = COLOR
   active: boolean = false
 

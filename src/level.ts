@@ -11,7 +11,7 @@ import * as mapData from "./level-data";
 import TorchItem from "./items/torch";
 import ScannerItem from "./items/scanner";
 import BridgeItem, { KEY as BRIDGE_KEY } from "./items/bridge";
-import EVItem, { KEY as EV_KEY } from "./items/ev";
+import EVItem, { KEY as EV_KEY, NAME as EV_NAME } from "./items/ev";
 import EV from "./entities/ev";
 import CrystalShard from "./entities/crystal-shard";
 
@@ -289,6 +289,15 @@ export default class MainLevel {
       let activeIndicator = this.activeItem === key ? "*" : " "
       let keyInfo = `%c{${this._inventory[key].color}}[${key}]%c{}`
       let keyName = this._inventory[key].name
+      if (keyName === EV_NAME) {
+        if (this.ev.playerIsRiding()) {
+          keyName = "Exit EV2"
+        }
+        else if (this.ev.isLoaded() && !this.ev.carryingLo()) {
+          keyName = "Unload EV2"
+        }
+      }
+
       let text = keyInfo + activeIndicator + keyName
       this.game.display.drawText(offset, y - 1, text, x)
       offset += keyName.length + 10
