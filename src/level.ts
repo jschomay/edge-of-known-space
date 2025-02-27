@@ -305,10 +305,12 @@ export default class MainLevel {
   }
 
   drawNewShard() {
-    let offset = 2 + this.powerLevel
+    // draws in place of power indicator
+    let offset = 8 + this.powerLevel
+    let gutter = 1 * (this.powerLevel - 1)
     let { x, y } = this.getSize()
     let row = y - 1
-    let xy = new XY(offset, row)
+    let xy = new XY(offset + gutter, row)
     let shard = new CrystalShard(this.game)
     shard.visible = true
     this.setSpecialEntity(shard, xy)
@@ -318,7 +320,8 @@ export default class MainLevel {
   drawPower() {
     let { x, y } = this.getSize()
     let row = y - 1
-    let powerBarOffset = 9
+    let powerBarOffset = 4
+    let label = "Power  "
     let powerBarRange = 5
 
     let dot = (i) => {
@@ -326,11 +329,20 @@ export default class MainLevel {
       if (this.battery < 4) color = "#fa0"
       if (this.battery < 3) color = "#f00"
       let ch = i < this.battery ? "." : " "
-      this.game.display.draw(powerBarOffset + i, row, ch, color)
+      this.game.display.draw(label.length + powerBarOffset + i, row, ch, color)
     }
 
-    this.game.display.draw(powerBarOffset - 1, row, "[")
-    this.game.display.draw(powerBarOffset + powerBarRange, row, "]")
+    // clear
+    for (let i = 0; i < powerBarOffset + powerBarRange + label.length + 2; i++) {
+      this.game.display.draw(i, row, " ")
+    }
+
+    this.game.display.drawText(powerBarOffset, row, label)
+    this.game.display.draw(label.length + powerBarOffset - 1, row, "[")
+    this.game.display.draw(label.length + powerBarOffset + powerBarRange, row, "]")
+
+    if (this.powerLevel > 1) return
+
     for (let i = 0; i < powerBarRange; i++) {
       dot(i)
     }
