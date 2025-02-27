@@ -5,10 +5,11 @@ import Chasm from "../entities/chasm";
 import XY from "../xy";
 
 export const KEY = "4"
+export const NAME = "Bridge"
 
 export default class BridgeItem implements Item {
   key: string = KEY
-  name: string = "Bridge"
+  name: string = NAME
   color: string = "gray"
   active: boolean = false
 

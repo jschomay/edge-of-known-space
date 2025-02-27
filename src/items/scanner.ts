@@ -14,9 +14,11 @@ import Log from "../entities/log";
 import Passage from "../entities/passage";
 import Boulder from "../entities/boulder";
 
+export const NAME = "Scanner"
+
 export default class ScannerItem implements Item {
   key: string = "3"
-  name: string = "Scanner"
+  name: string = NAME
   color: string = "#55f"
   active: boolean = false
   _initialR: number = 1

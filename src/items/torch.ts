@@ -13,10 +13,11 @@ import CrystalShard from "../entities/crystal-shard";
 import Ship from "../entities/ship";
 
 export const KEY = "2"
+export const NAME = "Torch"
 
 export default class TorchItem implements Item {
   key: string = KEY
-  name: string = "Torch"
+  name: string = NAME
   color: string = "orange"
   active: boolean = false
   r: number = 5

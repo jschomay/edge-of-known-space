@@ -6,12 +6,12 @@ import Player from "./entities/player";
 import TextBuffer from "./textbuffer"
 import { entityFromCh } from "./entities";
 import Item from "./items";
-import TerminalItem from "./items/terminal";
 import * as mapData from "./level-data";
-import TorchItem from "./items/torch";
-import ScannerItem from "./items/scanner";
-import BridgeItem, { KEY as BRIDGE_KEY } from "./items/bridge";
-import EVItem, { KEY as EV_KEY, NAME as EV_NAME } from "./items/ev";
+import TerminalItem, { NAME as TERMINAL_NAME } from "./items/terminal";
+import TorchItem, { NAME as TORCH_NAME } from "./items/torch";
+import ScannerItem, { NAME as SCANNER_NAME } from "./items/scanner";
+import BridgeItem, { NAME as BRIDGE_NAME } from "./items/bridge";
+import EVItem, { NAME as EV_NAME } from "./items/ev";
 import EV from "./entities/ev";
 import CrystalShard from "./entities/crystal-shard";
 
@@ -285,7 +285,16 @@ export default class MainLevel {
       this.game.display.draw(i, y - 1, " ", null, null);
     }
 
-    for (let key of Object.keys(this._inventory).sort()) {
+    let allKeys = [TERMINAL_NAME, TORCH_NAME, SCANNER_NAME, BRIDGE_NAME, EV_NAME]
+
+    for (let i = 0; i < allKeys.length; i++) {
+      // keys are 1-5 as strings
+      let key = (i + 1).toString()
+      if (!this._inventory[key]) {
+        offset += allKeys[i].length + 10
+        continue
+      }
+
       let activeIndicator = this.activeItem === key ? "*" : " "
       let keyInfo = `%c{${this._inventory[key].color}}[${key}]%c{}`
       let keyName = this._inventory[key].name

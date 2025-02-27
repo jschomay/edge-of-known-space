@@ -7,9 +7,11 @@ import Item from "."
 import Log from "../entities/log";
 
 const key = "1"
+export const NAME = "Terminal"
+
 export default class TerminalItem implements Item {
   key: string = key
-  name: string = "Terminal"
+  name: string = NAME
   color: string = "green"
   active: boolean = false
 
