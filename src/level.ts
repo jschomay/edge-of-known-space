@@ -119,6 +119,27 @@ export default class MainLevel {
     }
   }
 
+  public onClick(e: MouseEvent) {
+    let [x, y] = this.game.display.eventToPosition(e);
+
+    // general inventory row
+    if (Math.abs(40 - y) < 3) {
+      // toggle inventory
+      if (x > 19 && x < 35) {
+        this.toggleItem("1")
+      } else if (x > 35 && x < 50) {
+        this.toggleItem("2")
+      } else if (x > 50 && x < 67) {
+        this.toggleItem("3")
+      } else if (x > 67 && x < 83) {
+        this.toggleItem("4")
+      } else if (x > 83 && x < 103) {
+        this.toggleItem("5")
+      }
+    }
+  }
+
+
   onKeyDown(e: KeyboardEvent) {
     this.textBuffer.clear()
 
@@ -139,6 +160,14 @@ export default class MainLevel {
 
     // debug active item and ev state
     // this.textBuffer.write(`EV: ${this.ev.playerIsRiding() ? "riding" : "not riding"}, EV loaded: ${!!this.ev._loaded}, EV in range: ${this.ev.inRange()}, active item: ${this.activeItem}`)
+  }
+
+  toggleItem(key: string) {
+    if (this.activeItem === key) {
+      this.deactivateItem(key)
+    } else {
+      this.activateItem(key)
+    }
   }
 
   activateItem(key: string) {

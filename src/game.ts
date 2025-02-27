@@ -38,6 +38,7 @@ export default class Game {
     this.engine.start();
 
     window.addEventListener("keydown", this.onKeyDown.bind(this));
+    window.addEventListener("click", this.level.onClick.bind(this.level));
   }
 
   public onKeyDown(e: KeyboardEvent) {
