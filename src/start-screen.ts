@@ -28,6 +28,11 @@ export default class StartScreen {
     this._generateMap()
   }
 
+  // for mobile
+  onClick(e: MouseEvent) {
+    this.onKeyDown(new KeyboardEvent("keydown", { 'key': 'Enter' }))
+  }
+
   onKeyDown(e: KeyboardEvent): void {
     if (e.key !== "Enter") { return }
     if (this._state < 7) {

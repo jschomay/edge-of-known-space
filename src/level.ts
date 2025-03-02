@@ -119,7 +119,16 @@ export default class MainLevel {
     }
   }
 
+  // for mobile
   public onClick(e: MouseEvent) {
+    this.textBuffer.clear()
+
+    if (this.textBuffer.showing) {
+      this.textBuffer.clearDisplayBox()
+      return
+    }
+
+
     let [x, y] = this.game.display.eventToPosition(e);
 
     // general inventory row

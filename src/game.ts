@@ -38,7 +38,19 @@ export default class Game {
     this.engine.start();
 
     window.addEventListener("keydown", this.onKeyDown.bind(this));
-    window.addEventListener("click", this.level.onClick.bind(this.level));
+    if (this.detectMobile()) {
+      this._container.addEventListener("touchstart", this.onClick.bind(this));
+    }
+  }
+
+  detectMobile() {
+    return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+  }
+
+
+  // for mobile
+  public onClick(e: Event) {
+    this.level.onClick(e)
   }
 
   public onKeyDown(e: KeyboardEvent) {
@@ -49,8 +61,36 @@ export default class Game {
 
   switchLevel(level: MainLevel | StartScreen | EndScreen): void {
     this.level = level;
-    if (level instanceof MainLevel) this.startBgTrack()
     let size = level.getSize();
     this.display.setOptions({ width: size.x, height: size.y });
+
+    if (level instanceof MainLevel) {
+      this.startBgTrack()
+
+      if (this.detectMobile()) {
+        let dirInput = null;
+        let id = null;
+        let move = () => {
+          switch (dirInput) {
+            case "up": this.onKeyDown(new KeyboardEvent("keydown", { 'key': 'ArrowUp', keyCode: 38 })); break;
+            case "down": this.onKeyDown(new KeyboardEvent("keydown", { 'key': 'ArrowDown', keyCode: 40 })); break;
+            case "left": this.onKeyDown(new KeyboardEvent("keydown", { 'key': 'ArrowLeft', keyCode: 37 })); break;
+            case "right": this.onKeyDown(new KeyboardEvent("keydown", { 'key': 'ArrowRight', keyCode: 39 })); break;
+          }
+        }
+
+        let virtualJoystickEl = document.getElementById("virtual-joystick")!
+        virtualJoystickEl.style.display = "flex"
+        virtualJoystickEl.addEventListener("touchstart", (e) => {
+          dirInput = e.target?.id
+          move()
+          id = setInterval(move, 200)
+        })
+        virtualJoystickEl.addEventListener("touchend", (e) => {
+          dirInput = null
+          clearInterval(id)
+        })
+      }
+    }
   }
 }
