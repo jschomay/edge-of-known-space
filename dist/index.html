@@ -16,14 +16,48 @@
       font-size: 24px;
       font-family: monospace;
     }
+
+    #virtual-joystick {
+      position: absolute;
+      z-index: 999;
+      left: 20px;
+      top: 40%;
+      width: 90px;
+      height: 90px;
+      display: flex;
+      flex-wrap: wrap;
+      border-radius: 50%;
+      overflow: hidden;
+      transform: rotate(45deg);
+      display: none;
+    }
+
+    #virtual-joystick div {
+      opacity: 0.5;
+      border: 1px solid gray;
+      width: 50%;
+      height: 50%;
+      flex-shrink: 0;
+      flex-grow: 0;
+      background: white;
+    }
+    #virtual-joystick div:active {
+      opacity: 0.8;
+    }
   </style>
   <title>Edge of Known Space</title>
-  <script type="module" crossorigin src="./assets/index-D6p6hSYO.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-D8iN5FJv.css">
+  <script type="module" crossorigin src="./assets/index-C09HFctl.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-BRhSpRFv.css">
 </head>
 
 <body class="bg-black min-h-screen flex items-center justify-center" style="background: black;">
   <p>LOADING...</p>
+  <div id="virtual-joystick">
+    <div id="up"></div>
+    <div id="right"></div>
+    <div id="left"></div>
+    <div id="down"></div>
+  </div>
 </body>
 
 </html>
